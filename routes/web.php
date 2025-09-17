@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\administrasi\DashboardControllerAdministrasi;
+use App\Http\Controllers\administrasi\JobdeskControllerAdministrasi;
+use App\Http\Controllers\administrasi\ProfilControllerAdministrasi;
+use App\Http\Controllers\administrasi\RencanaControllerAdministrasi;
 use App\Http\Controllers\direktur\DashboardControllerDirektur;
 use App\Http\Controllers\direktur\JobdDeskControllerDirektur;
 use App\Http\Controllers\direktur\KaryawanControllerDirektur;
@@ -11,6 +15,10 @@ use App\Http\Controllers\enginer\DashboardControllerEnginer;
 use App\Http\Controllers\enginer\JobdeskControllerEnginer;
 use App\Http\Controllers\enginer\ProfilControllerEnginer;
 use App\Http\Controllers\enginer\RencanaControllerEnginer;
+use App\Http\Controllers\karyawan\DashboardControllerKaryawan;
+use App\Http\Controllers\karyawan\JobdeskControllerKaryawan;
+use App\Http\Controllers\karyawan\ProfilControllerKaryawan;
+use App\Http\Controllers\karyawan\RencanaControllerKaryawan;
 use App\Http\Controllers\KepalaTeknik\DashboardControllerKepalaTeknik;
 use App\Http\Controllers\KepalaTeknik\JobdeskControllerKepalaTeknik;
 use App\Http\Controllers\KepalaTeknik\ProfilControllerKepalaTeknik;
@@ -82,6 +90,33 @@ Route::prefix('produksi')->group(function () {
     Route::get('profil', [ProfilControllerProduksi::class, 'index']);
 
 });
+
+// Route Administrasi
+Route::prefix('administrasi')->group(function () {
+
+    Route::get('dashboard', [DashboardControllerAdministrasi::class, 'index']);
+
+    Route::get('rencana', [RencanaControllerAdministrasi::class, 'index']);
+
+    Route::get('jobdesk', [JobdeskControllerAdministrasi::class, 'index']);
+
+    Route::get('profil', [ProfilControllerAdministrasi::class, 'index']);
+
+});
+
+// Route karyawan
+Route::prefix('karyawan')->group(function () {
+
+    Route::get('dashboard', [DashboardControllerKaryawan::class, 'index']);
+
+    Route::get('rencana', [RencanaControllerKaryawan::class, 'index']);
+
+    Route::get('jobdesk', [JobdeskControllerKaryawan::class, 'index']);
+
+    Route::get('profil', [ProfilControllerKaryawan::class, 'index']);
+
+});
+
 
 
 
