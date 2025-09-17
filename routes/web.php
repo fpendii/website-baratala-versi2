@@ -40,6 +40,10 @@ Route::prefix('direktur')->group(function () {
     Route::get('dashboard', [DashboardControllerDirektur::class, 'index']);
 
     Route::get('jobdesk', [JobdDeskControllerDirektur::class, 'index']);
+    Route::get('jobdesk/create', [JobdDeskControllerDirektur::class, 'create']);
+    Route::get('jobdesk/edit/{id}', [JobdDeskControllerDirektur::class, 'edit']);
+    Route::get('jobdesk/delete/{id}', [JobdDeskControllerDirektur::class, 'delete']);
+
 
     Route::get('laporan', [LaporanControllerDirektur::class, 'index']);
 

@@ -72,49 +72,49 @@
                 <div class="menu-inner-shadow"></div>
 
                 <ul class="menu-inner py-1">
-                    <li class="menu-item {{ request()->is('direktur/dashboard') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->is('direktur/dashboard*') ? 'active' : '' }}">
                         <a href="/direktur/dashboard" class="menu-link">
                             <i class="menu-icon icon-base ri ri-dashboard-line"></i>
                             <div data-i18n="Basic">Dashboard</div>
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('direktur/jobdesk') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->is('direktur/jobdesk*') ? 'active' : '' }}">
                         <a href="/direktur/jobdesk" class="menu-link">
                             <i class="menu-icon icon-base ri ri-todo-line"></i>
                             <div data-i18n="Basic">Jobdesk</div>
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('direktur/laporan') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->is('direktur/laporan*') ? 'active' : '' }}">
                         <a href="/direktur/laporan" class="menu-link">
                             <i class="menu-icon icon-base ri ri-file-list-3-line"></i>
                             <div data-i18n="Basic">Laporan</div>
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('direktur/laporan-keuangan') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->is('direktur/laporan-keuangan*') ? 'active' : '' }}">
                         <a href="/direktur/laporan-keuangan" class="menu-link">
                             <i class="menu-icon icon-base ri ri-bar-chart-box-line"></i>
                             <div data-i18n="Basic">Laporan Keuangan</div>
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('direktur/laporan-jobdesk') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->is('direktur/laporan-jobdesk*') ? 'active' : '' }}">
                         <a href="/direktur/laporan-jobdesk" class="menu-link">
                             <i class="menu-icon icon-base ri ri-briefcase-line"></i>
                             <div data-i18n="Basic">Laporan Jobdesk</div>
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('direktur/karyawan') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->is('direktur/karyawan*') ? 'active' : '' }}">
                         <a href="/direktur/karyawan" class="menu-link">
                             <i class="menu-icon icon-base ri ri-team-line"></i>
                             <div data-i18n="Basic">Karyawan</div>
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('direktur/profil') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->is('direktur/profil*') ? 'active' : '' }}">
                         <a href="/direktur/profil" class="menu-link">
                             <i class="menu-icon icon-base ri ri-user-line"></i>
                             <div data-i18n="Basic">Profil</div>
