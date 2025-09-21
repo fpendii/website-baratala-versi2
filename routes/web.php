@@ -45,11 +45,15 @@ Route::prefix('direktur')->group(function () {
     Route::get('jobdesk/delete/{id}', [JobdDeskControllerDirektur::class, 'delete']);
 
 
+
+
     Route::get('laporan', [LaporanControllerDirektur::class, 'index']);
+    Route::get('laporan/tabel', [LaporanControllerDirektur::class, 'TampilanTabel']);
 
-    Route::get('laporan-keuangan', [LaporanKeuanganControllerDirektur::class, 'index']);
+    Route::get('keuangan-laporan', [LaporanKeuanganControllerDirektur::class, 'index']);
 
-    Route::get('laporan-jobdesk', [LaporanJobdeskControllerDirektur::class, 'index']);
+    Route::get('jobdesk-laporan', [LaporanJobdeskControllerDirektur::class, 'index']);
+    Route::get('jobdesk-laporan/jobdesk-karyawan', [LaporanJobdeskControllerDirektur::class, 'JobdeskKaryawan']);
 
     Route::get('karyawan', [KaryawanControllerDirektur::class, 'index']);
 

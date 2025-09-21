@@ -10,4 +10,8 @@ class LaporanControllerDirektur extends Controller
     public function index(){
         return view('direktur.laporan.index');
     }
+
+    public function TampilanTabel(){
+        return view('direktur.laporan.tabel');
+    }
 }
