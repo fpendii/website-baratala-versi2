@@ -66,7 +66,7 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
 });
 
 // Route Kepala Teknik
-Route::prefix('kepala-teknik')->group(function () {
+Route::prefix('karyawan')->group(function () {
 
     Route::get('dashboard', [DashboardControllerKepalaTeknik::class, 'index']);
 
