@@ -43,7 +43,7 @@
                                 <i class="icon-base ri ri-more-2-line icon-18px"></i>
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ url('/direktur/jobdesk/'.$jobdesk->id.'/edit') }}">
+                                <a class="dropdown-item" href="{{ route('direktur.jobdesk.edit', $jobdesk->id) }}">
                                     <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
                                     Edit
                                 </a>
