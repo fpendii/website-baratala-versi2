@@ -25,4 +25,20 @@ class LaporanControllerDirektur extends Controller
         $laporan = Laporan::with(['pengguna', 'laporanKeuangan'])->findOrFail($id);
         return view('direktur.laporan.detail', compact('laporan'));
     }
+
+    public function updateKeputusan(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:diterima,ditolak',
+            'keputusan' => 'nullable|string',
+        ]);
+
+        $laporan = Laporan::findOrFail($id);
+        $laporan->status = $request->status;
+        $laporan->keputusan = $request->keputusan;
+        $laporan->save();
+
+        return redirect()->route('direktur.laporan.detail', $laporan->id)
+            ->with('success', 'Keputusan berhasil diperbarui!');
+    }
 }

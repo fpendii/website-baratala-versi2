@@ -47,10 +47,11 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::delete('jobdesk/delete/{id}', [JobdDeskControllerDirektur::class, 'destroy'])->name('jobdesk.destroy');
 
 
-    Route::get('laporan', [LaporanControllerDirektur::class, 'index']);
+    Route::get('laporan', [LaporanControllerDirektur::class, 'index'])->name('laporan.index');
     Route::get('laporan/tabel', [LaporanControllerDirektur::class, 'TampilanTabel']);
     Route::get('laporan/grafik', [LaporanControllerDirektur::class, 'TampilanGrafik']);
     Route::get('laporan/detail/{id}', [LaporanControllerDirektur::class, 'detail'])->name('laporan.detail');
+    Route::post('laporan/keputusan/{id}', [LaporanControllerDirektur::class, 'updateKeputusan'])->name('laporan.keputusan');
 
     Route::get('keuangan-laporan', [LaporanKeuanganControllerDirektur::class, 'index']);
     // Route::get('keuangan-laporan/detail/{id}', [LaporanKeuanganControllerDirektur::class, 'detail']);
