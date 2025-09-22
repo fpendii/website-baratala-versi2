@@ -95,7 +95,7 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="/direktur/laporan-jobdesk/detail/1" class="btn btn-primary btn-sm">Lihat Detail</a>
+                                <a href="/direktur/jobdesk-laporan/detail/1" class="btn btn-primary btn-sm">Detail</a>
                             </td>
                         </tr>
                         @endforeach

@@ -11,7 +11,16 @@ class LaporanJobdeskControllerDirektur extends Controller
         return view('direktur.laporan_jobdesk.index');
     }
 
+    public function detail(){
+        return view('direktur.laporan_jobdesk.detail');
+    }
+
     public function JobdeskKaryawan(){
         return view('direktur.laporan_jobdesk.jobdesk_karyawan');
+    }
+
+    public function detailJobdeskKaryawan(){
+        $halamnJobdeskKaryawan = true;
+        return view('direktur.laporan_jobdesk.detail_jobdesk_karyawan');
     }
 }

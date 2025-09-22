@@ -75,7 +75,7 @@
                             </div>
                         </td>
                         <td>
-                             <a href="/direktur/laporan-jobdesk/jobdesk-karyawan/detail/1" class="btn btn-primary btn-sm">Lihat Detail</a>
+                             <a href="/direktur/jobdesk-laporan/jobdesk-karyawan/detail/1" class="btn btn-primary btn-sm">Lihat Detail</a>
                         </td>
                     </tr>
                     @endforeach
