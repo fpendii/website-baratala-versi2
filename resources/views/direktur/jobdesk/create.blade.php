@@ -9,7 +9,7 @@
         <small class="text-body-secondary float-end">Form Tambah Data Jobdesk</small>
     </div>
     <div class="card-body">
-        <form action="{{ url('/direktur/jobdesk') }}" method="POST">
+        <form action="{{ route('direktur.jobdesk.store') }}" method="POST">
             @csrf
             <div class="row mb-4">
                 <label class="col-sm-2 col-form-label">Jobdesk</label>
@@ -38,12 +38,14 @@
                     <div class="input-group input-group-merge">
                         <span class="input-group-text"><i class="icon-base ri ri-group-line"></i></span>
                         <select class="form-select" name="divisi" required>
-                            <option value="" disabled selected>Pilih Divisi</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="Finance">Finance</option>
-                            <option value="HRD">HRD</option>
-                            <option value="IT">IT</option>
-                        </select>
+    <option value="" disabled selected>Pilih Divisi</option>
+    <option value="direktur">Direktur</option>
+    <option value="kepala teknik">Kepala Teknik</option>
+    <option value="enginer">Enginer</option>
+    <option value="produksi">Produksi</option>
+    <option value="keuangan">Keuangan</option>
+</select>
+
                     </div>
                 </div>
             </div>

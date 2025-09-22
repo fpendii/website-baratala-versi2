@@ -9,7 +9,7 @@
         <small class="text-body-secondary float-end">Form Edit Data Jobdesk</small>
     </div>
     <div class="card-body">
-        <form action="{{ url('/direktur/jobdesk/'.$jobdesk->id) }}" method="POST">
+        <form action="{{ route('direktur.jobdesk.update', $jobdesk->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -40,12 +40,14 @@
                     <div class="input-group input-group-merge">
                         <span class="input-group-text"><i class="icon-base ri ri-group-line"></i></span>
                         <select class="form-select" name="divisi" required>
-                            <option value="" disabled>Pilih Divisi</option>
-                            <option value="Marketing" {{ $jobdesk->divisi == 'Marketing' ? 'selected' : '' }}>Marketing</option>
-                            <option value="Finance" {{ $jobdesk->divisi == 'Finance' ? 'selected' : '' }}>Finance</option>
-                            <option value="HRD" {{ $jobdesk->divisi == 'HRD' ? 'selected' : '' }}>HRD</option>
-                            <option value="IT" {{ $jobdesk->divisi == 'IT' ? 'selected' : '' }}>IT</option>
-                        </select>
+    <option value="" disabled>Pilih Divisi</option>
+    <option value="direktur" {{ $jobdesk->divisi == 'direktur' ? 'selected' : '' }}>Direktur</option>
+    <option value="kepala teknik" {{ $jobdesk->divisi == 'kepala teknik' ? 'selected' : '' }}>Kepala Teknik</option>
+    <option value="enginer" {{ $jobdesk->divisi == 'enginer' ? 'selected' : '' }}>Enginer</option>
+    <option value="produksi" {{ $jobdesk->divisi == 'produksi' ? 'selected' : '' }}>Produksi</option>
+    <option value="keuangan" {{ $jobdesk->divisi == 'keuangan' ? 'selected' : '' }}>Keuangan</option>
+</select>
+
                     </div>
                 </div>
             </div>
