@@ -5,7 +5,6 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="mb-0">Daftar Karyawan</h5>
-    <a href="#" class="btn btn-primary btn-sm">Tambah Karyawan</a>
 </div>
 
 @php
@@ -68,7 +67,6 @@ $karyawan = [
                     </td>
                     <td>
                         <a href="#" class="btn btn-sm btn-primary">Detail</a>
-                        <a href="#" class="btn btn-sm btn-warning">Edit</a>
                     </td>
                 </tr>
                 @endforeach
