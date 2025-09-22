@@ -56,7 +56,9 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     // Route::get('keuangan-laporan/detail/{id}', [LaporanKeuanganControllerDirektur::class, 'detail']);
 
     Route::get('jobdesk-laporan', [LaporanJobdeskControllerDirektur::class, 'index']);
+    Route::get('jobdesk-laporan/detail/1', [LaporanJobdeskControllerDirektur::class, 'detail']);
     Route::get('jobdesk-laporan/jobdesk-karyawan', [LaporanJobdeskControllerDirektur::class, 'JobdeskKaryawan']);
+    Route::get('jobdesk-laporan/jobdesk-karyawan/detail/1', [LaporanJobdeskControllerDirektur::class, 'detailJobdeskKaryawan']);
 
     Route::get('karyawan', [KaryawanControllerDirektur::class, 'index']);
 
