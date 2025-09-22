@@ -39,7 +39,7 @@
                                     <i class="icon-base ri ri-more-2-line icon-18px"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0);">
+                                    <a class="dropdown-item" href="/direktur/laporan/detail/1">
                                         <i class="icon-base ri ri-eye-line icon-18px me-1"></i>
                                         Lihat Detail
                                     </a>
@@ -47,48 +47,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><span class="fw-medium">Permintaan Cuti Tahunan</span></td>
-                        <td>Budi Santoso</td>
-                        <td>12 Sep 2025</td>
-                        <td><span class="badge bg-label-success me-1">Selesai</span></td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none"
-                                    data-bs-toggle="dropdown">
-                                    <i class="icon-base ri ri-more-2-line icon-18px"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0);">
-                                        <i class="icon-base ri ri-eye-line icon-18px me-1"></i>
-                                        Lihat Detail
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><span class="fw-medium">Laporan Masalah Sistem</span></td>
-                        <td>Siti Rahayu</td>
-                        <td>10 Sep 2025</td>
-                        <td><span class="badge bg-label-info me-1">Dalam Proses</span></td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none"
-                                    data-bs-toggle="dropdown">
-                                    <i class="icon-base ri ri-more-2-line icon-18px"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0);">
-                                        <i class="icon-base ri ri-eye-line icon-18px me-1"></i>
-                                        Lihat Detail
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+
                 </tbody>
             </table>
         </div>
