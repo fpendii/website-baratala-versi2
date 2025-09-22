@@ -11,23 +11,25 @@
     </div>
 
     <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span class="fw-medium">Laporan Masalah Sistem</span>
-                    <span class="badge bg-label-info">Dalam Proses</span>
-                </div>
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-body-secondary">Dari: Siti Rahayu</h6>
-                    <p class="card-text text-truncate">
-                        Terdapat bug pada fitur input data yang menyebabkan error saat menyimpan informasi.
-                    </p>
-                    <a href="/direktur/laporan/detail/1" class="btn btn-primary btn-sm">Lihat Detail</a>
-                </div>
-                <div class="card-footer text-body-secondary">
-                    Dikirim pada: 10 Sep 2025
+        @foreach ($laporans as $laporan)
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span class="fw-medium">{{ $laporan->judul }}</span>
+                        <span class="badge bg-label-{{ $laporan->status == 'Selesai' ? 'success' : ($laporan->status == 'Menunggu' ? 'warning' : 'info') }}">
+                            {{ $laporan->status }}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-body-secondary">Dari: {{ $laporan->pengguna->nama ?? 'Unknown' }}</h6>
+                        <p class="card-text text-truncate">{{ $laporan->deskripsi }}</p>
+                        <a href="{{ route('direktur.laporan.detail', $laporan->id) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+                    </div>
+                    <div class="card-footer text-body-secondary">
+                        Dikirim pada: {{ $laporan->created_at->format('d M Y') }}
+                    </div>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
 @endsection
