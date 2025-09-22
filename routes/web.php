@@ -35,19 +35,25 @@ Route::get('/', function () {
 
 // Route Direktur
 
-Route::prefix('direktur')->group(function () {
+Route::prefix('direktur')->name('direktur.')->group(function () {
 
     Route::get('dashboard', [DashboardControllerDirektur::class, 'index']);
 
-    Route::get('jobdesk', [JobdDeskControllerDirektur::class, 'index']);
-    Route::get('jobdesk/create', [JobdDeskControllerDirektur::class, 'create']);
-    Route::get('jobdesk/edit/{id}', [JobdDeskControllerDirektur::class, 'edit']);
-    Route::get('jobdesk/delete/{id}', [JobdDeskControllerDirektur::class, 'delete']);
+    Route::get('jobdesk', [JobdDeskControllerDirektur::class, 'index'])->name('jobdesk.index');
+    Route::get('jobdesk/create', [JobdDeskControllerDirektur::class, 'create'])->name('jobdesk.create');
+    Route::post('jobdesk/store', [JobdDeskControllerDirektur::class, 'store'])->name('jobdesk.store');
+    Route::get('jobdesk/edit/{id}', [JobdDeskControllerDirektur::class, 'edit'])->name('jobdesk.edit');
+    Route::put('jobdesk/update/{id}', [JobdDeskControllerDirektur::class, 'update'])->name('jobdesk.update');
+    Route::delete('jobdesk/delete/{id}', [JobdDeskControllerDirektur::class, 'destroy'])->name('jobdesk.destroy');
+
 
     Route::get('laporan', [LaporanControllerDirektur::class, 'index']);
     Route::get('laporan/tabel', [LaporanControllerDirektur::class, 'TampilanTabel']);
+    Route::get('laporan/grafik', [LaporanControllerDirektur::class, 'TampilanGrafik']);
+    Route::get('laporan/detail/1', [LaporanControllerDirektur::class, 'detail']);
 
     Route::get('keuangan-laporan', [LaporanKeuanganControllerDirektur::class, 'index']);
+    // Route::get('keuangan-laporan/detail/{id}', [LaporanKeuanganControllerDirektur::class, 'detail']);
 
     Route::get('jobdesk-laporan', [LaporanJobdeskControllerDirektur::class, 'index']);
     Route::get('jobdesk-laporan/jobdesk-karyawan', [LaporanJobdeskControllerDirektur::class, 'JobdeskKaryawan']);
@@ -67,7 +73,6 @@ Route::prefix('kepala-teknik')->group(function () {
     Route::get('jobdesk', [JobdeskControllerKepalaTeknik::class, 'index']);
 
     Route::get('profil', [ProfilControllerKepalaTeknik::class, 'index']);
-
 });
 
 // Route Enginer
@@ -80,7 +85,6 @@ Route::prefix('enginer')->group(function () {
     Route::get('jobdesk', [JobdeskControllerEnginer::class, 'index']);
 
     Route::get('profil', [ProfilControllerEnginer::class, 'index']);
-
 });
 
 // Route Produksi
@@ -93,7 +97,6 @@ Route::prefix('produksi')->group(function () {
     Route::get('jobdesk', [JobdeskControllerProduksi::class, 'index']);
 
     Route::get('profil', [ProfilControllerProduksi::class, 'index']);
-
 });
 
 // Route Administrasi
@@ -106,7 +109,6 @@ Route::prefix('administrasi')->group(function () {
     Route::get('jobdesk', [JobdeskControllerAdministrasi::class, 'index']);
 
     Route::get('profil', [ProfilControllerAdministrasi::class, 'index']);
-
 });
 
 // Route karyawan
@@ -119,13 +121,4 @@ Route::prefix('karyawan')->group(function () {
     Route::get('jobdesk', [JobdeskControllerKaryawan::class, 'index']);
 
     Route::get('profil', [ProfilControllerKaryawan::class, 'index']);
-
 });
-
-
-
-
-
-
-
-
