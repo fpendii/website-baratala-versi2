@@ -25,29 +25,39 @@
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    {{-- Loop through your messages/reports here --}}
-                    <tr>
-                        <td>1</td>
-                        <td><span class="fw-medium">Laporan Proyek Kuartal 3</span></td>
-                        <td>Agus Setiawan</td>
-                        <td>15 Sep 2025</td>
-                        <td><span class="badge bg-label-warning me-1">Menunggu</span></td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none"
-                                    data-bs-toggle="dropdown">
-                                    <i class="icon-base ri ri-more-2-line icon-18px"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="/direktur/laporan/detail/1">
-                                        <i class="icon-base ri ri-eye-line icon-18px me-1"></i>
-                                        Lihat Detail
-                                    </a>
+                    @foreach ($laporans as $laporan)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td><span class="fw-medium">{{ $laporan->judul }}</span></td>
+                            <td>{{ $laporan->pengguna->nama ?? 'Unknown' }}</td>
+                            <td>{{ $laporan->created_at->format('d M Y') }}</td>
+                            <td>
+                                <span class="badge bg-label-{{ $laporan->status == 'Selesai' ? 'success' : ($laporan->status == 'Menunggu' ? 'warning' : 'info') }}">
+                                    {{ $laporan->status }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none"
+                                        data-bs-toggle="dropdown">
+                                        <i class="icon-base ri ri-more-2-line icon-18px"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{{ url('/direktur/laporan/detail/'.$laporan->id) }}">
+                                            <i class="icon-base ri ri-eye-line icon-18px me-1"></i>
+                                            Lihat Detail
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+                    @endforeach
 
+                    @if($laporans->isEmpty())
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">Belum ada laporan</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>

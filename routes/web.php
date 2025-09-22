@@ -50,7 +50,7 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::get('laporan', [LaporanControllerDirektur::class, 'index']);
     Route::get('laporan/tabel', [LaporanControllerDirektur::class, 'TampilanTabel']);
     Route::get('laporan/grafik', [LaporanControllerDirektur::class, 'TampilanGrafik']);
-    Route::get('laporan/detail/1', [LaporanControllerDirektur::class, 'detail']);
+    Route::get('laporan/detail/{id}', [LaporanControllerDirektur::class, 'detail'])->name('laporan.detail');
 
     Route::get('keuangan-laporan', [LaporanKeuanganControllerDirektur::class, 'index']);
     // Route::get('keuangan-laporan/detail/{id}', [LaporanKeuanganControllerDirektur::class, 'detail']);
