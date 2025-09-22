@@ -44,9 +44,6 @@ Route::prefix('direktur')->group(function () {
     Route::get('jobdesk/edit/{id}', [JobdDeskControllerDirektur::class, 'edit']);
     Route::get('jobdesk/delete/{id}', [JobdDeskControllerDirektur::class, 'delete']);
 
-
-
-
     Route::get('laporan', [LaporanControllerDirektur::class, 'index']);
     Route::get('laporan/tabel', [LaporanControllerDirektur::class, 'TampilanTabel']);
 

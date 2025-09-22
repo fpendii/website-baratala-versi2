@@ -79,8 +79,8 @@
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('direktur/jobdesk-karyawan*') ? 'active' : '' }}">
-                        <a href="/direktur/jobdesk-karyawan" class="menu-link">
+                    <li class="menu-item {{ request()->is('direktur/jobdesk*') ? 'active' : '' }}">
+                        <a href="/direktur/jobdesk" class="menu-link">
                             <i class="menu-icon icon-base ri ri-todo-line"></i>
                             <div data-i18n="Basic">Jobdesk</div>
                         </a>
