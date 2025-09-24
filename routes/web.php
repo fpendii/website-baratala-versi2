@@ -27,6 +27,7 @@ use App\Http\Controllers\produksi\DashboardControllerProduksi;
 use App\Http\Controllers\produksi\JobdeskControllerProduksi;
 use App\Http\Controllers\produksi\ProfilControllerProduksi;
 use App\Http\Controllers\produksi\RencanaControllerProduksi;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
