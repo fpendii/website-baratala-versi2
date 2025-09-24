@@ -33,8 +33,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route Direktur
+// Route Auth
+Route::get('/login',[AuthController::class, 'login'])->name('login');
 
+// Route Direktur
 Route::prefix('direktur')->name('direktur.')->group(function () {
 
     Route::get('dashboard', [DashboardControllerDirektur::class, 'index']);
