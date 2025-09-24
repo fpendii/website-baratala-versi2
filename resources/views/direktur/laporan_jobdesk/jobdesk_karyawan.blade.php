@@ -11,75 +11,29 @@
             <table class="table table-sm">
                 <thead>
                     <tr>
-                        <th class="text-truncate">User</th>
+                        <th class="text-truncate">Nama</th>
                         <th class="text-truncate">Email</th>
                         <th class="text-truncate">Divisi</th>
-                        <th class="text-truncate">Status</th>
+                        <th class="text-truncate">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        // Data dummy users
-                        $users = [
-                            [
-                                'name' => 'Jordan Stevenson',
-                                'username' => '@amiccoo',
-                                'email' => 'susanna.Lind57@gmail.com',
-                                'role' => 'Admin',
-                                'status' => 'pending',
-                                'avatar' => '../assets/img/avatars/1.png'
-                            ],
-                            [
-                                'name' => 'Siti Rahma',
-                                'username' => '@srahma',
-                                'email' => 'siti.rahma@example.com',
-                                'role' => 'Editor',
-                                'status' => 'active',
-                                'avatar' => '../assets/img/avatars/3.png'
-                            ],
-                            [
-                                'name' => 'Budi Santoso',
-                                'username' => '@bsantoso',
-                                'email' => 'budi.santoso@example.com',
-                                'role' => 'Author',
-                                'status' => 'inactive',
-                                'avatar' => '../assets/img/avatars/5.png'
-                            ],
-                        ];
-                    @endphp
-
-                    @foreach($users as $user)
+                    @forelse($karyawans as $karyawan)
                     <tr>
+                        <td>{{ $karyawan->nama ?? '-' }}</td>
+                        <td>{{ $karyawan->email ?? '-' }}</td>
+                        <td>{{ $karyawan->divisi ?? '-' }}</td>
                         <td>
-                            <div class="d-flex align-items-center">
-                                <div class="avatar avatar-sm me-4">
-                                    <img src="{{ $user['avatar'] }}" alt="Avatar" class="rounded-circle" />
-                                </div>
-                                <div>
-                                    <h6 class="mb-0 text-truncate">{{ $user['name'] }}</h6>
-                                    <small class="text-truncate">{{ $user['username'] }}</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="text-truncate">{{ $user['email'] }}</td>
-                        <td class="text-truncate">
-                            <div class="d-flex align-items-center">
-                                @if($user['role'] == 'Admin')
-                                    <i class="icon-base ri ri-vip-crown-line icon-22px text-primary me-2"></i>
-                                @elseif($user['role'] == 'Editor')
-                                    <i class="icon-base ri ri-edit-box-line icon-22px text-warning me-2"></i>
-                                @else
-                                    <i class="icon-base ri ri-computer-line icon-22px text-danger me-2"></i>
-                                @endif
-                                <span>{{ $user['role'] }}</span>
-                            </div>
-                        </td>
-                        <td>
-                             <a href="/direktur/jobdesk-laporan/jobdesk-karyawan/detail/1" class="btn btn-primary btn-sm">Lihat Detail</a>
+                            <a href="{{ route('direktur.laporan-jobdesk.karyawan.detail', $karyawan->id) }}" class="btn btn-primary btn-sm">
+                                Lihat Detail
+                            </a>
                         </td>
                     </tr>
-                    @endforeach
-
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center">Belum ada karyawan dengan laporan jobdesk</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

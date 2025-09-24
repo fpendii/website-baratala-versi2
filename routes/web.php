@@ -38,6 +38,8 @@ Route::get('/', function () {
 Route::prefix('direktur')->name('direktur.')->group(function () {
 
     Route::get('dashboard', [DashboardControllerDirektur::class, 'index']);
+    
+    Route::resource('karyawan', KaryawanControllerDirektur::class);
 
     Route::get('jobdesk', [JobdDeskControllerDirektur::class, 'index'])->name('jobdesk.index');
     Route::get('jobdesk/create', [JobdDeskControllerDirektur::class, 'create'])->name('jobdesk.create');
@@ -56,12 +58,13 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::get('keuangan-laporan', [LaporanKeuanganControllerDirektur::class, 'index']);
     // Route::get('keuangan-laporan/detail/{id}', [LaporanKeuanganControllerDirektur::class, 'detail']);
 
-    Route::get('jobdesk-laporan', [LaporanJobdeskControllerDirektur::class, 'index']);
-    Route::get('jobdesk-laporan/detail/1', [LaporanJobdeskControllerDirektur::class, 'detail']);
-    Route::get('jobdesk-laporan/jobdesk-karyawan', [LaporanJobdeskControllerDirektur::class, 'JobdeskKaryawan']);
-    Route::get('jobdesk-laporan/jobdesk-karyawan/detail/1', [LaporanJobdeskControllerDirektur::class, 'detailJobdeskKaryawan']);
+    Route::get('/jobdesk-laporan', [LaporanJobdeskControllerDirektur::class, 'index']);
+    Route::get('/jobdesk-laporan/detail/{id}', [LaporanJobdeskControllerDirektur::class, 'detail'])->name('laporan-jobdesk.detail');
+    Route::get('/jobdesk-laporan/jobdesk-karyawan', [LaporanJobdeskControllerDirektur::class, 'JobdeskKaryawan']);
+    Route::get('/jobdesk-laporan/jobdesk-karyawan/detail/{id}', [LaporanJobdeskControllerDirektur::class, 'detailJobdeskKaryawan'])->name('laporan-jobdesk.karyawan.detail');
 
-    Route::get('karyawan', [KaryawanControllerDirektur::class, 'index']);
+    // Route::get('karyawan', [KaryawanControllerDirektur::class, 'index']);
+
 
     Route::get('profil', [ProfilControllerDirektur::class, 'index']);
 });
