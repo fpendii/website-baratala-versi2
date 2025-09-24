@@ -39,11 +39,18 @@ class AuthController extends Controller
             RateLimiter::clear($key);
             $request->session()->regenerate();
 
-            // Ambil role user yang login (pastikan kolom 'role' ada di tabel pengguna)
-            $role = Auth::user()->role;
-            $request->session()->put('role', $role);
+            // ambil semua data user
+            $user = Auth::user();
 
-            return redirect()->intended('/dashboard');
+            // simpan ke session
+            $request->session()->put([
+                'pengguna' => $user->toArray(),
+                'role'     => $user->role,
+            ]);
+
+            // redirect sesuai role
+            $role = strtolower($user->role); // biar aman huruf kecil semua
+            return redirect()->intended("/{$role}/dashboard");
         }
 
         RateLimiter::hit($key, $decay);
@@ -52,6 +59,8 @@ class AuthController extends Controller
             ->with('error', 'Email atau password salah.')
             ->withInput();
     }
+
+
 
 
     public function logout(Request $request)
