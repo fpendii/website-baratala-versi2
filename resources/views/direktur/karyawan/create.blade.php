@@ -48,9 +48,13 @@
                 <label for="role" class="form-label">Role</label>
                 <select class="form-select" id="role" name="role" required>
                     <option value="" disabled selected>Pilih Role</option>
+                    <option value="direktur" {{ old('role') == 'direktur' ? 'selected' : '' }}>Direktur</option>
+                    <option value="enginer" {{ old('role') == 'enginer' ? 'selected' : '' }}>Enginer</option>
+                    <option value="produksi" {{ old('role') == 'produksi' ? 'selected' : '' }}>Produksi</option>
                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="editor" {{ old('role') == 'editor' ? 'selected' : '' }}>Editor</option>
-                    <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
+                    <option value="karyawan" {{ old('') == 'karyawan' ? 'selected' : '' }}>Karyawan</option>
+
+
                 </select>
                 @error('role')
                     <div class="text-danger">{{ $message }}</div>
