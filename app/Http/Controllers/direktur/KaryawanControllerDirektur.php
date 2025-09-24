@@ -42,7 +42,7 @@ class KaryawanControllerDirektur extends Controller
             'password' => 'required|string|min:8|confirmed',
             'no_hp' => 'nullable|string|max:15',
             'alamat' => 'nullable|string',
-            'role' => ['required', 'string', Rule::in(['admin', 'editor', 'user'])],
+            'role' => ['required', 'string', Rule::in(['admin', 'karyawan', 'direktur', 'kepala teknik', 'enginer', 'produksi', 'keuangan'])],
         ]);
 
         // Buat objek Pengguna baru dan isi datanya
@@ -85,7 +85,7 @@ class KaryawanControllerDirektur extends Controller
             'email' => 'required|string|email|max:255|unique:pengguna,email,' . $karyawan->id,
             'no_hp' => 'nullable|string|max:15',
             'alamat' => 'nullable|string',
-            'role' => ['required', 'string', Rule::in(['admin', 'editor', 'user'])],
+            'role' => ['required', 'string', Rule::in(['admin', 'karyawan', 'direktur', 'kepala teknik', 'enginer', 'produksi', 'keuangan'])],
         ];
 
         // Validasi password hanya jika diisi

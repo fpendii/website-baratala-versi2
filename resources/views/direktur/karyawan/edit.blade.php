@@ -38,8 +38,11 @@
                 <label for="role" class="form-label">Role</label>
                 <select class="form-select" id="role" name="role" required>
                     <option value="admin" {{ (old('role', $karyawan->role) == 'admin') ? 'selected' : '' }}>Admin</option>
-                    <option value="editor" {{ (old('role', $karyawan->role) == 'editor') ? 'selected' : '' }}>Editor</option>
-                    <option value="user" {{ (old('role', $karyawan->role) == 'user') ? 'selected' : '' }}>User</option>
+                    <option value="karyawan" {{ (old('role', $karyawan->role) == 'karyawan') ? 'selected' : '' }}>Karyawan</option>
+                    <option value="direktur" {{ (old('role', $karyawan->role) == 'direktur') ? 'selected' : '' }}>Direktur</option>
+                    <option value="enginer" {{ (old('role', $karyawan->role) == 'enginer') ? 'selected' : '' }}>Enginer</option>
+                    <option value="produksi" {{ (old('role', $karyawan->role) == 'produksi') ? 'selected' : '' }}>Produksi</option>
+
                 </select>
                 @error('role')
                     <div class="text-danger">{{ $message }}</div>
@@ -52,10 +55,7 @@
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
-            <div class="mb-3">
-                <label for="password_confirmation" class="form-label">Konfirmasi Password Baru</label>
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
-            </div>
+
             <button type="submit" class="btn btn-primary">Perbarui</button>
             <a href="{{ route('direktur.karyawan.index') }}" class="btn btn-secondary">Batal</a>
         </form>
