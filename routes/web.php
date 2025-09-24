@@ -28,13 +28,16 @@ use App\Http\Controllers\produksi\JobdeskControllerProduksi;
 use App\Http\Controllers\produksi\ProfilControllerProduksi;
 use App\Http\Controllers\produksi\RencanaControllerProduksi;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // Route Auth
+Route::get('/',[AuthController::class, 'login']);
 Route::get('/login',[AuthController::class, 'login'])->name('login');
+Route::post('/login',[AuthController::class, 'submitLogin'])->name('login.submit');
 
 // Route Direktur
 Route::prefix('direktur')->name('direktur.')->group(function () {
