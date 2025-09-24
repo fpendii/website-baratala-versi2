@@ -72,28 +72,28 @@
                 <div class="menu-inner-shadow"></div>
 
                 <ul class="menu-inner py-1">
-                    <li class="menu-item {{ request()->is('direktur/dashboard*') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->is('karyawan/dashboard*') ? 'active' : '' }}">
                         <a href="/karyawan/dashboard" class="menu-link">
                             <i class="menu-icon icon-base ri ri-dashboard-line"></i>
                             <div data-i18n="Basic">Dashboard</div>
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('direktur/jobdesk*') ? 'active' : '' }}">
-                        <a href="/karyawan/jobdesk" class="menu-link">
+                    <li class="menu-item {{ request()->is('karyawan/rencana*') ? 'active' : '' }}">
+                        <a href="/karyawan/rencana" class="menu-link">
                             <i class="menu-icon icon-base ri ri-todo-line"></i>
                             <div data-i18n="Basic">Rencana Kerja</div>
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('direktur/jobdesk-laporan*') ? 'active' : '' }}">
-                        <a href="/karyawan/jobdesk-laporan" class="menu-link">
+                    <li class="menu-item {{ request()->is('karyawan/jobdesk*') ? 'active' : '' }}">
+                        <a href="/karyawan/jobdesk" class="menu-link">
                             <i class="menu-icon icon-base ri ri-briefcase-line"></i>
                             <div data-i18n="Basic">Laporan Jobdesk</div>
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('direktur/profil*') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->is('karyawan/profil*') ? 'active' : '' }}">
                         <a href="/karyawan/profil" class="menu-link">
                             <i class="menu-icon icon-base ri ri-user-line"></i>
                             <div data-i18n="Basic">Profil</div>

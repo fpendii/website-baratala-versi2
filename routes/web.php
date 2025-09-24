@@ -70,16 +70,16 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
 });
 
 // Route Kepala Teknik
-Route::prefix('karyawan')->group(function () {
+// Route::prefix('karyawan')->group(function () {
 
-    Route::get('dashboard', [DashboardControllerKepalaTeknik::class, 'index']);
+//     Route::get('dashboard', [DashboardControllerKepalaTeknik::class, 'index']);
 
-    Route::get('rencana', [RencanaControllerKepalaTeknik::class, 'index']);
+//     Route::get('rencana', [RencanaControllerKepalaTeknik::class, 'index']);
 
-    Route::get('jobdesk', [JobdeskControllerKepalaTeknik::class, 'index']);
+//     Route::get('jobdesk', [JobdeskControllerKepalaTeknik::class, 'index']);
 
-    Route::get('profil', [ProfilControllerKepalaTeknik::class, 'index']);
-});
+//     Route::get('profil', [ProfilControllerKepalaTeknik::class, 'index']);
+// });
 
 // Route Enginer
 Route::prefix('enginer')->group(function () {
@@ -123,8 +123,11 @@ Route::prefix('karyawan')->group(function () {
     Route::get('dashboard', [DashboardControllerKaryawan::class, 'index']);
 
     Route::get('rencana', [RencanaControllerKaryawan::class, 'index']);
+    Route::get('rencana/create', [RencanaControllerKaryawan::class, 'create']);
 
     Route::get('jobdesk', [JobdeskControllerKaryawan::class, 'index']);
+    Route::get('jobdesk/create', [JobdeskControllerKaryawan::class, 'create']);
+
 
     Route::get('profil', [ProfilControllerKaryawan::class, 'index']);
 });
