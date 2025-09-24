@@ -38,7 +38,7 @@ Route::get('/', function () {
 Route::prefix('direktur')->name('direktur.')->group(function () {
 
     Route::get('dashboard', [DashboardControllerDirektur::class, 'index']);
-    
+
     Route::resource('karyawan', KaryawanControllerDirektur::class);
 
     Route::get('jobdesk', [JobdDeskControllerDirektur::class, 'index'])->name('jobdesk.index');
@@ -125,8 +125,16 @@ Route::prefix('karyawan')->group(function () {
     Route::get('rencana', [RencanaControllerKaryawan::class, 'index']);
     Route::get('rencana/create', [RencanaControllerKaryawan::class, 'create']);
 
-    Route::get('jobdesk', [JobdeskControllerKaryawan::class, 'index']);
-    Route::get('jobdesk/create', [JobdeskControllerKaryawan::class, 'create']);
+    Route::get('jobdesk', [JobdeskControllerKaryawan::class, 'index'])->name('karyawan.jobdesk.index');
+    Route::get('jobdesk/create', [JobdeskControllerKaryawan::class, 'create'])->name('karyawan.jobdesk.create');
+    // Rute untuk menyimpan laporan jobdesk
+    Route::post('jobdesk/store', [JobdeskControllerKaryawan::class, 'store'])->name('karyawan.jobdesk.store');
+    // Rute untuk menampilkan detail laporan
+    Route::get('jobdesk/{id}', [JobdeskControllerKaryawan::class, 'show'])->name('karyawan.jobdesk.show');
+    // Rute baru untuk menampilkan form edit laporan
+    Route::get('jobdesk/{id}/edit', [JobdeskControllerKaryawan::class, 'edit'])->name('karyawan.jobdesk.edit');
+    // Rute baru untuk memperbarui laporan
+    Route::put('jobdesk/{id}', [JobdeskControllerKaryawan::class, 'update'])->name('karyawan.jobdesk.update');
 
 
     Route::get('profil', [ProfilControllerKaryawan::class, 'index']);

@@ -3,59 +3,67 @@
 @section('title', 'Tambah Laporan Jobdesk')
 
 @section('content')
+
 <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">Tambah Laporan Jobdesk</h5>
-        </div>
-        <div class="card-body">
-            <form method="POST" action="#" enctype="multipart/form-data">
-                @csrf
+<div class="card">
+<div class="card-header">
+<h5 class="mb-0">Tambah Laporan Jobdesk</h5>
+</div>
+<div class="card-body">
+<form method="POST" action="{{ route('karyawan.jobdesk.store') }}" enctype="multipart/form-data">
+@csrf
 
-                <!-- Dropdown Jobdesk Dummy -->
-                <div class="mb-3">
-                    <label for="jobdesk_id" class="form-label">Pilih Jobdesk</label>
-                    <select id="jobdesk_id" name="jobdesk_id" class="form-select" required>
-                        <option value="">-- Pilih Jobdesk --</option>
-                        <option value="1">Mengawasi Proses Pengeboran (Tambang)</option>
-                        <option value="2">Membuat Laporan Mingguan (Keuangan)</option>
-                        <option value="3">Mengoperasikan Alat Berat (Operasional)</option>
-                        <option value="4">Pemeliharaan Mesin (Produksi)</option>
-                        <option value="5">Rencana Strategi Perusahaan (Direktur)</option>
-                    </select>
-                </div>
+            <!-- Dropdown Jobdesk -->
+            <div class="mb-3">
+                <label for="id_jobdesk" class="form-label">Pilih Jobdesk</label>
+                <select id="id_jobdesk" name="id_jobdesk" class="form-select @error('id_jobdesk') is-invalid @enderror" required>
+                    <option value="">-- Pilih Jobdesk --</option>
+                    @foreach($jobdesks as $jobdesk)
+                        <option value="{{ $jobdesk->id }}" {{ old('id_jobdesk') == $jobdesk->id ? 'selected' : '' }}>
+                            {{ $jobdesk->judul_jobdesk }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('id_jobdesk')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-                <!-- Judul Laporan -->
-                <div class="mb-3">
-                    <label for="judul" class="form-label">Judul Laporan</label>
-                    <input type="text" id="judul" name="judul" class="form-control" placeholder="Masukkan judul laporan" required>
-                </div>
+            <!-- Deskripsi -->
+            <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi</label>
+                <textarea id="deskripsi" name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" rows="5" placeholder="Tuliskan deskripsi laporan" required>{{ old('deskripsi') }}</textarea>
+                @error('deskripsi')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-                <!-- Deskripsi -->
-                <div class="mb-3">
-                    <label for="deskripsi" class="form-label">Deskripsi</label>
-                    <textarea id="deskripsi" name="deskripsi" class="form-control" rows="5" placeholder="Tuliskan deskripsi laporan" required></textarea>
-                </div>
+            <!-- Lampiran -->
+            <div class="mb-3">
+                <label for="lampiran" class="form-label">Lampiran (Opsional)</label>
+                <input type="file" id="lampiran" name="lampiran" class="form-control @error('lampiran') is-invalid @enderror" accept=".pdf,.doc,.docx,.jpg,.png">
+                @error('lampiran')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-                <!-- Lampiran -->
-                <div class="mb-3">
-                    <label for="lampiran" class="form-label">Lampiran (Opsional)</label>
-                    <input type="file" id="lampiran" name="lampiran" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png">
-                </div>
+            <!-- Status -->
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" name="status" class="form-select @error('status') is-invalid @enderror" required>
+                    <option value="dikerjakan" {{ old('status') == 'dikerjakan' ? 'selected' : '' }}>Dikerjakan</option>
+                    <option value="tidak-dikerjakan" {{ old('status') == 'tidak-dikerjakan' ? 'selected' : '' }}>Tidak Dikerjakan</option>
+                </select>
+                @error('status')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-                <!-- Status -->
-                <div class="mb-3">
-                    <label for="status" class="form-label">Status</label>
-                    <select id="status" name="status" class="form-select" required>
-                        <option value="dikerjakan">Dikerjakan</option>
-                        <option value="tidak-dikerjakan">Tidak Dikerjakan</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Kirim Laporan</button>
-                <a href="#" class="btn btn-outline-secondary">Batal</a>
-            </form>
-        </div>
+            <button type="submit" class="btn btn-primary">Kirim Laporan</button>
+            <a href="{{ route('karyawan.jobdesk.index') }}" class="btn btn-outline-secondary">Batal</a>
+        </form>
     </div>
+</div>
+
 </div>
 @endsection

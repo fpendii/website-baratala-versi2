@@ -17,6 +17,7 @@ class Jobdesk extends Model
         'divisi',
     ];
 
+
     public function laporanJobdesks()
     {
         return $this->hasMany(LaporanJobdesk::class, 'id_jobdesk');
