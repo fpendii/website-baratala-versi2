@@ -1,138 +1,180 @@
 <!doctype html>
-<html lang="id">
+
+<html lang="en" class="layout-wide customizer-hide" data-assets-path="/template-admin/assets/"
+    data-template="vertical-menu-template-free">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Login — Aplikasi</title>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
 
-<!-- CDN: Bootstrap 5, Font Awesome, Google Fonts, jQuery -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Demo: Login Basic - Pages | Materio - Bootstrap Dashboard FREE</title>
 
-<style>
-  body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
-  .card{border-radius:12px}
-  .input-group-text{background:#fff;border-right:0}
-  .form-control{border-left:0}
-  .brand{font-weight:700;letter-spacing:.3px}
-</style>
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/template-admin/assets/img/favicon/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap"
+        rel="stylesheet" />
+
+    <link rel="stylesheet" href="/template-admin/assets/vendor/fonts/iconify-icons.css" />
+
+    <!-- Core CSS -->
+    <!-- build:css assets/vendor/css/theme.css -->
+
+    <link rel="stylesheet" href="/template-admin/assets/vendor/libs/node-waves/node-waves.css" />
+
+    <link rel="stylesheet" href="/template-admin/assets/vendor/css/core.css" />
+    <link rel="stylesheet" href="/template-admin/assets/css/demo.css" />
+
+    <!-- Vendors CSS -->
+
+    <link rel="stylesheet" href="/template-admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+    <!-- endbuild -->
+
+    <!-- Page CSS -->
+    <!-- Page -->
+    <link rel="stylesheet" href="/template-admin/assets/vendor/css/pages/page-auth.css" />
+
+    <!-- Helpers -->
+    <script src="/template-admin/assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+
+    <!--? Config: Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file. -->
+
+    <script src="/template-admin/assets/js/config.js"></script>
 </head>
-<body class="bg-light">
 
-<div class="container">
-  <div class="row justify-content-center align-items-center vh-100">
-    <div class="col-12 col-md-8 col-lg-5">
-      <div class="text-center mb-4">
-        <h3 class="brand"><i class="fa-solid fa-rocket me-2"></i>Baratala Auth</h3>
-        <p class="text-muted small">Masuk untuk mengelola rencana kerja. Aman, cepat, dan manusiawi.</p>
-      </div>
+<body>
+    <!-- Content -->
 
-      <div class="card shadow-sm">
-        <div class="card-body p-4">
+    <div class="position-relative">
+        <div class="authentication-wrapper authentication-basic container-p-y">
+            <div class="authentication-inner py-6 mx-4">
+                <!-- Login -->
+                <div class="card p-sm-7 p-2">
+                    <!-- Logo -->
+                    <div class="app-brand justify-content-center mt-5">
+                        <a href="index.html" class="app-brand-link gap-3">
+                            <span class="app-brand-logo demo">
+                                <span class="text-primary">
+                                    <img width="40px" src="/image/logo.png" alt="Baratala">
+                                </span>
+                            </span>
+                            <span class="app-brand-text demo text-heading fw-semibold">BARATALA</span>
+                        </a>
+                    </div>
+                    <!-- /Logo -->
 
-          <!-- status / errors -->
-          @if(session('status'))
-            <div class="alert alert-success mb-3">{{ session('status') }}</div>
-          @endif
+                    <div class="card-body mt-1">
+                        <h4 class="mb-1">Welcome di Baratala! 👋🏻</h4>
+                        <p class="mb-5">Masukkan Email dan Password anda untuk mengakses halaman</p>
 
-          @if(session('error'))
-            <div class="alert alert-danger mb-3">{{ session('error') }}</div>
-          @endif
+                        <form id="formAuthentication" class="mb-5" action="{{ url('/login') }}" method="POST">
+                            @csrf
 
-          @if($errors->any())
-            <div class="alert alert-danger mb-3">
-              <ul class="mb-0 small">
-                @foreach($errors->all() as $e) <li>{{ $e }}</li> @endforeach
-              </ul>
+                            {{-- Notifikasi error umum (misalnya email/password salah) --}}
+                            @if (session('error'))
+                                <div class="alert alert-danger mb-4">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
+
+                            {{-- Notifikasi sukses (misalnya berhasil logout / registrasi) --}}
+                            @if (session('success'))
+                                <div class="alert alert-success mb-4">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+
+                            <div class="form-floating form-floating-outline mb-5 form-control-validation">
+                                <input type="text" class="form-control @error('email') is-invalid @enderror"
+                                    id="email" name="email" value="{{ old('email') }}"
+                                    placeholder="Enter your email" autofocus />
+                                <label for="email">Email</label>
+
+                                {{-- Pesan error untuk email --}}
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-5">
+                                <div class="form-password-toggle form-control-validation">
+                                    <div class="input-group input-group-merge">
+                                        <div class="form-floating form-floating-outline">
+                                            <input type="password" id="password"
+                                                class="form-control @error('password') is-invalid @enderror"
+                                                name="password" placeholder="********" aria-describedby="password" />
+                                            <label for="password">Password</label>
+
+                                            {{-- Pesan error untuk password --}}
+                                            @error('password')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <span class="input-group-text cursor-pointer">
+                                            <i class="icon-base ri ri-eye-off-line icon-20px"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-5 pb-2 d-flex justify-content-between pt-2 align-items-center">
+                                <div class="form-check mb-0"></div>
+                                <a href="{{ url('/lupa-password') }}" class="float-end mb-1">
+                                    <span>Lupa Password?</span>
+                                </a>
+                            </div>
+
+                            <div class="mb-5">
+                                <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <!-- /Login -->
+                <img src="/template-admin/assets/img/illustrations/tree-3.png" alt="auth-tree"
+                    class="authentication-image-object-left d-none d-lg-block" />
+                <img src="/template-admin/assets/img/illustrations/auth-basic-mask-light.png"
+                    class="authentication-image d-none d-lg-block scaleX-n1-rtl" height="172" alt="triangle-bg" />
+                <img src="/template-admin/assets/img/illustrations/tree.png" alt="auth-tree"
+                    class="authentication-image-object-right d-none d-lg-block" />
             </div>
-          @endif
-
-          <form method="POST" action="{{ route('login.attempt') }}" novalidate>
-            @csrf
-
-            <div class="mb-3">
-              <label class="form-label">Email atau Username</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
-                <input autocomplete="username" required autofocus name="login" value="{{ old('login') }}"
-                       class="form-control" placeholder="email@domain.com atau username">
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Kata Sandi</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
-                <input id="password" autocomplete="current-password" required name="password" type="password"
-                       class="form-control" placeholder="••••••••">
-                <button type="button" class="btn btn-outline-secondary input-group-text" id="togglePwd" title="Tampilkan/Sembunyikan">
-                  <i class="fa-regular fa-eye" id="eyeIcon"></i>
-                </button>
-              </div>
-              <div class="form-text small">Minimal 6 karakter. Aktifkan 2FA di profil untuk keamanan ekstra.</div>
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="1" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                <label class="form-check-label small" for="remember">Ingat saya</label>
-              </div>
-              <a href="#" class="small">Lupa kata sandi?</a>
-            </div>
-
-            <!-- rate-limit hint -->
-            @if(session('throttle'))
-              <div class="alert alert-warning small">Terlalu banyak percobaan. Coba lagi setelah {{ session('throttle') }} detik.</div>
-            @endif
-
-            <div class="d-grid mb-3">
-              <button class="btn btn-primary" type="submit">
-                <i class="fa-solid fa-right-to-bracket me-2"></i> Masuk
-              </button>
-            </div>
-
-            <div class="text-center small text-muted mb-3">atau masuk dengan</div>
-
-            <div class="d-flex gap-2">
-              <a href="#" class="btn btn-outline-dark w-100"><i class="fa-brands fa-google me-2"></i>Google</a>
-              <a href="#" class="btn btn-outline-dark w-100"><i class="fa-brands fa-github me-2"></i>GitHub</a>
-            </div>
-
-          </form>
         </div>
-
-        <div class="card-footer text-center small text-muted">
-          Belum punya akun? <a href="#">Daftar</a>
-        </div>
-      </div>
-
-      <p class="text-center small text-muted mt-3">Login aman. IP dan percobaan dibatasi.</p>
     </div>
-  </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core JS -->
 
-<script>
-  // toggle password
-  $('#togglePwd').on('click', function(){
-    const pwd = $('#password');
-    const icon = $('#eyeIcon');
-    if(pwd.attr('type') === 'password'){ pwd.attr('type','text'); icon.removeClass('fa-regular').addClass('fa-solid'); }
-    else { pwd.attr('type','password'); icon.removeClass('fa-solid').addClass('fa-regular'); }
-  });
+    <script src="/template-admin/assets/vendor/libs/jquery/jquery.js"></script>
 
-  // optional: basic client-side validation (visual)
-  $('form').on('submit', function(e){
-    const login = $.trim($('[name=login]').val());
-    const pwd = $.trim($('[name=password]').val());
-    if(!login || !pwd){
-      e.preventDefault();
-      alert('Isi semua kolom login dan password.');
-    }
-  });
-</script>
+    <script src="/template-admin/assets/vendor/libs/popper/popper.js"></script>
+    <script src="/template-admin/assets/vendor/js/bootstrap.js"></script>
+    <script src="/template-admin/assets/vendor/libs/node-waves/node-waves.js"></script>
+
+    <script src="/template-admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+    <script src="/template-admin/assets/vendor/js/menu.js"></script>
+
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+
+    <!-- Main JS -->
+
+    <script src="/template-admin/assets/js/main.js"></script>
+
+    <!-- Page JS -->
+
+    <!-- Place this tag before closing body tag for github widget button. -->
+    <script async="async" defer="defer" src="https://buttons.github.io/buttons.js"></script>
 </body>
+
 </html>

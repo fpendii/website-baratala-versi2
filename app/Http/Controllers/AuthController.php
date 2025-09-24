@@ -16,42 +16,49 @@ class AuthController extends Controller
 
     public function attempt(Request $request)
     {
-        $key = 'login:'.$request->ip();
+        $key = 'login:' . $request->ip();
         $maxAttempts = 5;
         $decay = 60; // detik
 
         if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
             $retry = RateLimiter::availableIn($key);
-            return back()->with('error', "Terlalu banyak percobaan. Coba lagi dalam {$retry} detik.")
-                         ->withInput();
+            return back()
+                ->with('error', "Terlalu banyak percobaan. Coba lagi dalam {$retry} detik.")
+                ->withInput();
         }
 
         $request->validate([
-            'login' => 'required|string',
+            'email' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
 
-        $login = $request->input('login');
-        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-
-        if (Auth::attempt([$field => $login, 'password' => $request->password], $request->boolean('remember'))) {
+        if (Auth::attempt([
+            'email' => $request->email,
+            'password' => $request->password
+        ], $request->boolean('remember'))) {
             RateLimiter::clear($key);
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard'); // arahkan sesuai kebutuhan
+
+            // Ambil role user yang login (pastikan kolom 'role' ada di tabel pengguna)
+            $role = Auth::user()->role;
+            $request->session()->put('role', $role);
+
+            return redirect()->intended('/dashboard');
         }
 
         RateLimiter::hit($key, $decay);
 
-        throw ValidationException::withMessages([
-            'login' => ['Email/Username atau password salah.'],
-        ]);
+        return back()
+            ->with('error', 'Email atau password salah.')
+            ->withInput();
     }
+
 
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login')->with('status', 'Berhasil logout.');
+        return redirect()->route('login')->with('success', 'Berhasil logout.');
     }
 }

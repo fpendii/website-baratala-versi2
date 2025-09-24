@@ -122,10 +122,13 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="/logout" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
-                            <div data-i18n="Basic">Logout</div>
-                        </a>
+                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+        @csrf
+        <button type="submit" class="menu-link btn btn-link p-0" style="border: none; background: none;">
+            <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
+            <div data-i18n="Basic">Logout</div>
+        </button>
+    </form>
                     </li>
 
                 </ul>

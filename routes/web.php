@@ -30,12 +30,21 @@ use App\Http\Controllers\produksi\RencanaControllerProduksi;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// // Route Auth
+// Route::get('/',[AuthController::class, 'login']);
+// Route::get('/login',[AuthController::class, 'login'])->name('login');
+// Route::post('/login',[AuthController::class, 'submitLogin'])->name('login.submit');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'attempt'])->name('login.attempt');
 });
 
-// Route Auth
-Route::get('/login',[AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 // Route Direktur
 Route::prefix('direktur')->name('direktur.')->group(function () {
