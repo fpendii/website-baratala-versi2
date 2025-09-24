@@ -40,16 +40,10 @@ class JobdeskControllerKaryawan extends Controller
     {
         // Get all available jobdesks for the employee to choose from
         $jobdesks = Jobdesk::all();
-
+        // dd(123);
         return view('karyawan.jobdesk.create', compact('jobdesks'));
     }
 
-    /**
-     * Menyimpan laporan jobdesk baru yang dibuat oleh karyawan.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(Request $request)
     {
         // Validate the input data
@@ -90,7 +84,7 @@ class JobdeskControllerKaryawan extends Controller
             ->with('jobdesk')
             ->firstOrFail();
 
-        return view('karyawan.jobdesk.show', compact('laporan'));
+        return view('karyawan.jobdesk.detail', compact('laporan'));
     }
 
     /**

@@ -27,8 +27,8 @@ use App\Http\Controllers\produksi\DashboardControllerProduksi;
 use App\Http\Controllers\produksi\JobdeskControllerProduksi;
 use App\Http\Controllers\produksi\ProfilControllerProduksi;
 use App\Http\Controllers\produksi\RencanaControllerProduksi;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -127,18 +127,22 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
 
     Route::get('dashboard', [DashboardControllerKaryawan::class, 'index']);
 
-    Route::get('rencana', [RencanaControllerKaryawan::class, 'index']);
-    Route::get('rencana/create', [RencanaControllerKaryawan::class, 'create']);
+    // Route::get('rencana', [RencanaControllerKaryawan::class, 'index']);
+    // Route::get('rencana/create', [RencanaControllerKaryawan::class, 'create']);
 
-    Route::get('jobdesk', [JobdeskControllerKaryawan::class, 'index'])->name('jobdesk.index');
+    Route::get('rencana', [RencanaControllerKaryawan::class, 'index'])->name('rencana.index');
+    Route::get('rencana/create', [RencanaControllerKaryawan::class, 'create'])->name('rencana.create');
+    Route::post('rencana/store', [RencanaControllerKaryawan::class, 'store'])->name('rencana.store');
+    Route::get('rencana/{id}', [RencanaControllerKaryawan::class, 'show'])->name('rencana.show');
+    Route::get('rencana/{id}/edit', [RencanaControllerKaryawan::class, 'edit'])->name('rencana.edit');
+    Route::put('rencana/{id}', [RencanaControllerKaryawan::class, 'update'])->name('rencana.update');
+    Route::get('rencana', [RencanaControllerKaryawan::class, 'index'])->name('rencana.index');
+    Route::delete('rencana/delete/{id}', [RencanaControllerKaryawan::class, 'destroy'])->name('rencana.destroy');
+
     Route::get('jobdesk/create', [JobdeskControllerKaryawan::class, 'create'])->name('jobdesk.create');
-    // Rute untuk menyimpan laporan jobdesk
     Route::post('jobdesk/store', [JobdeskControllerKaryawan::class, 'store'])->name('jobdesk.store');
-    // Rute untuk menampilkan detail laporan
     Route::get('jobdesk/{id}', [JobdeskControllerKaryawan::class, 'show'])->name('jobdesk.show');
-    // Rute baru untuk menampilkan form edit laporan
     Route::get('jobdesk/{id}/edit', [JobdeskControllerKaryawan::class, 'edit'])->name('jobdesk.edit');
-    // Rute baru untuk memperbarui laporan
     Route::put('jobdesk/{id}', [JobdeskControllerKaryawan::class, 'update'])->name('jobdesk.update');
 
 

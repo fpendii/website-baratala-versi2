@@ -29,7 +29,7 @@
 </p>
 <p><strong>Lampiran:</strong>
 @if($laporan->lampiran)
-<a href="{{ asset('storage/' . $laporan->lampiran) }}" target="_blank">Lihat Lampiran</a>
+<a href="{{ asset('storage/public/' . $laporan->lampiran) }}" target="_blank">Lihat Lampiran</a>
 @else
 Tidak ada lampiran
 @endif
