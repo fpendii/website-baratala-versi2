@@ -9,7 +9,7 @@
             <h5 class="mb-0">Tambah Rencana Kerja</h5>
         </div>
         <div class="card-body">
-            <form method="POST" action="#" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('karyawan.rencana.store') }}" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Judul Rencana -->
@@ -21,7 +21,7 @@
                 <!-- Deskripsi -->
                 <div class="mb-3">
                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                    <textarea id="deskripsi" name="deskripsi" class="form-control" rows="5" placeholder="Tuliskan deskripsi rencana kerja" required></textarea>
+                    <textarea id="deskripsi" name="deskripsi" class="form-control" rows="5" placeholder="Tuliskan deskripsi rencana kerja"></textarea>
                 </div>
 
                 <!-- Tanggal Mulai -->
@@ -45,15 +45,8 @@
                         <option value="selesai">Selesai</option>
                     </select>
                 </div>
+                <input type="hidden" name="jenis" value="rencana" id="">
 
-                <!-- Jenis -->
-                <div class="mb-3">
-                    <label for="jenis" class="form-label">Jenis</label>
-                    <select id="jenis" name="jenis" class="form-select" required>
-                        <option value="rencana">Rencana</option>
-                        <option value="perintah">Perintah</option>
-                    </select>
-                </div>
 
                 <!-- Prioritas -->
                 <div class="mb-3">
@@ -79,7 +72,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan Rencana</button>
-                <a href="#" class="btn btn-outline-secondary">Batal</a>
+                <a href="{{ route('karyawan.rencana.index') }}" class="btn btn-outline-secondary">Batal</a>
             </form>
         </div>
     </div>
