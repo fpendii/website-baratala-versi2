@@ -99,16 +99,14 @@
                             <div data-i18n="Basic">Profil</div>
                         </a>
                     </li>
-
                     <li class="menu-item">
-                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-        @csrf
-        <button type="submit" class="menu-link btn btn-link p-0" style="border: none; background: none;">
-            <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
-            <div data-i18n="Basic">Logout</div>
-        </button>
-    </form>
+                        <a href="/logout" class="menu-link">
+                             <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
+                            <div data-i18n="Basic">Logout</div>
+                        </a>
                     </li>
+
+
 
                 </ul>
 
@@ -132,8 +130,8 @@
                         <div class="navbar-nav align-items-center">
                             <div class="nav-item d-flex align-items-center">
                                 <i class="icon-base ri ri-search-line icon-lg lh-0"></i>
-                                <input type="text" class="form-control border-0 shadow-none"
-                                    placeholder="Search..." aria-label="Search..." />
+                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
+                                    aria-label="Search..." />
                             </div>
                         </div>
                         <!-- /Search -->
