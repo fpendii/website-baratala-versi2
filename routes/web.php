@@ -5,7 +5,7 @@ use App\Http\Controllers\administrasi\JobdeskControllerAdministrasi;
 use App\Http\Controllers\administrasi\ProfilControllerAdministrasi;
 use App\Http\Controllers\administrasi\RencanaControllerAdministrasi;
 use App\Http\Controllers\direktur\DashboardControllerDirektur;
-use App\Http\Controllers\direktur\JobdDeskControllerDirektur;
+use App\Http\Controllers\direktur\JobdeskControllerDirektur;
 use App\Http\Controllers\direktur\KaryawanControllerDirektur;
 use App\Http\Controllers\direktur\LaporanControllerDirektur;
 use App\Http\Controllers\direktur\LaporanJobdeskControllerDirektur;
@@ -28,6 +28,7 @@ use App\Http\Controllers\produksi\JobdeskControllerProduksi;
 use App\Http\Controllers\produksi\ProfilControllerProduksi;
 use App\Http\Controllers\produksi\RencanaControllerProduksi;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\direktur\RencanaControllerDirektur;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -48,37 +49,35 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth')->na
 
 // Route Direktur
 Route::prefix('direktur')->name('direktur.')->group(function () {
+    // Dashboard
+    Route::get('dashboard', [DashboardControllerDirektur::class, 'index'])->name('dashboard');
 
-    Route::get('dashboard', [DashboardControllerDirektur::class, 'index']);
+    // Rencana kerja
+    Route::resource('rencana', RencanaControllerDirektur::class);
 
+    // Karyawan
     Route::resource('karyawan', KaryawanControllerDirektur::class);
 
-    Route::get('jobdesk', [JobdDeskControllerDirektur::class, 'index'])->name('jobdesk.index');
-    Route::get('jobdesk/create', [JobdDeskControllerDirektur::class, 'create'])->name('jobdesk.create');
-    Route::post('jobdesk/store', [JobdDeskControllerDirektur::class, 'store'])->name('jobdesk.store');
-    Route::get('jobdesk/edit/{id}', [JobdDeskControllerDirektur::class, 'edit'])->name('jobdesk.edit');
-    Route::put('jobdesk/update/{id}', [JobdDeskControllerDirektur::class, 'update'])->name('jobdesk.update');
-    Route::delete('jobdesk/delete/{id}', [JobdDeskControllerDirektur::class, 'destroy'])->name('jobdesk.destroy');
+    // Jobdesk (CRUD)
+    Route::resource('jobdesk', JobdeskControllerDirektur::class);
 
-
-    Route::get('laporan', [LaporanControllerDirektur::class, 'index'])->name('laporan.index');
-    Route::get('laporan/tabel', [LaporanControllerDirektur::class, 'TampilanTabel']);
-    Route::get('laporan/grafik', [LaporanControllerDirektur::class, 'TampilanGrafik']);
-    Route::get('laporan/detail/{id}', [LaporanControllerDirektur::class, 'detail'])->name('laporan.detail');
+    // Laporan (pakai resource biar rapih, tapi bisa disesuaikan kalau memang tidak semua method)
+    Route::resource('laporan', LaporanControllerDirektur::class)->only(['index', 'show', 'update']);
+    Route::get('laporan/tabel', [LaporanControllerDirektur::class, 'TampilanTabel'])->name('laporan.tabel');
+    Route::get('laporan/grafik', [LaporanControllerDirektur::class, 'TampilanGrafik'])->name('laporan.grafik');
     Route::post('laporan/keputusan/{id}', [LaporanControllerDirektur::class, 'updateKeputusan'])->name('laporan.keputusan');
 
-    Route::get('keuangan-laporan', [LaporanKeuanganControllerDirektur::class, 'index']);
-    // Route::get('keuangan-laporan/detail/{id}', [LaporanKeuanganControllerDirektur::class, 'detail']);
+    // Laporan Keuangan
+    Route::resource('laporan-keuangan', LaporanKeuanganControllerDirektur::class)->only(['index', 'show']);
 
-    Route::get('/jobdesk-laporan', [LaporanJobdeskControllerDirektur::class, 'index']);
-    Route::get('/jobdesk-laporan/detail/{id}', [LaporanJobdeskControllerDirektur::class, 'detail'])->name('laporan-jobdesk.detail');
-    Route::get('/jobdesk-laporan/jobdesk-karyawan', [LaporanJobdeskControllerDirektur::class, 'JobdeskKaryawan']);
-    Route::get('/jobdesk-laporan/jobdesk-karyawan/detail/{id}', [LaporanJobdeskControllerDirektur::class, 'detailJobdeskKaryawan'])->name('laporan-jobdesk.karyawan.detail');
+    // Laporan Jobdesk
+    Route::get('jobdesk-laporan', [LaporanJobdeskControllerDirektur::class, 'index'])->name('laporan-jobdesk.index');
+    Route::get('jobdesk-laporan/detail/{id}', [LaporanJobdeskControllerDirektur::class, 'detail'])->name('laporan-jobdesk.detail');
+    Route::get('jobdesk-laporan/jobdesk-karyawan', [LaporanJobdeskControllerDirektur::class, 'JobdeskKaryawan'])->name('laporan-jobdesk.karyawan');
+    Route::get('jobdesk-laporan/jobdesk-karyawan/detail/{id}', [LaporanJobdeskControllerDirektur::class, 'detailJobdeskKaryawan'])->name('laporan-jobdesk.karyawan.detail');
 
-    // Route::get('karyawan', [KaryawanControllerDirektur::class, 'index']);
-
-
-    Route::get('profil', [ProfilControllerDirektur::class, 'index']);
+    // Profil
+    Route::resource('profil', ProfilControllerDirektur::class)->only(['index', 'edit', 'update']);
 });
 
 // Route Kepala Teknik
