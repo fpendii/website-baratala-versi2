@@ -19,7 +19,8 @@ class JobdeskControllerKaryawan extends Controller
     public function index()
     {
         // Get the ID of the logged-in user
-        $userId = Auth::id();
+        $userId = 1;
+        // $userId = Auth::id();
 
         // Retrieve all jobdesk reports for the current user,
         // with eager loading for the 'jobdesk' relationship
@@ -61,7 +62,8 @@ class JobdeskControllerKaryawan extends Controller
         }
 
         // Add the user ID of the logged-in user
-        $validatedData['id_pengguna'] = Auth::id();
+        // $validatedData['id_pengguna'] = Auth::id();
+        $validatedData['id_pengguna'] = 1;
 
         // Create a new LaporanJobdesk record in the database
         LaporanJobdesk::create($validatedData);

@@ -12,7 +12,9 @@ class RencanaControllerKaryawan extends Controller
 {
     public function index()
     {
-        $tugas = Tugas::where('id_pengguna', Auth::id())->get();
+        $id_pengguna = 1;
+        // $id_pengguna = Auth::id();
+        $tugas = Tugas::where('id_pengguna', $id_pengguna)->get();
         return view('karyawan.rencana.index', compact('tugas'));
     }
 
@@ -38,8 +40,13 @@ class RencanaControllerKaryawan extends Controller
             'pengguna'         => 'nullable|string', // masih string di sini
         ]);
 
+// <<<<<<< HEAD
         // simpan user yang membuat tugas
         $validated['id_pengguna'] = Auth::id();
+// =======
+//         // $validated['id_pengguna'] = Auth::id();
+//         $validated['id_pengguna'] = 1;
+// >>>>>>> 59c3419c76d84e429479cc02b39109fab4fefe9d
 
         // simpan file lampiran jika ada
         if ($request->hasFile('lampiran')) {

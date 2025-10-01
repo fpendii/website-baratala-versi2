@@ -30,6 +30,7 @@ use App\Http\Controllers\produksi\RencanaControllerProduksi;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\direktur\RencanaControllerDirektur;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\karyawan\KeuanganControllerKaryawan;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -62,6 +63,8 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
 
     // Jobdesk (CRUD)
     Route::resource('jobdesk', JobdeskControllerDirektur::class);
+
+
 
     // Laporan (pakai resource biar rapih, tapi bisa disesuaikan kalau memang tidak semua method)
     Route::resource('laporan', LaporanControllerDirektur::class)->only(['index', 'show', 'update']);
@@ -156,4 +159,11 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
 
 
     Route::get('profil', [ProfilControllerKaryawan::class, 'index']);
+
+    // Keuangan
+    Route::get('keuangan', [KeuanganControllerKaryawan::class, 'index']);
+    Route::get('keuangan/pengeluaran/create', [KeuanganControllerKaryawan::class, 'createPengeluaran']);
+    Route::post('keuangan/pengeluaran/store', [KeuanganControllerKaryawan::class, 'storePengeluaran']);
+    Route::get('keuangan/kasbon/create', [KeuanganControllerKaryawan::class, 'createKasbon']);
+    Route::post('keuangan/kasbon/store', [KeuanganControllerKaryawan::class, 'storeKasbon']);
 });
