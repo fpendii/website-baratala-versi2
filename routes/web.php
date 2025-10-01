@@ -44,7 +44,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'attempt'])->name('login.attempt');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 // Route Direktur
 Route::prefix('direktur')->name('direktur.')->group(function () {

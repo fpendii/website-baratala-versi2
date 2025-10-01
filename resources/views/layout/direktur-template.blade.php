@@ -121,15 +121,13 @@
                         </a>
                     </li>
 
-                    <li class="menu-item">
-                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-        @csrf
-        <button type="submit" class="menu-link btn btn-link p-0" style="border: none; background: none;">
-            <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
-            <div data-i18n="Basic">Logout</div>
-        </button>
-    </form>
+                   <li class="menu-item">
+                        <a href="/logout" class="menu-link">
+                             <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
+                            <div data-i18n="Basic">Logout</div>
+                        </a>
                     </li>
+
 
                 </ul>
 
@@ -222,14 +220,13 @@
                                     <li>
                                         <div class="dropdown-divider my-1"></div>
                                     </li>
-                                    <li>
-                                        <div class="d-grid px-4 pt-2 pb-1">
-                                            <a class="btn btn-danger d-flex" href="javascript:void(0);">
-                                                <small class="align-middle">Logout</small>
-                                                <i class="ri ri-logout-box-r-line ms-2 ri-xs"></i>
-                                            </a>
-                                        </div>
+                                    <li class="menu-item">
+                                        <a href="/logout" class="menu-link">
+                                            <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
+                                            <div data-i18n="Basic">Logout</div>
+                                        </a>
                                     </li>
+
                                 </ul>
                             </li>
                             <!--/ User -->
