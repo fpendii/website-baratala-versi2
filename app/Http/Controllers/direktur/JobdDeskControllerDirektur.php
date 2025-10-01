@@ -29,7 +29,6 @@ class JobdDeskControllerDirektur extends Controller
             'deskripsi'     => 'required|string',
             'divisi'        => 'required|string|max:255',
         ]);
-dd($request->all());
         Jobdesk::create($request->all());
 
         return redirect()->route('direktur.jobdesk.index')

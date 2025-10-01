@@ -86,6 +86,13 @@
                         </a>
                     </li>
 
+                    <li class="menu-item {{ request()->is('karyawan/keuangan*') ? 'active' : '' }}">
+                        <a href="/karyawan/keuangan" class="menu-link">
+                            <i class="menu-icon icon-base ri ri-wallet-3-line"></i>
+                            <div data-i18n="Basic">Keuangan</div>
+                        </a>
+                    </li>
+
                     <li class="menu-item {{ request()->is('karyawan/jobdesk*') ? 'active' : '' }}">
                         <a href="/karyawan/jobdesk" class="menu-link">
                             <i class="menu-icon icon-base ri ri-briefcase-line"></i>
@@ -101,7 +108,7 @@
                     </li>
                     <li class="menu-item">
                         <a href="/logout" class="menu-link">
-                             <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
+                            <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
                             <div data-i18n="Basic">Logout</div>
                         </a>
                     </li>
@@ -224,39 +231,6 @@
                     </div>
                     <!-- / Content -->
 
-                    <!-- Footer -->
-                    <footer class="content-footer footer bg-footer-theme">
-                        <div class="container-xxl">
-                            <div
-                                class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">
-                                    &#169;
-                                    <script>
-                                        document.write(new Date().getFullYear());
-                                    </script>
-                                    , made with ❤️ by
-                                    <a href="https://themeselection.com" target="_blank"
-                                        class="footer-link fw-medium">ThemeSelection</a>
-                                </div>
-                                <div class="d-none d-lg-inline-block">
-                                    <a href="https://themeselection.com/item/category/admin-templates/"
-                                        target="_blank" class="footer-link me-4">Admin Templates</a>
-
-                                    <a href="https://themeselection.com/license/" class="footer-link me-4"
-                                        target="_blank">License</a>
-
-                                    <a href="https://themeselection.com/item/category/bootstrap-templates/"
-                                        target="_blank" class="footer-link me-4">Bootstrap Templates</a>
-                                    <a href="https://demos.themeselection.com/materio-bootstrap-html-admin-template/documentation/"
-                                        target="_blank" class="footer-link me-4">Documentation</a>
-
-                                    <a href="https://github.com/themeselection/materio-bootstrap-html-admin-template-free/issues"
-                                        target="_blank" class="footer-link">Support</a>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- / Footer -->
 
                     <div class="content-backdrop fade"></div>
                 </div>
