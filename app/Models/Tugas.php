@@ -26,6 +26,16 @@ class Tugas extends Model
 
     public function pengguna()
     {
-        return $this->belongsTo(Pengguna::class, 'id_pengguna');
+        return $this->belongsToMany(
+            Pengguna::class,      // model yang di-relasi
+            'tugas_pengguna',     // nama tabel pivot
+            'id_tugas',           // foreign key di pivot untuk Tugas
+            'id_pengguna'         // foreign key di pivot untuk Pengguna
+        );
+    }
+
+    public function tugasPengguna()
+    {
+        return $this->hasMany(TugasPengguna::class, 'id_tugas');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\karyawan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tugas;
+use App\Models\Pengguna;
 use Illuminate\Support\Facades\Auth;
 
 class RencanaControllerKaryawan extends Controller
@@ -17,8 +18,10 @@ class RencanaControllerKaryawan extends Controller
 
     public function create()
     {
-        return view('karyawan.rencana.create');
+        $users = Pengguna::where('id', '!=', auth()->id())->get();
+        return view('karyawan.rencana.create', compact('users'));
     }
+
 
     public function store(Request $request)
     {
@@ -32,23 +35,45 @@ class RencanaControllerKaryawan extends Controller
             'prioritas'        => 'nullable|string',
             'lampiran'         => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             'catatan'          => 'nullable|string',
+            'pengguna'         => 'nullable|string', // masih string di sini
         ]);
 
+        // simpan user yang membuat tugas
         $validated['id_pengguna'] = Auth::id();
 
+        // simpan file lampiran jika ada
         if ($request->hasFile('lampiran')) {
             $lampiranPath = $request->file('lampiran')->store('public/uploads');
             $validated['lampiran'] = str_replace('public/', '', $lampiranPath);
         }
 
-        Tugas::create($validated);
+        // simpan tugas
+        $tugas = Tugas::create($validated);
+
+        // ambil id pengguna dari input (pecah string jadi array)
+        $penggunaIds = [];
+        if (!empty($request->pengguna)) {
+            $penggunaIds = array_filter(explode(',', $request->pengguna));
+        }
+
+        // tambahkan user login
+        $penggunaIds[] = Auth::id();
+
+        // hilangkan duplikasi & cek hanya id yang valid
+        $penggunaIds = Pengguna::whereIn('id', $penggunaIds)->pluck('id')->toArray();
+
+        // simpan ke pivot
+        $tugas->pengguna()->sync($penggunaIds);
 
         return redirect()->route('karyawan.rencana.index')->with('success', 'Rencana berhasil ditambahkan.');
     }
 
+
+
     public function show($id)
     {
-        $tugas = Tugas::findOrFail($id);
+        $tugas = Tugas::with('pengguna')->findOrFail($id);
+        // dd($tugas);
         return view('karyawan.rencana.detail', compact('tugas'));
     }
 

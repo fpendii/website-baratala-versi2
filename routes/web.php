@@ -55,6 +55,8 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     // Rencana kerja
     Route::resource('rencana', RencanaControllerDirektur::class);
 
+    Route::post('rencana/updatePengguna/{id}', [RencanaControllerDirektur::class, 'updatePengguna'])->name('rencana.updatePengguna');
+
     // Karyawan
     Route::resource('karyawan', KaryawanControllerDirektur::class);
 

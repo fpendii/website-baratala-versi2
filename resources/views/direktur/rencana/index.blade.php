@@ -1,4 +1,4 @@
-@extends('layout.karyawan-template')
+@extends('layout.direktur-template')
 
 @section('title', 'Rencana Kerja Karyawan')
 
