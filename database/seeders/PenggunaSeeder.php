@@ -26,7 +26,7 @@ class PenggunaSeeder extends Seeder
         ]);
 
         Pengguna::create([
-            'nama' => 'Karyawan Biasa',
+            'nama' => 'Karyawan 1',
             'email' => 'karyawan@example.com',
             'password' => Hash::make('password'),
             'no_hp' => '081234567891',
@@ -35,8 +35,16 @@ class PenggunaSeeder extends Seeder
         ]);
 
         Pengguna::create([
-            'nama' => 'Kepala Teknik',
-            'email' => 'kepalatenik@example.com',
+            'nama' => 'Karyawan 2',
+            'email' => 'karyawan2@example.com',
+            'password' => Hash::make('password'),
+            'no_hp' => '081234567892',
+            'alamat' => 'Jalan Lurus No. 3, Surabaya',
+            'role' => 'kepala teknik',
+        ]);
+        Pengguna::create([
+            'nama' => 'Karyawan 3',
+            'email' => 'karyawan3@example.com',
             'password' => Hash::make('password'),
             'no_hp' => '081234567892',
             'alamat' => 'Jalan Lurus No. 3, Surabaya',

@@ -3,7 +3,6 @@
 @section('title', 'Laporan Keuangan')
 
 @section('content')
-<div class="container-xxl flex-grow-1 container-p-y">
     <div class="row gy-6">
 
         <!-- Ringkasan Uang Kas -->
@@ -104,5 +103,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection

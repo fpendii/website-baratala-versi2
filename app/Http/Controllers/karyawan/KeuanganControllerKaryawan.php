@@ -5,6 +5,8 @@ namespace App\Http\Controllers\karyawan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LaporanKeuangan;
+use App\Models\Pengguna;
+use App\Models\User;
 
 class KeuanganControllerKaryawan extends Controller
 {
@@ -22,5 +24,19 @@ class KeuanganControllerKaryawan extends Controller
             'totalPengeluaran',
             'labaBersih'
         ));
+    }
+
+    public function createPengeluaran(){
+
+        $daftarKaryawan = Pengguna::get();
+
+        return view('karyawan.keuangan.create-pengeluaran', compact('daftarKaryawan'));
+    }
+
+    public function createKasbon(){
+
+         $daftarKaryawan = Pengguna::get();
+
+        return view('karyawan.keuangan.create-kasbon', compact('daftarKaryawan'));
     }
 }
