@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Jobdesk;
 
-class JobdDeskControllerDirektur extends Controller
+class JobDeskControllerDirektur extends Controller
 {
     // Tampilkan semua jobdesk
     public function index()

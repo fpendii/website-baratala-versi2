@@ -85,6 +85,12 @@
                             <div data-i18n="Basic">Jobdesk</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->is('direktur/rencana*') ? 'active' : '' }}">
+                        <a href="{{ route('direktur.rencana.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ri ri-todo-line"></i>
+                            <div data-i18n="Basic">Rencana Kerja</div>
+                        </a>
+                    </li>
 
                     <li class="menu-item {{ request()->is('direktur/laporan*') ? 'active' : '' }}">
                         <a href="/direktur/laporan" class="menu-link">
