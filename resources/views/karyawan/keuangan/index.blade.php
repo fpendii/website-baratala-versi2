@@ -11,7 +11,7 @@
                 <div class="card-body text-nowrap">
                     <h5 class="card-title mb-0">Uang Kas</h5>
                     <p class="mb-2">Kantor</p>
-                    <h4 class="text-primary mb-0">Rp{{ number_format($totalPendapatan - $totalPengeluaran, 0, ',', '.') }}</h4>
+                    <h4 class="text-primary mb-0">Rp{{ number_format($uangKas->nominal, 0, ',', '.') }}</h4>
                 </div>
                 <img src="/image/icon-uang.png" class="position-absolute bottom-0 end-0 me-5 mb-5"
                      width="83" alt="kas" />
@@ -24,7 +24,7 @@
                 <div class="card-body text-nowrap">
                     <h5 class="card-title mb-0">Uang Masuk</h5>
                     <p class="mb-2">Bulan ini</p>
-                    <h4 class="text-success mb-0">Rp{{ number_format($totalPendapatan, 0, ',', '.') }}</h4>
+                    {{-- <h4 class="text-success mb-0">Rp{{ number_format($totalPendapatan, 0, ',', '.') }}</h4> --}}
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                 <div class="card-body text-nowrap">
                     <h5 class="card-title mb-0">Uang Keluar</h5>
                     <p class="mb-2">Bulan ini</p>
-                    <h4 class="text-danger mb-0">Rp{{ number_format($totalPengeluaran, 0, ',', '.') }}</h4>
+                    <h4 class="text-danger mb-0">Rp{{ number_format($uangKeluar, 0, ',', '.') }}</h4>
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
                             <tr>
                                 <th>Tanggal</th>
                                 <th>Pengguna</th>
-                                <th>Deskripsi</th>
+                                <th>Keperluan</th>
                                 <th>Jenis</th>
                                 <th>Nominal</th>
                                 <th>Metode</th>
@@ -72,7 +72,7 @@
                                 <tr>
                                     <td>{{ \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') }}</td>
                                     <td>{{ $laporan->pengguna->nama ?? '-' }}</td>
-                                    <td>{{ $laporan->deskripsi }}</td>
+                                    <td>{{ $laporan->keperluan }}</td>
                                     <td>
                                         @if ($laporan->tipe == 'pendapatan')
                                             <span class="badge bg-success">Pendapatan</span>
@@ -83,7 +83,7 @@
                                     <td class="{{ $laporan->tipe == 'pendapatan' ? 'text-success' : 'text-danger' }}">
                                         Rp{{ number_format($laporan->nominal, 0, ',', '.') }}
                                     </td>
-                                    <td>{{ $laporan->metode_pembayaran }}</td>
+                                    <td>{{ ucfirst($laporan->jenis_uang) }}</td>
                                     <td>
                                         @if ($laporan->bukti_transaksi)
                                             <a href="{{ asset('storage/'.$laporan->bukti_transaksi) }}" target="_blank">Lihat</a>

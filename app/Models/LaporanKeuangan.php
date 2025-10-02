@@ -15,11 +15,13 @@ class LaporanKeuangan extends Model
         'id_keuangan',
         'id_pengguna',
         'tanggal',
-        'tipe',
+        'keperluan',
         'nominal',
-        'deskripsi',
-        'bukti_transaksi',
-        'metode_pembayaran',
+        'jenis',
+        'jenis_uang',
+        'lampiran',
+        'persetujuan_direktur',
+        'penerima',
     ];
 
     public function keuangan()
@@ -32,8 +34,13 @@ class LaporanKeuangan extends Model
         return $this->belongsTo(Pengguna::class, 'id_pengguna');
     }
 
-    public function laporans()
+    public function penerimaRelasi()
     {
-        return $this->hasMany(Laporan::class, 'id_laporan_keuangan');
+        return $this->belongsTo(Pengguna::class, 'penerima');
     }
+
+    protected $casts = [
+        'nominal' => 'decimal:2',
+        'persetujuan_direktur' => 'boolean',
+    ];
 }

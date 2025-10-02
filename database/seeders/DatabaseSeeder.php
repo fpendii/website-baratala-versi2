@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
             JobdeskSeeder::class,
             TugasSeeder::class,
             KeuanganSeeder::class,
-            LaporanKeuanganSeeder::class,
             LaporanJobdeskSeeder::class,
             LaporanSeeder::class,
         ]);

@@ -18,10 +18,5 @@ class KeuanganSeeder extends Seeder
             'nominal' => 5000000.00,
             'deskripsi' => 'Anggaran untuk perbaikan mesin produksi.',
         ]);
-
-        Keuangan::create([
-            'nominal' => 25000000.00,
-            'deskripsi' => 'Anggaran untuk pengembangan aplikasi.',
-        ]);
     }
 }
