@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tugas;
 use App\Models\Pengguna;
+use App\Models\Komentar;
 use Illuminate\Support\Facades\Auth;
 
 class RencanaControllerDirektur extends Controller
@@ -69,7 +70,7 @@ class RencanaControllerDirektur extends Controller
 
     public function show($id)
     {
-        $tugas = Tugas::with('pengguna')->findOrFail($id);
+        $tugas = Tugas::with(['komentar.pengguna', 'pengguna'])->findOrFail($id);
         // dd($tugas);
         $allUsers = \App\Models\Pengguna::all(); // semua user
 
@@ -144,6 +145,41 @@ class RencanaControllerDirektur extends Controller
             ->route('direktur.rencana.show', $tugas->id)
             ->with('success', 'Pengguna berhasil diperbarui.');
     }
+
+    public function komentar(Request $request, $id)
+    {
+        // Validasi input
+        $request->validate([
+            'komentar_direktur' => 'required|string|max:1000',
+        ]);
+
+        // Pastikan tugas ada
+        $tugas = Tugas::findOrFail($id);
+        // dd($tugas, $request->all());
+        // Simpan komentar
+        Komentar::create([
+            'tugas_id'    => $tugas->id,
+            'pengguna_id' => Auth::id(),  // ambil user yang login
+            'isi'         => $request->komentar_direktur,
+            'status'      => 'menunggu', // default
+        ]);
+
+        return redirect()->back()->with('success', 'Komentar berhasil ditambahkan.');
+    }
+
+    public function updateKomentarStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:setuju,tolak,menunggu',
+        ]);
+
+        $komentar = \App\Models\Komentar::findOrFail($id);
+        $komentar->status = $request->status;
+        $komentar->save();
+
+        return redirect()->back()->with('success', 'Status komentar diperbarui.');
+    }
+
 
 
     public function destroy($id)

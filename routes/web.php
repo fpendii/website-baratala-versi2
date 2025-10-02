@@ -11,6 +11,7 @@ use App\Http\Controllers\direktur\LaporanControllerDirektur;
 use App\Http\Controllers\direktur\LaporanJobdeskControllerDirektur;
 use App\Http\Controllers\direktur\LaporanKeuanganControllerDirektur;
 use App\Http\Controllers\direktur\ProfilControllerDirektur;
+use App\Http\Controllers\direktur\SuratMasukControllerDirektur;
 use App\Http\Controllers\enginer\DashboardControllerEnginer;
 use App\Http\Controllers\enginer\JobdeskControllerEnginer;
 use App\Http\Controllers\enginer\ProfilControllerEnginer;
@@ -19,6 +20,7 @@ use App\Http\Controllers\karyawan\DashboardControllerKaryawan;
 use App\Http\Controllers\karyawan\JobdeskControllerKaryawan;
 use App\Http\Controllers\karyawan\ProfilControllerKaryawan;
 use App\Http\Controllers\karyawan\RencanaControllerKaryawan;
+use App\Http\Controllers\karyawan\SuratMasukControllerKaryawan;
 use App\Http\Controllers\KepalaTeknik\DashboardControllerKepalaTeknik;
 use App\Http\Controllers\KepalaTeknik\JobdeskControllerKepalaTeknik;
 use App\Http\Controllers\KepalaTeknik\ProfilControllerKepalaTeknik;
@@ -43,6 +45,7 @@ use App\Http\Controllers\karyawan\KeuanganControllerKaryawan;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/', [AuthController::class, 'login']);
     Route::post('/login', [AuthController::class, 'attempt'])->name('login.attempt');
 });
 
@@ -55,8 +58,14 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
 
     // Rencana kerja
     Route::resource('rencana', RencanaControllerDirektur::class);
-
     Route::post('rencana/updatePengguna/{id}', [RencanaControllerDirektur::class, 'updatePengguna'])->name('rencana.updatePengguna');
+    Route::post('rencana/komentar/{id}', [RencanaControllerDirektur::class, 'komentar'])->name('rencana.komentar');
+    // Ubah status komentar
+    Route::post('rencana/komentar/{id}/status', [RencanaControllerDirektur::class, 'updateKomentarStatus'])->name('rencana.komentar.status');
+
+    //Surat Masuk
+    Route::resource('surat-masuk', SuratMasukControllerDirektur::class);
+
 
     // Karyawan
     Route::resource('karyawan', KaryawanControllerDirektur::class);
@@ -166,4 +175,8 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
     Route::post('keuangan/pengeluaran/store', [KeuanganControllerKaryawan::class, 'storePengeluaran']);
     Route::get('keuangan/kasbon/create', [KeuanganControllerKaryawan::class, 'createKasbon']);
     Route::post('keuangan/kasbon/store', [KeuanganControllerKaryawan::class, 'storeKasbon']);
+
+    //Surat Masuk
+    Route::resource('surat-masuk', SuratMasukControllerKaryawan::class);
+
 });

@@ -91,6 +91,12 @@
                             <div data-i18n="Basic">Rencana Kerja</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->is('direktur/surat-masuk*') ? 'active' : '' }}">
+                        <a href="{{ route('direktur.surat-masuk.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ri ri-todo-line"></i>
+                            <div data-i18n="Basic">Surat Masuk</div>
+                        </a>
+                    </li>
 
                     <li class="menu-item {{ request()->is('direktur/laporan*') ? 'active' : '' }}">
                         <a href="/direktur/laporan" class="menu-link">

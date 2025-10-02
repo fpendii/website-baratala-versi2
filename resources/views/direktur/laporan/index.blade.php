@@ -23,7 +23,7 @@
                     <div class="card-body">
                         <h6 class="card-subtitle mb-2 text-body-secondary">Dari: {{ $laporan->pengguna->nama ?? 'Unknown' }}</h6>
                         <p class="card-text text-truncate">{{ $laporan->deskripsi }}</p>
-                        <a href="{{ route('direktur.laporan.detail', $laporan->id) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+                        <a href="{{ route('direktur.laporan.show', $laporan->id) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
                     </div>
                     <div class="card-footer text-body-secondary">
                         Dikirim pada: {{ $laporan->created_at->format('d M Y') }}

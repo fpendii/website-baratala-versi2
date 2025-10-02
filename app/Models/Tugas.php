@@ -38,4 +38,9 @@ class Tugas extends Model
     {
         return $this->hasMany(TugasPengguna::class, 'id_tugas');
     }
+
+    public function komentar()
+    {
+        return $this->hasMany(Komentar::class);
+    }
 }

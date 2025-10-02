@@ -20,7 +20,7 @@ class LaporanControllerDirektur extends Controller
         return view('direktur.laporan.tabel', compact('laporans'));
     }
 
-    public function detail($id)
+    public function show($id)
     {
         $laporan = Laporan::with(['pengguna', 'laporanKeuangan'])->findOrFail($id);
         return view('direktur.laporan.detail', compact('laporan'));
@@ -38,7 +38,9 @@ class LaporanControllerDirektur extends Controller
         $laporan->keputusan = $request->keputusan;
         $laporan->save();
 
-        return redirect()->route('direktur.laporan.detail', $laporan->id)
+        return redirect()->route('direktur.laporan.show', $laporan->id)
             ->with('success', 'Keputusan berhasil diperbarui!');
     }
+
+    
 }

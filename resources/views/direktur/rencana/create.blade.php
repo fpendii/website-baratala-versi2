@@ -79,7 +79,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan Rencana</button>
-                <a href="{{ route('karyawan.rencana.index') }}" class="btn btn-outline-secondary">Batal</a>
+                <a href="{{ route('direktur.rencana.index') }}" class="btn btn-outline-secondary">Batal</a>
             </form>
         </div>
     </div>

@@ -85,6 +85,12 @@
                             <div data-i18n="Basic">Rencana Kerja</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->is('karyawan/surat-masuk*') ? 'active' : '' }}">
+                        <a href="/karyawan/surat-masuk" class="menu-link">
+                            <i class="menu-icon icon-base ri ri-todo-line"></i>
+                            <div data-i18n="Basic">Surat Masuk</div>
+                        </a>
+                    </li>
 
                     <li class="menu-item {{ request()->is('karyawan/keuangan*') ? 'active' : '' }}">
                         <a href="/karyawan/keuangan" class="menu-link">
