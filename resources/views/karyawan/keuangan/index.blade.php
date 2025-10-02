@@ -24,7 +24,7 @@
                 <div class="card-body text-nowrap">
                     <h5 class="card-title mb-0">Uang Masuk</h5>
                     <p class="mb-2">Bulan ini</p>
-                    {{-- <h4 class="text-success mb-0">Rp{{ number_format($totalPendapatan, 0, ',', '.') }}</h4> --}}
+                    <h4 class="text-success mb-0">Rp</h4>
                 </div>
             </div>
         </div>
@@ -45,18 +45,22 @@
             <div class="card overflow-hidden">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Daftar Transaksi</h5>
-                    <div>
+                    <div class="d-flex gap-2">
+                        <a href="{{ url('keuangan/export') }}" class="btn btn-outline-success btn-sm">
+                            Export Excel
+                        </a>
                         <a href="{{ url('karyawan/keuangan/pengeluaran/create') }}" class="btn btn-danger btn-sm">
-                            + Tambah Pengeluaran Kas
+                            + Pengeluaran Kas
                         </a>
                         <a href="{{ url('karyawan/keuangan/kasbon/create') }}" class="btn btn-warning btn-sm">
-                            + Tambah Kasbon
+                            + Kasbon
                         </a>
                         <a href="{{ url('karyawan/keuangan/uang-masuk/create') }}" class="btn btn-success btn-sm">
-                            + Tambah Uang Masuk
+                            + Uang Masuk
                         </a>
                     </div>
                 </div>
+
                 <div class="container">
                     <!-- Filter Transaksi -->
                     <div class="row mb-3">
@@ -99,6 +103,7 @@
                                 <div class="col-md-3 d-flex align-items-end justify-content-end">
                                     <button type="submit" class="btn btn-primary w-100">Filter</button>
                                 </div>
+
                             </form>
                         </div>
                     </div>
@@ -115,7 +120,7 @@
                                 <th>Jenis</th>
                                 <th>Nominal</th>
                                 <th>Metode</th>
-                                <th>Bukti</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -160,9 +165,9 @@
                             </tbody>
                         </table>
                         <div class="container">
-                                 <div class="d-flex justify-content-end mt-3">
-                            {{ $laporanKeuangan->links('pagination::bootstrap-5') }}
-                        </div>
+                            <div class="d-flex justify-content-end mt-3">
+                                {{ $laporanKeuangan->links('pagination::bootstrap-5') }}
+                            </div>
                         </div>
 
 

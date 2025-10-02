@@ -1,4 +1,4 @@
-@extends('layout.direktur-template')
+@extends('layout.karyawan-template')
 
 @section('title', 'Detail Surat Masuk')
 
