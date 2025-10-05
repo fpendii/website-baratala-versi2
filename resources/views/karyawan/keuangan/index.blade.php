@@ -132,7 +132,7 @@
                                     <td>
                                         @switch($laporan->jenis)
                                             @case('uang_masuk')
-                                                <span class="badge bg-success">Pemasukan</span>
+                                                <span class="badge bg-success">Uang Masuk</span>
                                             @break
 
                                             @case('pengeluaran')

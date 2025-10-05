@@ -175,6 +175,8 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
     Route::post('keuangan/pengeluaran/store', [KeuanganControllerKaryawan::class, 'storePengeluaran']);
     Route::get('keuangan/kasbon/create', [KeuanganControllerKaryawan::class, 'createKasbon']);
     Route::post('keuangan/kasbon/store', [KeuanganControllerKaryawan::class, 'storeKasbon']);
+    Route::get('keuangan/uang-masuk/create', [KeuanganControllerKaryawan::class, 'createUangMasuk']);
+    Route::post('keuangan/uang-masuk/store', [KeuanganControllerKaryawan::class, 'storeUangMasuk']);
 
     //Surat Masuk
     Route::resource('surat-masuk', SuratMasukControllerKaryawan::class);

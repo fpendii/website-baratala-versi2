@@ -168,4 +168,60 @@ class KeuanganControllerKaryawan extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
     }
+
+    public function createUangMasuk(){
+        $daftarKaryawan = Pengguna::get();
+
+        return view('karyawan.keuangan.create-uang-masuk', compact('daftarKaryawan'));
+    }
+
+    public function storeUangMasuk(Request $request){
+        $request->validate([
+            'tanggal' => 'required|date',
+            'keperluan' => 'required|string',
+            'nominal' => 'required|string',
+            'jenis_uang' => 'required|in:kas,bank',
+        ]);
+
+        // Bersihkan nominal -> hapus titik/koma pemisah ribuan
+        $nominal = preg_replace('/[^0-9]/', '', $request->nominal);
+
+        DB::beginTransaction();
+        try {
+            $uangMasuk = new LaporanKeuangan();
+            $uangMasuk->id_keuangan = Keuangan::first()->id;
+            $uangMasuk->id_pengguna = 1; // nanti bisa diganti auth()->id()
+            $uangMasuk->tanggal = $request->tanggal;
+            $uangMasuk->keperluan = $request->keperluan;
+            $uangMasuk->nominal = $nominal;
+            $uangMasuk->penerima = $request->penerima;
+            $uangMasuk->jenis = 'uang_masuk';
+            $uangMasuk->jenis_uang = $request->jenis_uang;
+            $uangMasuk->persetujuan_direktur = 0; // uang masuk tidak perlu persetujuan direktur
+
+            // // Upload lampiran
+            // if ($request->hasFile('lampiran')) {
+            //     $file = $request->file('lampiran');
+            //     $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            //     $file->move(public_path('uploads/lampiran'), $filename);
+            //     $uangMasuk->lampiran = $filename;
+            // }
+
+            // Tambah sisa uang kas
+            $uangKas = Keuangan::first();
+            $uangKas->nominal += $nominal;
+            $uangKas->save();
+
+            $uangMasuk->save();
+
+            DB::commit();
+
+            return redirect()->to('/karyawan/keuangan')->with('success', 'Pemasukan kas berhasil disimpan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Gagal menyimpan pemasukan kas: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+        }
+    }
 }
