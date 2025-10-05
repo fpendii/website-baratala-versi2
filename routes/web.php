@@ -106,29 +106,29 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
 //     Route::get('profil', [ProfilControllerKepalaTeknik::class, 'index']);
 // });
 
-// Route Enginer
-Route::prefix('enginer')->group(function () {
+// // Route Enginer
+// Route::prefix('enginer')->group(function () {
 
-    Route::get('dashboard', [DashboardControllerEnginer::class, 'index']);
+//     Route::get('dashboard', [DashboardControllerEnginer::class, 'index']);
 
-    Route::get('rencana', [RencanaControllerEnginer::class, 'index']);
+//     Route::get('rencana', [RencanaControllerEnginer::class, 'index']);
 
-    Route::get('jobdesk', [JobdeskControllerEnginer::class, 'index']);
+//     Route::get('jobdesk', [JobdeskControllerEnginer::class, 'index']);
 
-    Route::get('profil', [ProfilControllerEnginer::class, 'index']);
-});
+//     Route::get('profil', [ProfilControllerEnginer::class, 'index']);
+// });
 
-// Route Produksi
-Route::prefix('produksi')->group(function () {
+// // Route Produksi
+// Route::prefix('produksi')->group(function () {
 
-    Route::get('dashboard', [DashboardControllerProduksi::class, 'index']);
+//     Route::get('dashboard', [DashboardControllerProduksi::class, 'index']);
 
-    Route::get('rencana', [RencanaControllerProduksi::class, 'index']);
+//     Route::get('rencana', [RencanaControllerProduksi::class, 'index']);
 
-    Route::get('jobdesk', [JobdeskControllerProduksi::class, 'index']);
+//     Route::get('jobdesk', [JobdeskControllerProduksi::class, 'index']);
 
-    Route::get('profil', [ProfilControllerProduksi::class, 'index']);
-});
+//     Route::get('profil', [ProfilControllerProduksi::class, 'index']);
+// });
 
 // Route Administrasi
 Route::prefix('administrasi')->group(function () {
@@ -138,6 +138,8 @@ Route::prefix('administrasi')->group(function () {
     Route::get('rencana', [RencanaControllerAdministrasi::class, 'index']);
 
     Route::get('jobdesk', [JobdeskControllerAdministrasi::class, 'index']);
+
+    Route::get('surat-masuk', [SuratMasukControllerAdministrasi::class, 'index']);
 
     Route::get('profil', [ProfilControllerAdministrasi::class, 'index']);
 });
