@@ -12,6 +12,7 @@ use App\Http\Controllers\direktur\LaporanJobdeskControllerDirektur;
 use App\Http\Controllers\direktur\LaporanKeuanganControllerDirektur;
 use App\Http\Controllers\direktur\ProfilControllerDirektur;
 use App\Http\Controllers\direktur\SuratMasukControllerDirektur;
+use App\Http\Controllers\direktur\SuratKeluarControllerDirektur;
 use App\Http\Controllers\enginer\DashboardControllerEnginer;
 use App\Http\Controllers\enginer\JobdeskControllerEnginer;
 use App\Http\Controllers\enginer\ProfilControllerEnginer;

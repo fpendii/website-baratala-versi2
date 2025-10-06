@@ -38,7 +38,8 @@
                         <label for="status" class="form-label">Status</label>
                         <select id="status" name="status" class="form-select" required>
                             <option value="belum dikerjakan">Belum Dikerjakan</option>
-                            <option value="sedang dikerjakan">Sedang Dikerjakan</option>
+                            <option value="belum dikerjakan">On Progress</option>
+                            <option value="selesai">Tidak Dikerjakan</option>
                             <option value="selesai">Selesai</option>
                         </select>
                     </div>
@@ -54,17 +55,7 @@
                 </div>
                 <input type="hidden" name="jenis" value="rencana" id="">
 
-                <div class="mb-3">
-                    <label class="form-label d-block">Pengguna yang Ditugaskan</label>
-                    <div id="pengguna-container">
-                        {{-- Select pengguna akan dimuat di sini --}}
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="button" id="add-pengguna" class="btn btn-sm btn-outline-primary mt-2">
-                            <i class='bx bx-plus me-1'></i> Tambah Pengguna
-                        </button>
-                    </div>
-                </div>
+
 
                 <input type="hidden" name="pengguna" id="pengguna-hidden">
 
@@ -84,106 +75,5 @@
         </div>
     </div>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Pastikan $users dikirim dari controller dan tidak null
-    const allUsers = @json($users->where('id', '!=', auth()->id()));
-    const container = document.getElementById('pengguna-container');
-    const hiddenInput = document.getElementById('pengguna-hidden');
-    const addButton = document.getElementById('add-pengguna');
 
-    // Fungsi untuk memperbarui nilai input hidden
-    function updateHiddenInput() {
-        const selectedIds = Array.from(container.querySelectorAll('select')).map(s => s.value).filter(v => v);
-        hiddenInput.value = selectedIds.join(',');
-        updateAllSelectOptions(); // Panggil ini agar semua select diperbarui
-    }
-
-    // Fungsi untuk memperbarui opsi di SEMUA select
-    function updateAllSelectOptions() {
-        // Ambil semua ID yang sedang dipilih di seluruh select (kecuali yang kosong)
-        const allSelectedIds = Array.from(container.querySelectorAll('select')).map(s => s.value).filter(v => v);
-
-        container.querySelectorAll('select').forEach(selectElement => {
-            const currentValue = selectElement.value;
-            selectElement.innerHTML = `<option value="">-- Pilih Pengguna --</option>`;
-
-            allUsers.forEach(user => {
-                const userIdString = user.id.toString();
-
-                // Tampilkan opsi jika user ID sama dengan nilai yang sedang dipilih (agar nilai terpilih tetap ada)
-                // ATAU jika user ID belum ada di daftar ID yang dipilih di select lain
-                if (userIdString === currentValue || !allSelectedIds.includes(userIdString)) {
-                    const option = document.createElement('option');
-                    option.value = user.id;
-                    option.textContent = `${user.name} (${user.email})`;
-                    if (userIdString === currentValue) {
-                        option.selected = true;
-                    }
-                    selectElement.appendChild(option);
-                }
-            });
-        });
-    }
-
-    // Fungsi untuk membuat elemen div yang berisi select dan tombol hapus
-    function createSelectElement() {
-        // Menggunakan input-group untuk tampilan yang compact
-        const wrapper = document.createElement('div');
-        wrapper.className = 'input-group mb-2';
-
-        const select = document.createElement('select');
-        select.className = 'form-select';
-        select.addEventListener('change', updateHiddenInput); // Memanggil updateHiddenInput juga akan memicu updateAllSelectOptions
-
-        const deleteButton = document.createElement('button');
-        deleteButton.type = 'button';
-        deleteButton.className = 'btn btn-outline-danger';
-        deleteButton.innerHTML = `<i class='bx bx-trash'></i>`;
-
-        deleteButton.addEventListener('click', function() {
-            wrapper.remove();
-            updateHiddenInput(); // Memperbarui input hidden dan opsi select
-        });
-
-        wrapper.appendChild(select);
-        wrapper.appendChild(deleteButton);
-
-        return wrapper;
-    }
-
-    // Fungsi untuk menambahkan elemen select baru
-    function addSelectElement() {
-        const newWrapper = createSelectElement();
-        const newSelect = newWrapper.querySelector('select');
-
-        // Dapatkan semua ID yang sudah dipilih di SELECT yang ADA
-        const currentSelectedIds = Array.from(container.querySelectorAll('select'))
-            .filter(selectElement => selectElement.value) // Filter hanya yang sudah punya nilai
-            .map(selectElement => selectElement.value);
-
-        newSelect.innerHTML = `<option value="">-- Pilih Pengguna --</option>`;
-
-        allUsers.forEach(user => {
-            if (!currentSelectedIds.includes(user.id.toString())) {
-                const option = document.createElement('option');
-                option.value = user.id;
-                option.textContent = `${user.name} (${user.email})`;
-                newSelect.appendChild(option);
-            }
-        });
-
-        container.appendChild(newWrapper);
-        updateAllSelectOptions(); // Panggil untuk memastikan select lama juga ikut ter-refresh
-    }
-
-    // Event listener untuk tombol "Tambah Pengguna"
-    addButton.addEventListener('click', function() {
-        addSelectElement();
-    });
-
-    // Inisialisasi: Panggil updateHiddenInput untuk memastikan opsi yang benar saat pertama kali dibuka
-    updateHiddenInput();
-});
-</script>
 @endsection
