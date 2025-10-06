@@ -25,7 +25,7 @@
         <h6 class="card-title mb-2">Lampiran</h6>
         <p>
             @if($laporan->lampiran)
-                <a href="{{ asset('storage/' . $laporan->lampiran) }}" target="_blank">Lihat Lampiran</a>
+                <a href="{{ asset('storage/public/' . $laporan->lampiran) }}" target="_blank">Lihat Lampiran</a>
             @else
                 <span class="text-muted">Tidak ada lampiran</span>
             @endif

@@ -65,7 +65,7 @@
                 <dt class="col-sm-3 text-nowrap">Lampiran File</dt>
                 <dd class="col-sm-9">
                     @if($suratMasuk->lampiran)
-                        <a href="{{ asset('storage/' . $suratMasuk->lampiran) }}" target="_blank" class="btn btn-sm btn-outline-primary py-0">
+                        <a href="{{ asset('storage/public/' . $suratMasuk->lampiran) }}" target="_blank" class="btn btn-sm btn-outline-primary py-0">
                             <i class="bx bx-download me-1"></i> Unduh Lampiran ({{ basename($suratMasuk->lampiran) }})
                         </a>
                     @else

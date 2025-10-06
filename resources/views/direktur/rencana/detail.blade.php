@@ -8,6 +8,11 @@
         <span class="text-muted fw-light">Rencana Kerja /</span> Detail Tugas
     </h4>
 
+    {{-- Notifikasi (Opsional: Tambahkan notifikasi success/error di sini) --}}
+    {{-- @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif --}}
+
     <div class="row">
 
         {{-- KOLOM KIRI: DETAIL RENCANA KERJA & KOMENTAR --}}
@@ -16,9 +21,9 @@
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Informasi Rencana Kerja</h5>
-                    {{-- <a href="{{ route('direktur.rencana.edit', $tugas->id) }}" class="btn btn-sm btn-warning">
+                    <a href="{{ route('direktur.rencana.edit', $tugas->id) }}" class="btn btn-sm btn-warning">
                         <i class="bx bx-edit-alt me-1"></i> Edit Detail
-                    </a> --}}
+                    </a>
                 </div>
                 <div class="card-body">
                     <dl class="row detail-list-custom">
@@ -46,15 +51,15 @@
 
                     <dl class="row detail-list-custom">
                         <dt class="col-sm-4 text-nowrap">Tanggal Mulai</dt>
-                        <dd class="col-sm-8">{{ $tugas->tanggal_mulai }}</dd>
+                        <dd class="col-sm-8">{{ \Carbon\Carbon::parse($tugas->tanggal_mulai)->format('d F Y') }}</dd>
 
                         <dt class="col-sm-4 text-nowrap">Tanggal Selesai</dt>
-                        <dd class="col-sm-8">{{ $tugas->tanggal_selesai }}</dd>
+                        <dd class="col-sm-8">{{ \Carbon\Carbon::parse($tugas->tanggal_selesai)->format('d F Y') }}</dd>
 
                         <dt class="col-sm-4 text-nowrap">Lampiran</dt>
                         <dd class="col-sm-8">
                             @if($tugas->lampiran)
-                                <a href="{{ asset('storage/' . $tugas->lampiran) }}" target="_blank" class="btn btn-sm btn-outline-primary py-0">
+                                <a href="{{ asset('storage/public/' . $tugas->lampiran) }}" target="_blank" class="btn btn-sm btn-outline-primary py-0">
                                     <i class="bx bx-download me-1"></i> Lihat File
                                 </a>
                             @else
@@ -68,7 +73,7 @@
                 </div>
             </div>
 
-            {{-- CARD 2: LIST KOMENTAR & TAMBAH KOMENTAR --}}
+            {{-- CARD 2: LIST KOMENTAR & TAMBAH KOMENTAR (DIREKTUR DAPAT MEMODERASI) --}}
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Diskusi dan Komentar</h5>
@@ -94,26 +99,26 @@
                                 <p class="mb-2">{{ $komentar->isi }}</p>
 
                                 <div class="d-flex flex-wrap align-items-center">
-                                    <span class="badge me-2 bg-{{ $komentar->status == 'approve' ? 'success' : ($komentar->status == 'tolak' ? 'danger' : 'warning') }}">
+                                    <span class="badge me-2 bg-{{ $komentar->status == 'setuju' ? 'success' : ($komentar->status == 'tolak' ? 'danger' : 'warning') }}">
                                         Status: {{ ucfirst($komentar->status) }}
                                     </span>
 
                                     {{-- Action buttons for Direktur --}}
-                                    <form action="{{ route('direktur.rencana.komentar.status', $komentar->id) }}" method="POST" class="d-inline me-2">
-                                        @csrf
-                                        <input type="hidden" name="status" value="setuju">
-                                        <button type="submit" class="btn btn-success btn-xs py-0 px-2" title="Setujui Komentar"><i class="bx bx-check"></i> Setujui</button>
-                                    </form>
-                                    <form action="{{ route('direktur.rencana.komentar.status', $komentar->id) }}" method="POST" class="d-inline me-2">
-                                        @csrf
-                                        <input type="hidden" name="status" value="tolak">
-                                        <button type="submit" class="btn btn-danger btn-xs py-0 px-2" title="Tolak Komentar"><i class="bx bx-x"></i> Tolak</button>
-                                    </form>
-                                    {{-- <form action="{{ route('direktur.rencana.komentar.status', $komentar->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <input type="hidden" name="status" value="pertimbangkan">
-                                        <button type="submit" class="btn btn-warning btn-xs py-0 px-2" title="Pertimbangkan Komentar"><i class="bx bx-refresh"></i> Pertimbangkan</button>
-                                    </form> --}}
+                                    @if ($komentar->status != 'setuju')
+                                        <form action="{{ route('direktur.rencana.komentar.status', $komentar->id) }}" method="POST" class="d-inline me-2">
+                                            @csrf
+                                            <input type="hidden" name="status" value="setuju">
+                                            <button type="submit" class="btn btn-success btn-xs py-0 px-2" title="Setujui Komentar"><i class="bx bx-check"></i> Setujui</button>
+                                        </form>
+                                    @endif
+                                    @if ($komentar->status != 'tolak')
+                                        <form action="{{ route('direktur.rencana.komentar.status', $komentar->id) }}" method="POST" class="d-inline me-2">
+                                            @csrf
+                                            <input type="hidden" name="status" value="tolak">
+                                            <button type="submit" class="btn btn-danger btn-xs py-0 px-2" title="Tolak Komentar"><i class="bx bx-x"></i> Tolak</button>
+                                        </form>
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
@@ -151,7 +156,7 @@
                                             <option value="">-- Pilih Pengguna --</option>
                                             @foreach($allUsers as $u)
                                                 <option value="{{ $u->id }}" {{ $user->id == $u->id ? 'selected' : '' }}>
-                                                    {{ $u->name }} ({{ $u->email }})
+                                                    {{ $u->nama }} ({{ $u->email }})
                                                 </option>
                                             @endforeach
                                         </select>
@@ -215,7 +220,7 @@
 </div>
 {{-- END MODAL --}}
 
-{{-- JS UNTUK PENGGUNA (DIREFINED) --}}
+{{-- JS UNTUK PENGGUNA --}}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const userOptions = @json($allUsers);
@@ -243,26 +248,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const allSelected = getCurrentSelectedIds();
         document.querySelectorAll('.user-select-field').forEach(select => {
             const current = select.value;
-            // Clear existing options, but keep the placeholder
-            const placeholder = select.querySelector('option[value=""]');
-            select.innerHTML = '';
-            if (placeholder) {
-                select.appendChild(placeholder);
-            } else {
-                 select.innerHTML = `<option value="">-- Pilih Pengguna --</option>`;
-            }
-
+            // Clear existing options, but keep the placeholder (if any)
+            let innerHtmlContent = `<option value="">-- Pilih Pengguna --</option>`;
 
             userOptions.forEach(user => {
                 const userIdString = user.id.toString();
                 if (userIdString === current || !allSelected.includes(userIdString)) {
-                    const option = document.createElement('option');
-                    option.value = user.id;
-                    option.textContent = `${user.name} (${user.email})`;
-                    if (userIdString === current) option.selected = true;
-                    select.appendChild(option);
+                    const selectedAttr = userIdString === current ? 'selected' : '';
+                    innerHtmlContent += `<option value="${user.id}" ${selectedAttr}>${user.nama} (${user.email})</option>`;
                 }
             });
+            select.innerHTML = innerHtmlContent;
         });
         updateEmptyState();
     }
@@ -288,18 +284,20 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add User button handler
     addUserBtn.addEventListener('click', () => {
         const row = createUserRow();
-        // Insert new row before the empty state alert (if it exists)
+        // Insert new row
         if (emptyListAlert) {
             penggunaList.insertBefore(row, emptyListAlert);
         } else {
-            penggunaList.appendChild(row);
+             penggunaList.appendChild(row);
         }
+        // Force the new select field to update its options
         updateSelectOptions();
     });
 
     // Remove User handler (Delegation)
     penggunaList.addEventListener('click', e => {
-        if (e.target.closest('.remove-user')) {
+        const removeBtn = e.target.closest('.remove-user');
+        if (removeBtn) {
             e.target.closest('.pengguna-item').remove();
             updateSelectOptions();
         }
@@ -310,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target.classList.contains('user-select-field')) updateSelectOptions();
     });
 
-    // Initial call
+    // Initial call to ensure correctness after initial load
     updateSelectOptions();
 });
 </script>

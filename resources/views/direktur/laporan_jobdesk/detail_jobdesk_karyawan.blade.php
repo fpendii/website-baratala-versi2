@@ -32,7 +32,7 @@
                     <td>{{ $laporan->deskripsi }}</td>
                     <td>
                         @if($laporan->lampiran)
-                            <a href="{{ asset('storage/' . $laporan->lampiran) }}" target="_blank">Lihat</a>
+                            <a href="{{ asset('storage/public/' . $laporan->lampiran) }}" target="_blank">Lihat</a>
                         @else
                             <span class="text-muted">-</span>
                         @endif

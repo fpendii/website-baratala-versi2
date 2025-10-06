@@ -150,7 +150,7 @@
                                     <td>{{ ucfirst($laporan->jenis_uang) }}</td>
                                     <td>
                                         @if ($laporan->bukti_transaksi)
-                                            <a href="{{ asset('storage/' . $laporan->bukti_transaksi) }}"
+                                            <a href="{{ asset('storage/public/' . $laporan->bukti_transaksi) }}"
                                                 target="_blank">Lihat</a>
                                         @else
                                             -
