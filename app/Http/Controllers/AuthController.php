@@ -18,7 +18,7 @@ class AuthController extends Controller
     {
         $key = 'login:' . $request->ip();
         $maxAttempts = 5;
-        $decay = 60; // detik
+        $decay = 60;
 
         if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
             $retry = RateLimiter::availableIn($key);
@@ -48,6 +48,14 @@ class AuthController extends Controller
                 'role'     => $user->role,
             ]);
 
+            if($user->role == 'admin') {
+                return redirect()->intended('/administrasi/dashboard');
+            } elseif($user->role == 'direktur') {
+                return redirect()->intended('/direktur/dashboard');
+            } elseif(in_array($user->role, ['karyawan', 'kepala teknik', 'enginer', 'produksi', 'keuangan'])) {
+                return redirect()->intended('/karyawan/dashboard');
+            }
+
             // redirect sesuai role
             $role = strtolower($user->role); // biar aman huruf kecil semua
             return redirect()->intended("/{$role}/dashboard");
@@ -59,9 +67,6 @@ class AuthController extends Controller
             ->with('error', 'Email atau password salah.')
             ->withInput();
     }
-
-
-
 
     public function logout(Request $request)
     {
