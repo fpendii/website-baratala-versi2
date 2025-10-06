@@ -162,6 +162,9 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
     Route::get('rencana', [RencanaControllerKaryawan::class, 'index'])->name('rencana.index');
     Route::delete('rencana/delete/{id}', [RencanaControllerKaryawan::class, 'destroy'])->name('rencana.destroy');
 
+    Route::post('rencana/komentar/{id}', [RencanaControllerKaryawan::class, 'komentar'])->name('rencana.komentar');
+
+
     Route::get('jobdesk', [JobdeskControllerKaryawan::class, 'index'])->name('jobdesk.index');
     Route::get('jobdesk/create', [JobdeskControllerKaryawan::class, 'create'])->name('jobdesk.create');
     Route::post('jobdesk/store', [JobdeskControllerKaryawan::class, 'store'])->name('jobdesk.store');

@@ -56,7 +56,7 @@
 
                             {{-- Icon Lampiran --}}
                             @if($item->lampiran)
-                                <a href="{{ asset('storage/' . $item->lampiran) }}"
+                                <a href="{{ asset('storage/public/' . $item->lampiran) }}"
                                    target="_blank"
                                    class="ms-1 text-info"
                                    title="Lampiran tersedia">

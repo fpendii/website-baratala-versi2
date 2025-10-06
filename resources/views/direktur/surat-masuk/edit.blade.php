@@ -65,7 +65,7 @@
                     <label for="lampiran" class="form-label">Ganti Lampiran (Kosongkan jika tidak ingin ganti)</label>
                     @if ($suratMasuk->lampiran)
                         <p class="text-muted small">
-                            File saat ini: <a href="{{ asset('storage/' . $suratMasuk->lampiran) }}" target="_blank">{{ basename($suratMasuk->lampiran) }}</a>
+                            File saat ini: <a href="{{ asset('storage/public/' . $suratMasuk->lampiran) }}" target="_blank">{{ basename($suratMasuk->lampiran) }}</a>
                         </p>
                     @endif
                     <input type="file" id="lampiran" name="lampiran" class="form-control @error('lampiran') is-invalid @enderror" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">

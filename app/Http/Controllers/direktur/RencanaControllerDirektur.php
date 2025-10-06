@@ -80,8 +80,9 @@ class RencanaControllerDirektur extends Controller
 
     public function edit($id)
     {
-        $tugas = Tugas::findOrFail($id);
-        return view('direktur.rencana.edit', compact('tugas'));
+        $rencana = Tugas::with(['komentar.pengguna', 'pengguna'])->findOrFail($id);
+        // dd($rencana);
+        return view('direktur.rencana.edit', compact('rencana'));
     }
 
     public function update(Request $request, $id)

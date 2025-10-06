@@ -47,7 +47,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
                 @if($laporan->lampiran)
-                    <small class="form-text text-muted mt-2">Lampiran saat ini: <a href="{{ asset('storage/' . $laporan->lampiran) }}" target="_blank">Lihat File</a>. Unggah file baru untuk mengganti.</small>
+                    <small class="form-text text-muted mt-2">Lampiran saat ini: <a href="{{ asset('storage/public/' . $laporan->lampiran) }}" target="_blank">Lihat File</a>. Unggah file baru untuk mengganti.</small>
                 @endif
             </div>
 
