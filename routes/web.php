@@ -4,6 +4,8 @@ use App\Http\Controllers\administrasi\DashboardControllerAdministrasi;
 use App\Http\Controllers\administrasi\JobdeskControllerAdministrasi;
 use App\Http\Controllers\administrasi\ProfilControllerAdministrasi;
 use App\Http\Controllers\administrasi\RencanaControllerAdministrasi;
+use App\Http\Controllers\administrasi\SuratMasukControllerAdministrasi;
+use App\Http\Controllers\administrasi\KaryawanControllerAdministrasi;
 use App\Http\Controllers\direktur\DashboardControllerDirektur;
 use App\Http\Controllers\direktur\JobdeskControllerDirektur;
 use App\Http\Controllers\direktur\KaryawanControllerDirektur;
@@ -67,14 +69,11 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     //Surat Masuk
     Route::resource('surat-masuk', SuratMasukControllerDirektur::class);
 
-
     // Karyawan
     Route::resource('karyawan', KaryawanControllerDirektur::class);
 
     // Jobdesk (CRUD)
     Route::resource('jobdesk', JobdeskControllerDirektur::class);
-
-
 
     // Laporan (pakai resource biar rapih, tapi bisa disesuaikan kalau memang tidak semua method)
     Route::resource('laporan', LaporanControllerDirektur::class)->only(['index', 'show', 'update']);
@@ -83,7 +82,8 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::post('laporan/keputusan/{id}', [LaporanControllerDirektur::class, 'updateKeputusan'])->name('laporan.keputusan');
 
     // Laporan Keuangan
-    Route::resource('laporan-keuangan', LaporanKeuanganControllerDirektur::class)->only(['index', 'show']);
+    Route::resource('keuangan-laporan', LaporanKeuanganControllerDirektur::class)->only(['index', 'show']);
+    Route::get('keuangan-laporan/persetujuan/{id}', [LaporanKeuanganControllerDirektur::class, 'persetujuan'])->name('keuangan-laporan.persetujuan');
 
     // Laporan Jobdesk
     Route::get('jobdesk-laporan', [LaporanJobdeskControllerDirektur::class, 'index'])->name('laporan-jobdesk.index');
@@ -136,6 +136,8 @@ Route::prefix('administrasi')->group(function () {
 
     Route::get('dashboard', [DashboardControllerAdministrasi::class, 'index']);
 
+    Route::get('rencana-kerja', [RencanaControllerAdministrasi::class, 'index']);
+
     Route::get('rencana', [RencanaControllerAdministrasi::class, 'index']);
 
     Route::get('jobdesk', [JobdeskControllerAdministrasi::class, 'index']);
@@ -143,6 +145,8 @@ Route::prefix('administrasi')->group(function () {
     Route::get('surat-masuk', [SuratMasukControllerAdministrasi::class, 'index']);
 
     Route::get('profil', [ProfilControllerAdministrasi::class, 'index']);
+
+    Route::get('karyawan', [KaryawanControllerAdministrasi::class, 'index']);
 });
 
 // Route karyawan

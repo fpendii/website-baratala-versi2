@@ -81,28 +81,35 @@
 
                     <li class="menu-item {{ request()->is('administrasi/rencana*') ? 'active' : '' }}">
                         <a href="/administrasi/rencana" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-todo-line"></i>
+                            <i class="menu-icon icon-base ri ri-calendar-check-line"></i>
                             <div data-i18n="Basic">Rencana Kerja</div>
                         </a>
                     </li>
-                     <li class="menu-item {{ request()->is('administrasi/jobdesk*') ? 'active' : '' }}">
+
+                    <li class="menu-item {{ request()->is('administrasi/jobdesk*') ? 'active' : '' }}">
                         <a href="/administrasi/jobdesk" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-todo-line"></i>
+                            <i class="menu-icon icon-base ri ri-task-line"></i>
                             <div data-i18n="Basic">Jobdesk</div>
                         </a>
                     </li>
+
                     <li class="menu-item {{ request()->is('administrasi/surat-masuk*') ? 'active' : '' }}">
                         <a href="/administrasi/surat-masuk" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-todo-line"></i>
+                            <i class="menu-icon icon-base ri ri-mail-open-line"></i>
                             <div data-i18n="Basic">Surat Masuk</div>
                         </a>
                     </li>
 
-
+                     <li class="menu-item {{ request()->is('administrasi/karyawan*') ? 'active' : '' }}">
+                        <a href="/administrasi/karyawan" class="menu-link">
+                            <i class="menu-icon icon-base ri ri-team-line"></i>
+                            <div data-i18n="Basic">Karyawan</div>
+                        </a>
+                    </li>
 
                     <li class="menu-item {{ request()->is('administrasi/profil*') ? 'active' : '' }}">
                         <a href="/administrasi/profil" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-user-line"></i>
+                            <i class="menu-icon icon-base ri ri-user-3-line"></i>
                             <div data-i18n="Basic">Profil</div>
                         </a>
                     </li>
@@ -113,8 +120,6 @@
                             <div data-i18n="Basic">Logout</div>
                         </a>
                     </li>
-
-
 
                 </ul>
 

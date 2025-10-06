@@ -38,9 +38,10 @@ class KeuanganControllerKaryawan extends Controller
 
         $uangKas = Keuangan::first();
         $uangKeluar = LaporanKeuangan::where('jenis', 'pengeluaran')->sum('nominal');
+        $uangMasuk = LaporanKeuangan::where('jenis', 'uang_masuk')->sum('nominal');
         $daftarKaryawan = Pengguna::all();
 
-        return view('karyawan.keuangan.index', compact('laporanKeuangan', 'uangKeluar', 'uangKas', 'daftarKaryawan'));
+        return view('karyawan.keuangan.index', compact('laporanKeuangan', 'uangKeluar', 'uangKas', 'daftarKaryawan', 'uangMasuk'));
     }
 
 

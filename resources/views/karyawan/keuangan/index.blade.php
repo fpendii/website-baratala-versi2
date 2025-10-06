@@ -24,7 +24,7 @@
                 <div class="card-body text-nowrap">
                     <h5 class="card-title mb-0">Uang Masuk</h5>
                     <p class="mb-2">Bulan ini</p>
-                    <h4 class="text-success mb-0">Rp</h4>
+                    <h4 class="text-success mb-0">Rp{{ number_format($uangMasuk, 0, ',', '.') }}</h4>
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@
                     <h4 class="text-danger mb-0">Rp{{ number_format($uangKeluar, 0, ',', '.') }}</h4>
                 </div>
             </div>
-        </div>
+        </div>x 
 
         <!-- Tabel Transaksi Keuangan -->
         <div class="col-12 mt-4">
