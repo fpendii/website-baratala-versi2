@@ -248,7 +248,7 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
+    @stack('scripts')
 
 
     <!-- Core JS -->
