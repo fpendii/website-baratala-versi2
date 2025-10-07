@@ -13,4 +13,10 @@ class SuratMasukControllerAdministrasi extends Controller
         $suratMasuk = SuratMasuk::orderBy('tanggal_terima', 'desc')->get();
         return view('administrasi.surat-masuk.index', compact('suratMasuk'));
     }
+
+    public function show($id)
+    {
+        $suratMasuk = SuratMasuk::findOrFail($id);
+        return view('administrasi.surat-masuk.show', compact('suratMasuk'));
+    }
 }

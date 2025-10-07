@@ -136,13 +136,26 @@ Route::prefix('administrasi')->group(function () {
 
     Route::get('dashboard', [DashboardControllerAdministrasi::class, 'index']);
 
-    Route::get('rencana-kerja', [RencanaControllerAdministrasi::class, 'index']);
+    // Route::get('rencana-kerja', [RencanaControllerAdministrasi::class, 'index']);
 
     Route::get('rencana', [RencanaControllerAdministrasi::class, 'index']);
+    Route::get('rencana/create', [RencanaControllerAdministrasi::class, 'create']);
+    Route::post('rencana/store', [RencanaControllerAdministrasi::class, 'store']);
+    Route::get('rencana/{id}', [RencanaControllerAdministrasi::class, 'show']);
+    Route::get('rencana/edit/{id}', [RencanaControllerAdministrasi::class, 'edit']);
+    Route::put('rencana/{id}', [RencanaControllerAdministrasi::class, 'update']);
+    Route::delete('rencana/destroy/{id}', [RencanaControllerAdministrasi::class, 'destroy']);
+    Route::post('rencana/komentar/{id}', [RencanaControllerAdministrasi::class, 'komentar']);
 
     Route::get('jobdesk', [JobdeskControllerAdministrasi::class, 'index']);
 
     Route::get('surat-masuk', [SuratMasukControllerAdministrasi::class, 'index']);
+    Route::get('surat-masuk/create', [SuratMasukControllerAdministrasi::class, 'create']);
+    Route::post('surat-masuk/store', [SuratMasukControllerAdministrasi::class, 'store']);
+    Route::get('surat-masuk/{id}', [SuratMasukControllerAdministrasi::class, 'show']);
+    Route::get('surat-masuk/{id}/edit', [SuratMasukControllerAdministrasi::class, 'edit']);
+    Route::put('surat-masuk/{id}', [SuratMasukControllerAdministrasi::class, 'update']);
+    Route::delete('surat-masuk/delete/{id}', [SuratMasukControllerAdministrasi::class, 'destroy']);
 
     Route::get('profil', [ProfilControllerAdministrasi::class, 'index']);
 

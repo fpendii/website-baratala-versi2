@@ -5,6 +5,8 @@ namespace App\Http\Controllers\administrasi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tugas;
+use App\Models\Pengguna;
+use Illuminate\Support\Facades\Auth;
 
 class RencanaControllerAdministrasi extends Controller
 {
@@ -18,5 +20,64 @@ class RencanaControllerAdministrasi extends Controller
     public function create()
     {
         return view('administrasi.rencana-kerja.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'judul_rencana'    => 'required|string|max:255',
+            'deskripsi'        => 'nullable|string',
+            'tanggal_mulai'    => 'required|date',
+            'tanggal_selesai'  => 'required|date|after_or_equal:tanggal_mulai',
+            'status'           => 'required|string',
+            'jenis'            => 'required|string',
+            'prioritas'        => 'nullable|string',
+            'lampiran'         => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'catatan'          => 'nullable|string',
+            'pengguna'         => 'nullable|string', // Hidden input, koma dipisahkan
+        ]);
+
+        // Simpan user yang membuat tugas (sebagai pembuat)
+        $validated['id_pengguna'] = Auth::id();
+
+        // Simpan file lampiran jika ada
+        if ($request->hasFile('lampiran')) {
+            $lampiranPath = $request->file('lampiran')->store('public/uploads/lampiran');
+            $validated['lampiran'] = str_replace('public/', '', $lampiranPath);
+        }
+
+        // Simpan tugas
+        $tugas = Tugas::create($validated);
+
+        // Ambil id pengguna dari input (pecah string jadi array)
+        $penggunaIds = [];
+        if (!empty($request->pengguna)) {
+            $penggunaIds = array_filter(explode(',', $request->pengguna));
+        }
+
+        // Tambahkan user yang sedang login (pembuat) ke daftar pengguna yang ditugaskan
+        $penggunaIds[] = Auth::id();
+
+        // Hilangkan duplikasi & validasi hanya id yang valid di tabel pengguna
+        $penggunaIds = Pengguna::whereIn('id', array_unique($penggunaIds))->pluck('id')->toArray();
+
+        // Simpan ke pivot
+        $tugas->pengguna()->sync($penggunaIds);
+
+        return redirect()->to('administrasi/rencana')->with('success', 'Rencana berhasil ditambahkan.');
+    }
+
+    public function show($id)
+    {
+        $tugas = Tugas::with('pengguna', 'komentar.pengguna')->findOrFail($id);
+        return view('administrasi.rencana-kerja.detail', compact('tugas'));
+    }
+
+    public function edit($id)
+    {
+        $rencana = Tugas::with(['pengguna', 'komentar.pengguna'])->findOrFail($id);
+        // Ambil semua pengguna kecuali dirinya sendiri untuk penugasan
+        $users = Pengguna::where('id', '!=', auth()->id())->get();
+        return view('administrasi.rencana-kerja.edit', compact('rencana', 'users'));
     }
 }
