@@ -144,7 +144,7 @@ Route::prefix('administrasi')->group(function () {
     Route::get('rencana/{id}', [RencanaControllerAdministrasi::class, 'show']);
     Route::get('rencana/edit/{id}', [RencanaControllerAdministrasi::class, 'edit']);
     Route::put('rencana/{id}', [RencanaControllerAdministrasi::class, 'update']);
-    Route::delete('rencana/destroy/{id}', [RencanaControllerAdministrasi::class, 'destroy']);
+    Route::delete('rencana/delete/{id}', [RencanaControllerAdministrasi::class, 'destroy']);
     Route::post('rencana/komentar/{id}', [RencanaControllerAdministrasi::class, 'komentar']);
 
     Route::get('jobdesk', [JobdeskControllerAdministrasi::class, 'index']);

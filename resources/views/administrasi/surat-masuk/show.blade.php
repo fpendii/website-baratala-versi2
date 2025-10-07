@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <a href="{{ route('direktur.surat-masuk.index') }}" class="btn btn-secondary mt-3">
+    <a href="{{ url('administrasi/surat-masuk') }}" class="btn btn-secondary mt-3">
         <i class="bx bx-arrow-back me-1"></i> Kembali ke Daftar Surat
     </a>
 </div>
