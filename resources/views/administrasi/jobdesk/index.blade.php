@@ -39,8 +39,7 @@
         <div class="col">
             <div class="card-header text-end">
                 <a href="{{ url('/administrasi/jobdesk/create') }}" class="btn btn-primary">
-                    <i class="icon-base ri ri-add-line icon-18px me-1"></i>
-                    Tambah
+                    <i class="icon-base ri ri-add-line icon-18px me-1"></i> Tambah
                 </a>
             </div>
         </div>
@@ -53,7 +52,7 @@
                     <th>No</th>
                     <th>Judul Jobdesk</th>
                     <th>Divisi</th>
-                    <th>Actions</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -111,13 +110,13 @@
     {{-- Memastikan modal di tengah layar --}}
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header">
                 <h5 class="modal-title" id="modalTitle">
                     <i class="icon-base ri ri-eye-line me-2"></i> Detail Jobdesk
                 </h5>
                 <button
                     type="button"
-                    class="btn-close btn-close-white"
+                    class="btn-close"
                     data-bs-dismiss="modal"
                     aria-label="Close"
                 ></button>

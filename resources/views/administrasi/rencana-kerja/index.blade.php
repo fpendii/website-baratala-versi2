@@ -37,8 +37,7 @@
             <div class="col">
                 <div class="card-header text-end">
                     <a href="{{ url('administrasi/rencana/create') }}" class="btn btn-primary">
-                        <i class="icon-base ri ri-add-line icon-18px me-1"></i>
-                        Tambah Rencana
+                        <i class="icon-base ri ri-add-line icon-18px me-1"></i> Tambah
                     </a>
                 </div>
             </div>
@@ -55,7 +54,7 @@
                         <th>Tanggal Selesai</th>
                         <th>Status</th>
                         <th>Prioritas</th>
-                        <th>Actions</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
@@ -77,7 +76,20 @@
                                 @endphp
                                 <span class="badge bg-label-{{ $statusClass }}">{{ ucfirst($item->status) }}</span>
                             </td>
-                            <td>{{ $item->prioritas ?? '-' }}</td>
+                            <td>
+                            {{-- Badge Prioritas --}}
+                            @php
+                                $prioritasClass = [
+                                    'tinggi' => 'danger',
+                                    'sedang' => 'warning',
+                                    'rendah' => 'secondary',
+                                ];
+                                $currentPrioritas = strtolower($item->prioritas ?? 'rendah');
+                            @endphp
+                            <span class="badge bg-{{ $prioritasClass[$currentPrioritas] ?? 'secondary' }}">
+                                {{ ucfirst($currentPrioritas) }}
+                            </span>
+                        </td>
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none"
@@ -131,11 +143,11 @@
             <div class="modal fade" id="detailRencanaModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                     <div class="modal-content">
-                        <div class="modal-header bg-primary text-white">
+                        <div class="modal-header">
                             <h5 class="modal-title" id="modalTitle">
                                 <i class="icon-base ri ri-eye-line me-2"></i> Detail Rencana Kerja
                             </h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body p-4">

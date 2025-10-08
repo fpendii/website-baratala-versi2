@@ -159,8 +159,8 @@ Route::prefix('administrasi')->group(function () {
     Route::get('surat-masuk/create', [SuratMasukControllerAdministrasi::class, 'create']);
     Route::post('surat-masuk/store', [SuratMasukControllerAdministrasi::class, 'store']);
     Route::get('surat-masuk/{id}', [SuratMasukControllerAdministrasi::class, 'show']);
-    Route::get('surat-masuk/{id}/edit', [SuratMasukControllerAdministrasi::class, 'edit']);
-    Route::put('surat-masuk/{id}', [SuratMasukControllerAdministrasi::class, 'update']);
+    Route::get('surat-masuk/edit/{id}', [SuratMasukControllerAdministrasi::class, 'edit']);
+    Route::put('surat-masuk/update/{id}', [SuratMasukControllerAdministrasi::class, 'update']);
     Route::delete('surat-masuk/delete/{id}', [SuratMasukControllerAdministrasi::class, 'destroy']);
 
     Route::get('profil', [ProfilControllerAdministrasi::class, 'index']);
