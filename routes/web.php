@@ -148,6 +148,12 @@ Route::prefix('administrasi')->group(function () {
     Route::post('rencana/komentar/{id}', [RencanaControllerAdministrasi::class, 'komentar']);
 
     Route::get('jobdesk', [JobdeskControllerAdministrasi::class, 'index']);
+    Route::get('jobdesk/create', [JobdeskControllerAdministrasi::class, 'create']);
+    Route::post('jobdesk/store', [JobdeskControllerAdministrasi::class, 'store']);
+    Route::get('jobdesk/{id}', [JobdeskControllerAdministrasi::class, 'show']);
+    Route::get('jobdesk/edit/{id}', [JobdeskControllerAdministrasi::class, 'edit']);
+    Route::put('jobdesk/update/{id}', [JobdeskControllerAdministrasi::class, 'update']);
+    Route::delete('jobdesk/delete/{id}', [JobdeskControllerAdministrasi::class, 'destroy']);
 
     Route::get('surat-masuk', [SuratMasukControllerAdministrasi::class, 'index']);
     Route::get('surat-masuk/create', [SuratMasukControllerAdministrasi::class, 'create']);

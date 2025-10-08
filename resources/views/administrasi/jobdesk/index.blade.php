@@ -3,10 +3,38 @@
 @section('title', 'Jobdesk') {{-- Mengubah title sesuai konten --}}
 
 @section('content')
+{{-- ALERT NOTIFIKASI --}}
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="icon-base ri ri-check-line me-1"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="icon-base ri ri-error-warning-line me-1"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    {{-- Pengecekan untuk error validasi setelah redirect dari Store/Update --}}
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="icon-base ri ri-error-warning-line me-1"></i>
+            Gagal menyimpan data. Mohon periksa kembali formulir Anda.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 <div class="card">
+
+
+
     <div class="row">
         <div class="col">
-            <h5 class="card-header">Jobdesk</h5>
+            <h5 class="card-header">Jobdesk Saya</h5>
         </div>
         <div class="col">
             <div class="card-header text-end">
@@ -25,7 +53,6 @@
                     <th>No</th>
                     <th>Judul Jobdesk</th>
                     <th>Divisi</th>
-                    {{-- Deskripsi dihilangkan dari tabel utama, dipindahkan ke Modal --}}
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -53,11 +80,11 @@
                                     Detail
                                 </a>
                                 {{-- Tombol Edit menggunakan route yang sudah ada --}}
-                                <a class="dropdown-item" href="{{ route('direktur.jobdesk.edit', $jobdesk->id) }}">
+                                <a class="dropdown-item" href="{{ url('administrasi/jobdesk/edit', $jobdesk->id) }}">
                                     <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
                                     Edit
                                 </a>
-                                <form action="{{ url('/direktur/jobdesk/'.$jobdesk->id) }}" method="POST" onsubmit="return confirm('Yakin hapus data ini?')">
+                                <form action="{{ url('/administrasi/jobdesk/'.$jobdesk->id) }}" method="POST" onsubmit="return confirm('Yakin hapus data ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="dropdown-item text-danger" type="submit">
@@ -79,9 +106,9 @@
     </div>
 </div>
 
-{{-- MODAL DETAIL JOBDESK --}}
+{{-- MODAL DETAIL JOBDESK YANG DIRAPIKAN --}}
 <div class="modal fade" id="detailJobdeskModal" tabindex="-1" aria-hidden="true">
-    {{-- Menambahkan modal-dialog-centered agar modal di tengah layar --}}
+    {{-- Memastikan modal di tengah layar --}}
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
@@ -96,23 +123,32 @@
                 ></button>
             </div>
             <div class="modal-body p-4">
-                {{-- JUDUL JOBDESK --}}
-                <h3 class="mb-3 text-primary" id="modal-judul-jobdesk"></h3>
-                <hr class="mb-4">
 
-                {{-- INFORMASI DIVISI --}}
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <p class="fw-bold mb-0">Divisi:</p>
-                        <p id="modal-divisi" class="fs-5 text-dark"></p>
+                {{-- JUDUL JOBDESK (Field Penuh) --}}
+                <div class="mb-4">
+                    <label class="form-label text-muted small fw-semibold">Judul Jobdesk</label>
+                    <div class="border p-2 rounded bg-light">
+                        <h4 class="mb-0 text-dark" id="modal-judul-jobdesk"></h4>
                     </div>
                 </div>
 
-                {{-- DESKRIPSI --}}
-                <div class="card bg-light p-3 mb-4">
-                    <p class="fw-bold mb-1 text-primary"><i class="icon-base ri ri-text me-1"></i> Deskripsi Jobdesk:</p>
-                    <div class="border-start border-3 border-primary ps-3">
-                        <p id="modal-deskripsi" style="white-space: pre-wrap;" class="text-dark">-</p>
+                <hr class="mb-4 mt-0">
+
+                {{-- INFORMASI DIVISI --}}
+                <div class="mb-4">
+                    <label class="form-label text-muted small fw-semibold">Divisi</label>
+                    <p class="border p-2 rounded mb-0 text-dark fs-5" id="modal-divisi">-</p>
+                </div>
+
+                <hr class="mb-4">
+
+                {{-- DESKRIPSI (Gaya Card yang Lebih Rapi) --}}
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-primary mb-2">
+                        <i class="icon-base ri ri-file-text-line me-1"></i> Deskripsi Jobdesk
+                    </label>
+                    <div class="border p-3 rounded bg-light">
+                        <p id="modal-deskripsi" style="white-space: pre-wrap;" class="mb-0 text-dark">-</p>
                     </div>
                 </div>
 

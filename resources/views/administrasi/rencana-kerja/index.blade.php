@@ -3,6 +3,31 @@
 @section('title', 'Rencana Kerja Administrasi')
 
 @section('content')
+    {{-- ALERT NOTIFIKASI --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="icon-base ri ri-check-line me-1"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="icon-base ri ri-error-warning-line me-1"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    {{-- Pengecekan untuk error validasi setelah redirect dari Store/Update --}}
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="icon-base ri ri-error-warning-line me-1"></i>
+            Gagal menyimpan data. Mohon periksa kembali formulir Anda.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="card">
         <div class="row">
             {{-- Header dan Tombol Tambah --}}
@@ -63,7 +88,8 @@
                                         {{-- Tombol Detail yang Memicu Modal --}}
                                         <a class="dropdown-item btn-detail" href="javascript:void(0);"
                                             data-bs-toggle="modal" data-bs-target="#detailRencanaModal"
-                                            data-judul="{{ $item->judul_rencana }}" data-deskripsi="{{ $item->deskripsi }}"
+                                            data-judul="{{ $item->judul_rencana }}"
+                                            data-deskripsi="{{ $item->deskripsi }}"
                                             data-tgl-mulai="{{ $item->tanggal_mulai }}"
                                             data-tgl-selesai="{{ $item->tanggal_selesai }}"
                                             data-status="{{ ucfirst($item->status) }}"
