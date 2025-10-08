@@ -72,73 +72,79 @@
                 <div class="menu-inner-shadow"></div>
 
                 <ul class="menu-inner py-1">
-                    <li class="menu-item {{ request()->is('direktur/dashboard*') ? 'active' : '' }}">
-                        <a href="/direktur/dashboard" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-dashboard-line"></i>
-                            <div data-i18n="Basic">Dashboard</div>
-                        </a>
-                    </li>
+                    <ul class="menu-inner py-1">
+                        <!-- Dashboard -->
+                        <li class="menu-item {{ request()->is('direktur/dashboard*') ? 'active' : '' }}">
+                            <a href="/direktur/dashboard" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-home-4-line"></i>
+                                <div data-i18n="Basic">Dashboard</div>
+                            </a>
+                        </li>
 
-                    <li class="menu-item {{ request()->is('direktur/jobdesk*') ? 'active' : '' }}">
-                        <a href="/direktur/jobdesk" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-todo-line"></i>
-                            <div data-i18n="Basic">Jobdesk</div>
-                        </a>
-                    </li>
-                    <li class="menu-item {{ request()->is('direktur/rencana*') ? 'active' : '' }}">
-                        <a href="{{ route('direktur.rencana.index') }}" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-todo-line"></i>
-                            <div data-i18n="Basic">Rencana Kerja</div>
-                        </a>
-                    </li>
-                    <li class="menu-item {{ request()->is('direktur/surat-masuk*') ? 'active' : '' }}">
-                        <a href="{{ route('direktur.surat-masuk.index') }}" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-todo-line"></i>
-                            <div data-i18n="Basic">Surat Masuk</div>
-                        </a>
-                    </li>
+                        <!-- Jobdesk -->
+                        <li class="menu-item {{ request()->is('direktur/data-jobdesk*') ? 'active' : '' }}">
+                            <a href="/direktur/data-jobdesk" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-task-line"></i>
+                                <div data-i18n="Basic">Jobdesk</div>
+                            </a>
+                        </li>
 
-                    <li class="menu-item {{ request()->is('direktur/laporan*') ? 'active' : '' }}">
-                        <a href="/direktur/laporan" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-file-list-3-line"></i>
-                            <div data-i18n="Basic">Laporan</div>
-                        </a>
-                    </li>
+                        <!-- Rencana Kerja -->
+                        <li class="menu-item {{ request()->is('direktur/rencana*') ? 'active' : '' }}">
+                            <a href="{{ route('direktur.rencana.index') }}" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-calendar-check-line"></i>
+                                <div data-i18n="Basic">Rencana Kerja</div>
+                            </a>
+                        </li>
 
-                    <li class="menu-item {{ request()->is('direktur/keuangan-laporan*') ? 'active' : '' }}">
-                        <a href="/direktur/keuangan-laporan" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-bar-chart-box-line"></i>
-                            <div data-i18n="Basic">Laporan Keuangan</div>
-                        </a>
-                    </li>
+                        <!-- Surat Masuk -->
+                        <li class="menu-item {{ request()->is('direktur/surat-masuk*') ? 'active' : '' }}">
+                            <a href="{{ route('direktur.surat-masuk.index') }}" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-mail-open-line"></i>
+                                <div data-i18n="Basic">Surat Masuk</div>
+                            </a>
+                        </li>
 
-                    <li class="menu-item {{ request()->is('direktur/jobdesk-laporan*') ? 'active' : '' }}">
-                        <a href="/direktur/jobdesk-laporan" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-briefcase-line"></i>
-                            <div data-i18n="Basic">Laporan Jobdesk</div>
-                        </a>
-                    </li>
+                        <!-- Laporan Keuangan -->
+                        <li class="menu-item {{ request()->is('direktur/keuangan-laporan*') ? 'active' : '' }}">
+                            <a href="/direktur/keuangan-laporan" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-bar-chart-2-line"></i>
+                                <div data-i18n="Basic">Laporan Keuangan</div>
+                            </a>
+                        </li>
 
-                    <li class="menu-item {{ request()->is('direktur/karyawan*') ? 'active' : '' }}">
-                        <a href="/direktur/karyawan" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-team-line"></i>
-                            <div data-i18n="Basic">Karyawan</div>
-                        </a>
-                    </li>
+                        <!-- Laporan Jobdesk -->
+                        <li class="menu-item {{ request()->is('direktur/jobdesk-laporan*') ? 'active' : '' }}">
+                            <a href="/direktur/jobdesk-laporan" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-briefcase-line"></i>
+                                <div data-i18n="Basic">Laporan Jobdesk</div>
+                            </a>
+                        </li>
 
-                    <li class="menu-item {{ request()->is('direktur/profil*') ? 'active' : '' }}">
-                        <a href="/direktur/profil" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-user-line"></i>
-                            <div data-i18n="Basic">Profil</div>
-                        </a>
-                    </li>
+                        <!-- Karyawan -->
+                        <li class="menu-item {{ request()->is('direktur/karyawan*') ? 'active' : '' }}">
+                            <a href="/direktur/karyawan" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-group-line"></i>
+                                <div data-i18n="Basic">Karyawan</div>
+                            </a>
+                        </li>
 
-                   <li class="menu-item">
-                        <a href="/logout" class="menu-link">
-                             <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
-                            <div data-i18n="Basic">Logout</div>
-                        </a>
-                    </li>
+                        <!-- Profil -->
+                        <li class="menu-item {{ request()->is('direktur/profil*') ? 'active' : '' }}">
+                            <a href="/direktur/profil" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-user-3-line"></i>
+                                <div data-i18n="Basic">Profil</div>
+                            </a>
+                        </li>
+
+                        <!-- Logout -->
+                        <li class="menu-item">
+                            <a href="/logout" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
+                                <div data-i18n="Basic">Logout</div>
+                            </a>
+                        </li>
+                    </ul>
 
 
                 </ul>
@@ -268,7 +274,7 @@
     </div>
     <!-- / Layout wrapper -->
 
-
+    @stack('scripts')
 
     <!-- Core JS -->
 

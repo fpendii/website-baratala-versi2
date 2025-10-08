@@ -73,7 +73,7 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::resource('karyawan', KaryawanControllerDirektur::class);
 
     // Jobdesk (CRUD)
-    Route::resource('jobdesk', JobdeskControllerDirektur::class);
+    Route::resource('data-jobdesk', JobdeskControllerDirektur::class);
 
     // Laporan (pakai resource biar rapih, tapi bisa disesuaikan kalau memang tidak semua method)
     Route::resource('laporan', LaporanControllerDirektur::class)->only(['index', 'show', 'update']);
@@ -84,6 +84,7 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     // Laporan Keuangan
     Route::resource('keuangan-laporan', LaporanKeuanganControllerDirektur::class)->only(['index', 'show']);
     Route::get('keuangan-laporan/persetujuan/{id}', [LaporanKeuanganControllerDirektur::class, 'persetujuan'])->name('keuangan-laporan.persetujuan');
+    Route::put('keuangan-laporan/persetujuan/{id}', [LaporanKeuanganControllerDirektur::class, 'updatePersetujuan'])->name('keuangan-laporan.updatePersetujuan');
 
     // Laporan Jobdesk
     Route::get('jobdesk-laporan', [LaporanJobdeskControllerDirektur::class, 'index'])->name('laporan-jobdesk.index');

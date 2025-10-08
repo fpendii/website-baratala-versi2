@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Judul Utama Halaman -->
-<h4 class="fw-bold py-3 mb-4">
+<h4 class="fw-bold py-3">
     <span class="text-muted fw-light">Administrasi /</span> Dashboard
 </h4>
 

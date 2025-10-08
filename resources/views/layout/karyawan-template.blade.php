@@ -81,13 +81,14 @@
 
                     <li class="menu-item {{ request()->is('karyawan/rencana*') ? 'active' : '' }}">
                         <a href="/karyawan/rencana" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-todo-line"></i>
+                            <i class="menu-icon icon-base ri ri-calendar-check-line"></i>
                             <div data-i18n="Basic">Rencana Kerja</div>
                         </a>
                     </li>
+
                     <li class="menu-item {{ request()->is('karyawan/surat-masuk*') ? 'active' : '' }}">
                         <a href="/karyawan/surat-masuk" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-todo-line"></i>
+                            <i class="menu-icon icon-base ri ri-mail-line"></i>
                             <div data-i18n="Basic">Surat Masuk</div>
                         </a>
                     </li>
@@ -101,7 +102,7 @@
 
                     <li class="menu-item {{ request()->is('karyawan/jobdesk*') ? 'active' : '' }}">
                         <a href="/karyawan/jobdesk" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-briefcase-line"></i>
+                            <i class="menu-icon icon-base ri ri-file-list-3-line"></i>
                             <div data-i18n="Basic">Laporan Jobdesk</div>
                         </a>
                     </li>
@@ -112,16 +113,15 @@
                             <div data-i18n="Basic">Profil</div>
                         </a>
                     </li>
+
                     <li class="menu-item">
                         <a href="/logout" class="menu-link">
                             <i class="menu-icon icon-base ri ri-logout-box-r-line"></i>
                             <div data-i18n="Basic">Logout</div>
                         </a>
                     </li>
-
-
-
                 </ul>
+
 
             </aside>
             <!-- / Menu -->

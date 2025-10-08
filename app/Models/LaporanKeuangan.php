@@ -21,6 +21,8 @@ class LaporanKeuangan extends Model
         'jenis_uang',
         'lampiran',
         'persetujuan_direktur',
+        'catatan',
+        'status_persetujuan',
         'penerima',
     ];
 

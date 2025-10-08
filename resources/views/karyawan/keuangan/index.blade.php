@@ -38,7 +38,7 @@
                     <h4 class="text-danger mb-0">Rp{{ number_format($uangKeluar, 0, ',', '.') }}</h4>
                 </div>
             </div>
-        </div>x 
+        </div>
 
         <!-- Tabel Transaksi Keuangan -->
         <div class="col-12 mt-4">

@@ -46,6 +46,9 @@ class AuthController extends Controller
             $request->session()->put([
                 'pengguna' => $user->toArray(),
                 'role'     => $user->role,
+                'nama'     => $user->nama,
+                'email'    => $user->email,
+                'id'       => $user->id,
             ]);
 
             if($user->role == 'admin') {

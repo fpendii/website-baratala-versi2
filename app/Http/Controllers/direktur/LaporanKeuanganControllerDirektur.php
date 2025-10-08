@@ -46,9 +46,48 @@ class LaporanKeuanganControllerDirektur extends Controller
         return view('direktur.laporan_keuangan.index', compact('laporanKeuangan', 'uangKeluar', 'uangKas', 'daftarKaryawan', 'uangMasuk'));
     }
 
-    public function persetujuan($id)
+    public function persetujuan(Request $request, $id)
     {
-        $laporan = LaporanKeuangan::with('pengguna')->findOrFail($id);
+        $laporan = LaporanKeuangan::with('pengguna', 'penerimaRelasi')->findOrFail($id);
+        // Ubah status persetujuan_direktur menjadi true
         return view('direktur.laporan_keuangan.persetujuan', compact('laporan'));
+    }
+
+    public function updatePersetujuan(Request $request, $id)
+    {
+        $laporan = LaporanKeuangan::findOrFail($id);
+
+
+        // Mulai transaksi
+        DB::beginTransaction();
+
+        try {
+            // Update status persetujuan_direktur
+            if ($request->persetujuan === 'disetujui') {
+                $laporan->status_persetujuan = 'disetujui';
+
+                // Jika disetujui, update uang kas
+                $keuangan = Keuangan::first();
+                if ($keuangan->nominal < $laporan->nominal) {
+                    return back()->with('error', 'Saldo kas tidak mencukupi untuk pengeluaran ini.');
+                }
+                $keuangan->nominal -= $laporan->nominal;
+                $keuangan->save();
+            } else {
+                $laporan->status_persetujuan = 'ditolak';
+            }
+            $laporan->catatan = $request->catatan;
+            $laporan->save();
+
+            // Commit transaksi
+            DB::commit();
+
+            return redirect()->route('direktur.keuangan-laporan.index')->with('success', 'Persetujuan laporan keuangan berhasil diperbarui.');
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi error
+            DB::rollBack();
+            Log::error('Error updating laporan keuangan approval: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat memperbarui persetujuan laporan keuangan.');
+        }
     }
 }

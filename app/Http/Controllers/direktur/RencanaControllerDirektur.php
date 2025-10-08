@@ -15,7 +15,7 @@ class RencanaControllerDirektur extends Controller
     {
         // Ambil semua tugas, urutkan terbaru dulu
         $tugas = Tugas::orderBy('created_at', 'desc')->get();
-        // dd($tugas);
+
         return view('direktur.rencana.index', compact('tugas'));
     }
 

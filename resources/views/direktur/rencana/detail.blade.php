@@ -3,7 +3,6 @@
 @section('title', 'Detail Rencana Kerja')
 
 @section('content')
-<div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">Rencana Kerja /</span> Detail Tugas
     </h4>
@@ -189,7 +188,7 @@
             </div>
         </div>
     </div>
-</div>
+
 
 {{-- MODAL UNTUK TAMBAH KOMENTAR --}}
 <div class="modal fade" id="tambahKomentarModal" tabindex="-1" aria-labelledby="tambahKomentarModalLabel" aria-hidden="true">

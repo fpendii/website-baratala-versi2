@@ -23,7 +23,7 @@ class RencanaControllerKaryawan extends Controller
                 $query->where('pengguna.id', Auth::id());
             })->get();
         // dd($tugas);
-        return view('direktur.rencana.index', compact('tugas'));
+        return view('karyawan.rencana.index', compact('tugas'));
     }
 
     /**
