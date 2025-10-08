@@ -36,7 +36,7 @@
         <h5 class="mb-2 mb-sm-0">Daftar Karyawan</h5>
 
         {{-- Tombol Tambah Karyawan --}}
-        <a href="{{ route('direktur.karyawan.create') }}" class="btn btn-primary">
+        <a href="{{ url('administrasi/karyawan/create') }}" class="btn btn-primary">
             <i class="icon-base ri ri-add-line icon-18px me-1"></i> Tambah
         </a>
     </div>
@@ -46,6 +46,7 @@
         <table class="table table-hover table-sm align-middle">
             <thead class="table-dark">
                 <tr>
+                    <th>No</th>
                     <th>Nama</th>
                     <th>Role</th>
                     <th style="width: 15%;">Aksi</th>
@@ -54,6 +55,7 @@
             <tbody class="table-border-bottom-0">
                 @forelse($karyawan as $user)
                 <tr>
+                    <td>{{ $loop->iteration + ($karyawan->currentPage() - 1) * $karyawan->perPage() }}</td>
                     <td>
                         <strong class="text-dark">{{ $user->nama }}</strong>
                     </td>
@@ -78,11 +80,11 @@
                                      <i class="icon-base ri ri-eye-line icon-18px me-1"></i> Detail
                                 </a>
                                 {{-- Edit --}}
-                                <a class="dropdown-item" href="{{ route('direktur.karyawan.edit', $user->id) }}">
+                                <a class="dropdown-item" href="{{ route('administrasi.karyawan.edit', $user->id) }}">
                                     <i class="icon-base ri ri-pencil-line icon-18px me-1"></i> Edit
                                 </a>
                                 {{-- Delete --}}
-                                <form action="{{ route('direktur.karyawan.destroy', $user->id) }}" method="POST"
+                                <form action="{{ route('administrasi.karyawan.destroy', $user->id) }}" method="POST"
                                     style="display: contents;"
                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus karyawan {{ $user->nama }}?');">
                                     @csrf
@@ -100,7 +102,7 @@
                     <td colspan="6" class="text-center py-4">
                         <i class="ri ri-user-settings-line ri-3x d-block mb-2 text-muted"></i>
                         <p class="mb-1">Belum ada data karyawan yang terdaftar.</p>
-                        <a href="{{ route('direktur.karyawan.create') }}"
+                        <a href="{{ url('administrasi/karyawan/create') }}"
                             class="btn btn-sm btn-outline-primary mt-2">Tambah Karyawan Pertama</a>
                     </td>
                 </tr>

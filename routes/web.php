@@ -165,7 +165,13 @@ Route::prefix('administrasi')->group(function () {
 
     Route::get('profil', [ProfilControllerAdministrasi::class, 'index']);
 
-    Route::get('karyawan', [KaryawanControllerAdministrasi::class, 'index']);
+    Route::get('karyawan', [KaryawanControllerAdministrasi::class, 'index'])->name('administrasi.karyawan.index');
+    Route::get('karyawan/create', [KaryawanControllerAdministrasi::class, 'create'])->name('administrasi.karyawan.create');
+    Route::post('karyawan/store', [KaryawanControllerAdministrasi::class, 'store'])->name('administrasi.karyawan.store');
+    Route::get('karyawan/{id}', [KaryawanControllerAdministrasi::class, 'show'])->name('administrasi.karyawan.show');
+    Route::get('karyawan/edit/{id}', [KaryawanControllerAdministrasi::class, 'edit'])->name('administrasi.karyawan.edit');
+    Route::put('karyawan/update/{id}', [KaryawanControllerAdministrasi::class, 'update'])->name('administrasi.karyawan.update');
+    Route::delete('karyawan/delete/{id}', [KaryawanControllerAdministrasi::class, 'destroy'])->name('administrasi.karyawan.destroy');
 });
 
 // Route karyawan

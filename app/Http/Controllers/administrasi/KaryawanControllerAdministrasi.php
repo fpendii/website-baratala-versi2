@@ -14,4 +14,15 @@ class KaryawanControllerAdministrasi extends Controller
 
         return view('administrasi.karyawan.index', compact('karyawan'));
     }
+
+    public function create()
+    {
+        return view('administrasi.karyawan.create');
+    }
+
+    public function edit($id)
+    {
+        $karyawan = Pengguna::findOrFail($id);
+        return view('administrasi.karyawan.edit', compact('karyawan'));
+    }
 }
