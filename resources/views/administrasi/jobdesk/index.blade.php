@@ -37,6 +37,7 @@
             <h5 class="card-header">Jobdesk Saya</h5>
         </div>
         <div class="col">
+
             <div class="card-header text-end">
                 <a href="{{ url('/administrasi/jobdesk/create') }}" class="btn btn-primary">
                     <i class="icon-base ri ri-add-line icon-18px me-1"></i> Tambah

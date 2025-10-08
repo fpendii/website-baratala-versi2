@@ -54,7 +54,7 @@
                         <th>Tanggal Selesai</th>
                         <th>Status</th>
                         <th>Prioritas</th>
-                        <th>Aksi</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
