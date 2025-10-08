@@ -102,4 +102,52 @@ class RencanaControllerAdministrasi extends Controller
         // Redirect kembali dengan pesan sukses
         return redirect()->to('administrasi/rencana')->with('success', 'Rencana dan lampirannya berhasil dihapus.');
     }
+
+    public function update(Request $request, $id)
+    {
+        $rencana = Tugas::findOrFail($id);
+
+        $validated = $request->validate([
+            'judul_rencana'    => 'required|string|max:255',
+            'deskripsi'        => 'nullable|string',
+            'tanggal_mulai'    => 'required|date',
+            'tanggal_selesai'  => 'required|date|after_or_equal:tanggal_mulai',
+            'status'           => 'required|string',
+            'jenis'            => 'required|string',
+            'prioritas'        => 'nullable|string',
+            'lampiran'         => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'catatan'          => 'nullable|string',
+            'pengguna'         => 'nullable|string', // Hidden input, koma dipisahkan
+        ]);
+
+        if ($request->hasFile('lampiran')) {
+            // Hapus file lama jika ada
+            if (!empty($rencana->lampiran) && Storage::disk('public')->exists($rencana->lampiran)) {
+                Storage::disk('public')->delete($rencana->lampiran);
+            }
+            // Simpan file baru
+            $filePath = $request->file('lampiran')->store('rencana_kerja_lampiran', 'public');
+            $validated['lampiran'] = $filePath;
+        }
+
+        // Update data rencana
+        $rencana->update($validated);
+
+        // Ambil id pengguna dari input (pecah string jadi array)
+        $penggunaIds = [];
+        if (!empty($request->pengguna)) {
+            $penggunaIds = array_filter(explode(',', $request->pengguna));
+        }
+
+        // Tambahkan user yang sedang login (pembuat) ke daftar pengguna yang ditugaskan
+        $penggunaIds[] = Auth::id();
+
+        // Hilangkan duplikasi & validasi hanya id yang valid di tabel pengguna
+        $penggunaIds = Pengguna::whereIn('id', array_unique($penggunaIds))->pluck('id')->toArray();
+
+        // Simpan ke pivot
+        $rencana->pengguna()->sync($penggunaIds);
+
+        return redirect()->to('administrasi/rencana')->with('success', 'Rencana berhasil diupdate.');
+    }
 }

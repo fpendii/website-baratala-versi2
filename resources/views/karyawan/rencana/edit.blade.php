@@ -96,7 +96,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan Update</button>
-                <a href="{{ route('karyawan.rencana.index') }}" class="btn btn-outline-secondary">Batal</a>
+                <a href="{{ url('karyawan/rencana') }}" class="btn btn-outline-secondary">Batal</a>
             </form>
         </div>
     </div>

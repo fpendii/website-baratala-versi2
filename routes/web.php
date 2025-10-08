@@ -143,7 +143,7 @@ Route::prefix('administrasi')->group(function () {
     Route::post('rencana/store', [RencanaControllerAdministrasi::class, 'store']);
     Route::get('rencana/{id}', [RencanaControllerAdministrasi::class, 'show']);
     Route::get('rencana/edit/{id}', [RencanaControllerAdministrasi::class, 'edit']);
-    Route::put('rencana/{id}', [RencanaControllerAdministrasi::class, 'update']);
+    Route::put('rencana/update/{id}', [RencanaControllerAdministrasi::class, 'update']);
     Route::delete('rencana/delete/{id}', [RencanaControllerAdministrasi::class, 'destroy']);
     Route::post('rencana/komentar/{id}', [RencanaControllerAdministrasi::class, 'komentar']);
 
