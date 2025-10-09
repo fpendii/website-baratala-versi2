@@ -9,7 +9,7 @@
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
 
-    <title>Baratala | Jobdesk</title>
+    <title>@yield('title')</title>
 
     <meta name="description" content="" />
 
@@ -93,12 +93,15 @@
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('karyawan/keuangan*') ? 'active' : '' }}">
+                    @if (auth()->user()->role == 'keuangan')
+                        <li class="menu-item {{ request()->is('karyawan/keuangan*') ? 'active' : '' }}">
                         <a href="/karyawan/keuangan" class="menu-link">
                             <i class="menu-icon icon-base ri ri-wallet-3-line"></i>
                             <div data-i18n="Basic">Keuangan</div>
                         </a>
                     </li>
+                    @endif
+
 
                     <li class="menu-item {{ request()->is('karyawan/jobdesk*') ? 'active' : '' }}">
                         <a href="/karyawan/jobdesk" class="menu-link">

@@ -5,10 +5,10 @@
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="fw-bold py-3 mb-0">✉️ Surat Masuk</h4>
+        <h4 class="fw-bold py-3 mb-0">Surat Masuk</h4>
         {{-- Tombol Tambah Surat Masuk --}}
         <a href="{{ route('direktur.surat-masuk.create') }}" class="btn btn-primary">
-            <i class="bx bx-plus me-1"></i> Input Surat Masuk
+             <i class="icon-base ri ri-add-line icon-18px me-1"></i> Tambah
         </a>
     </div>
 
@@ -27,7 +27,7 @@
     @endif
 
     <div class="card">
-        <h5 class="card-header">Daftar Surat Masuk untuk Direktur</h5>
+        <h5 class="card-header">Daftar Surat Masuk</h5>
         <div class="table-responsive text-nowrap">
             <table class="table table-hover table-sm align-middle">
                 <thead class="table-light">
