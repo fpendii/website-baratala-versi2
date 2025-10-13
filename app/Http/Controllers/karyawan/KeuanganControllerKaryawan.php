@@ -63,7 +63,7 @@ class KeuanganControllerKaryawan extends Controller
             'nominal' => 'required|string',
             'jenis_uang' => 'required|in:kas,bank',
             'lampiran' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'status_persetujuan' => 'required',
+            'persetujuan_direktur' => 'required',
         ]);
 
         // Bersihkan nominal -> hapus titik/koma pemisah ribuan
@@ -80,7 +80,27 @@ class KeuanganControllerKaryawan extends Controller
             $pengeluaran->penerima = $request->penerima;
             $pengeluaran->jenis = 'pengeluaran';
             $pengeluaran->jenis_uang = $request->jenis_uang;
-            $pengeluaran->persetujuan_direktur = $request->status_persetujuan;
+            $pengeluaran->persetujuan_direktur = $request->persetujuan_direktur;
+
+
+            // jika memerplukan persetujuan direktur
+            if($request->persetujuan_direktur == 1){
+                // Jika perlu persetujuan direktur, set status menunggu
+
+                $pengeluaran->status_persetujuan = 'menunggu';
+            } else {
+                // Jika tidak perlu persetujuan, langsung set disetujui
+                $pengeluaran->status_persetujuan = 'tanpa persetujuan';
+
+                // Kurangi sisa uang kas
+                $uangKas = Keuangan::first();
+                if ($uangKas->nominal < $nominal) {
+                    return redirect()->to('/karyawan/keuangan/pengeluaran/create')->with('error', 'Saldo kas tidak mencukupi!')->withInput();
+                }
+                $uangKas->nominal -= $nominal;
+                $uangKas->save();
+            }
+
 
             // Upload lampiran
             if ($request->hasFile('lampiran')) {
@@ -90,16 +110,8 @@ class KeuanganControllerKaryawan extends Controller
                 $pengeluaran->lampiran = $filename;
             }
 
-            // Kurangi sisa uang kas
-            $uangKas = Keuangan::first();
-            if ($uangKas->nominal < $nominal) {
-                throw new \Exception('Saldo kas tidak mencukupi!');
-            }
-            $uangKas->nominal -= $nominal;
-            $uangKas->save();
 
             $pengeluaran->save();
-
             DB::commit();
 
             return redirect()->to('/karyawan/keuangan')->with('success', 'Pengeluaran kas berhasil disimpan.');

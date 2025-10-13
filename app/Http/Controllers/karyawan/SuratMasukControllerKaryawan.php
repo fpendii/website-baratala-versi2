@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; // Import Storage facade
+use App\Helpers\WhatsAppHelper; // Import helper WhatsApp
 
 class SuratMasukControllerKaryawan extends Controller
 {
@@ -31,30 +32,66 @@ class SuratMasukControllerKaryawan extends Controller
      */
     public function store(Request $request)
     {
-        // 1. Validasi data (Tambahkan validasi untuk file lampiran)
         $validatedData = $request->validate([
             'judul' => 'required|string|max:255',
             'pengirim' => 'required|string|max:255',
             'nomor_surat' => 'nullable|string|max:100|unique:surat_masuk,nomor_surat',
             'tanggal_terima' => 'required|date',
             'prioritas' => 'required|in:rendah,sedang,tinggi',
-            'lampiran' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // File opsional, tipe file, maks 5MB
+            'lampiran' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
             'keterangan' => 'nullable|string',
         ]);
 
-        // 2. Proses upload lampiran (jika ada file yang diunggah)
         if ($request->hasFile('lampiran')) {
-            // Simpan file di folder 'surat_masuk_lampiran' di disk 'public'
             $filePath = $request->file('lampiran')->store('surat_masuk_lampiran', 'public');
             $validatedData['lampiran'] = $filePath;
         }
 
-        // 3. Simpan ke database
-        SuratMasuk::create($validatedData);
+        $suratMasuk = SuratMasuk::create($validatedData);
+
+        // === 🔔 Kirim Notifikasi WhatsApp ke semua user ===
+        $this->sendWhatsAppNotification($suratMasuk);
 
         return redirect()->route('karyawan.surat-masuk.index')
-                         ->with('success', 'Surat Masuk berhasil ditambahkan.');
+            ->with('success', 'Surat Masuk berhasil ditambahkan dan notifikasi dikirim.');
     }
+
+    /**
+     * Kirim notifikasi WA ke semua pengguna.
+     */
+    private function sendWhatsAppNotification($suratMasuk)
+    {
+        // Tentukan waktu salam otomatis
+        $hour = now()->format('H');
+        if ($hour >= 5 && $hour < 12) {
+            $salam = 'Selamat Pagi';
+        } elseif ($hour >= 12 && $hour < 17) {
+            $salam = 'Selamat Siang';
+        } elseif ($hour >= 17 && $hour < 20) {
+            $salam = 'Selamat Sore';
+        } else {
+            $salam = 'Selamat Malam';
+        }
+
+        // Format pesan WhatsApp
+        $message = "👋 *Halo, {$salam} Karyawan PD Baratala!*\n\n"
+            . "──────────────────────────────\n"
+            . "📬 *SURAT MASUK BARU TELAH DITERIMA*\n"
+            . "──────────────────────────────\n\n"
+            . "📌 *Judul:* _{$suratMasuk->judul}_\n"
+            . "✉️ *Pengirim:* _{$suratMasuk->pengirim}_\n"
+            . "⚡ *Prioritas:* _" . ucfirst($suratMasuk->prioritas) . "_\n"
+            . "📅 *Tanggal Terima:* _{$suratMasuk->tanggal_terima}_\n\n"
+            . "🗂️ Silakan cek detailnya di sistem untuk tindak lanjut lebih lanjut.\n\n"
+            . "──────────────────────────────\n"
+            . "📎 _Notifikasi otomatis dari Sistem Baratala_";
+
+        // Kirim ke grup WhatsApp kantor
+        \App\Helpers\WhatsAppHelper::sendToGroup($message);
+    }
+
+
+
 
     /**
      * Display the specified resource.
@@ -108,7 +145,7 @@ class SuratMasukControllerKaryawan extends Controller
         $suratMasuk->update($validatedData);
 
         return redirect()->route('karyawan.surat-masuk.index')
-                         ->with('success', 'Surat Masuk berhasil diperbarui.');
+            ->with('success', 'Surat Masuk berhasil diperbarui.');
     }
 
     /**
@@ -126,6 +163,6 @@ class SuratMasukControllerKaryawan extends Controller
         $suratMasuk->delete();
 
         return redirect()->route('karyawan.surat-masuk.index')
-                         ->with('success', 'Surat Masuk berhasil dihapus.');
+            ->with('success', 'Surat Masuk berhasil dihapus.');
     }
 }

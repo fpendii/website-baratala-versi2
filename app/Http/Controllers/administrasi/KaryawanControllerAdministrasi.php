@@ -25,4 +25,11 @@ class KaryawanControllerAdministrasi extends Controller
         $karyawan = Pengguna::findOrFail($id);
         return view('administrasi.karyawan.edit', compact('karyawan'));
     }
+
+    public function update(Request $request, $id)
+    {
+        $karyawan = Pengguna::findOrFail($id);
+        $karyawan->update($request->all());
+        return redirect()->route('administrasi.karyawan.index');
+    }
 }

@@ -252,6 +252,7 @@
     </div>
     <!-- / Layout wrapper -->
 
+    @stack('scripts')
 
 
     <!-- Core JS -->

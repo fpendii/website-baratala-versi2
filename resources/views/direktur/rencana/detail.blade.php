@@ -58,7 +58,7 @@
                         <dt class="col-sm-4 text-nowrap">Lampiran</dt>
                         <dd class="col-sm-8">
                             @if($tugas->lampiran)
-                                <a href="{{ asset('storage/public/' . $tugas->lampiran) }}" target="_blank" class="btn btn-sm btn-outline-primary py-0">
+                                <a href="{{ asset('storage/' . $tugas->lampiran) }}" target="_blank" class="btn btn-sm btn-outline-primary py-0">
                                     <i class="bx bx-download me-1"></i> Lihat File
                                 </a>
                             @else

@@ -120,7 +120,7 @@
 
 
                         <!-- Hidden field untuk opsi -->
-                        <input type="hidden" name="status_persetujuan" id="status_persetujuan">
+                        <input type="hidden" name="persetujuan_direktur" id="persetujuan_direktur">
 
                         <div class="d-flex justify-content-between">
                             <a href="{{ url('karyawan/keuangan') }}" class="btn btn-secondary">Kembali</a>
@@ -158,7 +158,7 @@
 
     <script>
         function submitForm(opsi) {
-            document.getElementById('status_persetujuan').value = opsi;
+            document.getElementById('persetujuan_direktur').value = opsi;
             document.getElementById('pengeluaranForm').submit();
         }
     </script>

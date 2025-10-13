@@ -57,7 +57,6 @@ class LaporanKeuanganControllerDirektur extends Controller
     {
         $laporan = LaporanKeuangan::findOrFail($id);
 
-
         // Mulai transaksi
         DB::beginTransaction();
 
