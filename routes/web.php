@@ -67,7 +67,14 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::post('rencana/komentar/{id}/status', [RencanaControllerDirektur::class, 'updateKomentarStatus'])->name('rencana.komentar.status');
 
     //Surat Masuk
-    Route::resource('surat-masuk', SuratMasukControllerDirektur::class);
+    Route::get('surat-masuk', [SuratMasukControllerDirektur::class, 'index'])->name('surat-masuk.index');
+    Route::get('surat-masuk/create', [SuratMasukControllerDirektur::class, 'create'])->name('surat-masuk.create');
+    Route::post('surat-masuk/store', [SuratMasukControllerDirektur::class, 'store'])->name('surat-masuk.store');
+    Route::get('surat-masuk/{id}', [SuratMasukControllerDirektur::class, 'show'])->name('surat-masuk.show');
+    Route::get('surat-masuk/edit/{id}', [SuratMasukControllerDirektur::class, 'edit'])->name('surat-masuk.edit');
+    Route::put('surat-masuk/{id}', [SuratMasukControllerDirektur::class, 'update'])->name('surat-masuk.update');
+    Route::delete('surat-masuk/delete/{id}', [SuratMasukControllerDirektur::class, 'destroy'])->name('surat-masuk.destroy');
+    Route::get('surat-masuk/download/{id}', [SuratMasukControllerDirektur::class, 'downloadLampiran'])->name('surat-masuk.download');
 
     // Karyawan
     Route::resource('karyawan', KaryawanControllerDirektur::class);

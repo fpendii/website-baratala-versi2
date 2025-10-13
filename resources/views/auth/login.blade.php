@@ -140,13 +140,7 @@
 
                     </div>
                 </div>
-                <!-- /Login -->
-                <img src="/template-admin/assets/img/illustrations/tree-3.png" alt="auth-tree"
-                    class="authentication-image-object-left d-none d-lg-block" />
-                <img src="/template-admin/assets/img/illustrations/auth-basic-mask-light.png"
-                    class="authentication-image d-none d-lg-block scaleX-n1-rtl" height="172" alt="triangle-bg" />
-                <img src="/template-admin/assets/img/illustrations/tree.png" alt="auth-tree"
-                    class="authentication-image-object-right d-none d-lg-block" />
+
             </div>
         </div>
     </div>

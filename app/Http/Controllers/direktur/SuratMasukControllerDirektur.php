@@ -67,8 +67,9 @@ class SuratMasukControllerDirektur extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SuratMasuk $suratMasuk)
+    public function edit($id)
     {
+        $suratMasuk = SuratMasuk::findOrFail($id);
         return view('direktur.surat-masuk.edit', compact('suratMasuk'));
     }
 
@@ -112,8 +113,9 @@ class SuratMasukControllerDirektur extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SuratMasuk $suratMasuk)
+    public function destroy($id)
     {
+        $suratMasuk = SuratMasuk::findOrFail($id);
         // Hapus lampiran fisik (jika ada) sebelum menghapus record database
         if ($suratMasuk->lampiran) {
             Storage::disk('public')->delete($suratMasuk->lampiran);

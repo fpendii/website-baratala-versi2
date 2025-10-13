@@ -118,23 +118,23 @@
                                             <i class="icon-base ri ri-eye-line icon-18px me-1"></i> Detail
                                         </a>
 
-                                            {{-- Tombol Edit --}}
-                                            <a class="dropdown-item"
-                                                href="{{ url('direktur/surat-masuk/edit/' . $item->id) }}">
-                                                <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
-                                                Edit
-                                            </a>
-                                            <form action="{{ url('/direktur/surat-masuk/delete/' . $item->id) }}"
-                                                method="POST" style="display: contents;"
-                                                onsubmit="return confirm('Yakin hapus data ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="dropdown-item text-danger" type="submit">
-                                                    <i class="icon-base ri ri-delete-bin-6-line icon-18px me-1"></i>
-                                                    Delete
-                                                </button>
-                                            </form>
-                                       
+                                        {{-- Tombol Edit --}}
+                                        <a class="dropdown-item"
+                                            href="{{ url('direktur/surat-masuk/edit/' . $item->id) }}">
+                                            <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
+                                            Edit
+                                        </a>
+                                        <form action="{{ url('/direktur/surat-masuk/delete/' . $item->id) }}"
+                                            method="POST" style="display: contents;"
+                                            onsubmit="return confirm('Yakin hapus data ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="dropdown-item text-danger" type="submit">
+                                                <i class="icon-base ri ri-delete-bin-6-line icon-18px me-1"></i>
+                                                Delete
+                                            </button>
+                                        </form>
+
 
 
                                     </div>
