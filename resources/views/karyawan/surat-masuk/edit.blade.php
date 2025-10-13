@@ -10,7 +10,7 @@
         </div>
         <div class="card-body">
             {{-- Pastikan method PUT/PATCH dan enctype ada --}}
-            <form method="POST" action="{{ route('direktur.surat-masuk.update', $suratMasuk->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('karyawan.surat-masuk.update', $suratMasuk->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -82,7 +82,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="bx bx-refresh me-1"></i> Perbarui Surat
                 </button>
-                <a href="{{ route('direktur.surat-masuk.index') }}" class="btn btn-outline-secondary">Batal</a>
+                <a href="{{ route('karyawan.surat-masuk.index') }}" class="btn btn-outline-secondary">Batal</a>
             </form>
         </div>
     </div>

@@ -19,8 +19,7 @@ class JobdeskControllerKaryawan extends Controller
     public function index()
     {
         // Get the ID of the logged-in user
-        $userId = 1;
-        // $userId = Auth::id();
+        $userId = Auth::id();
 
         // Retrieve all jobdesk reports for the current user,
         // with eager loading for the 'jobdesk' relationship
@@ -55,15 +54,16 @@ class JobdeskControllerKaryawan extends Controller
             'lampiran' => 'nullable|file|mimes:pdf,doc,docx,jpeg,png|max:2048',
         ]);
 
-        // Handle file upload if a file is present
+        // 2. Proses upload lampiran (jika ada file yang diunggah)
         if ($request->hasFile('lampiran')) {
-            $lampiranPath = $request->file('lampiran')->store('public/uploads');
-            $validatedData['lampiran'] = str_replace('public/', '', $lampiranPath);
+            // Simpan file di folder 'jobdesk_lampiran' di disk 'public'
+            $filePath = $request->file('lampiran')->store('jobdesk_lampiran', 'public');
+            $validatedData['lampiran'] = $filePath;
         }
 
         // Add the user ID of the logged-in user
-        // $validatedData['id_pengguna'] = Auth::id();
-        $validatedData['id_pengguna'] = 1;
+        $validatedData['id_pengguna'] = Auth::id();
+        // $validatedData['id_pengguna'] = 1;
 
         // Create a new LaporanJobdesk record in the database
         LaporanJobdesk::create($validatedData);
@@ -137,7 +137,7 @@ class JobdeskControllerKaryawan extends Controller
                 Storage::delete('public/' . $laporan->lampiran);
             }
             // Store the new file
-            $lampiranPath = $request->file('lampiran')->store('public/uploads');
+            $lampiranPath = $request->file('lampiran')->store('public/');
             $validatedData['lampiran'] = str_replace('public/', '', $lampiranPath);
         }
 

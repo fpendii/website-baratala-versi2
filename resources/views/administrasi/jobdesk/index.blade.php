@@ -84,7 +84,7 @@
                                     <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
                                     Edit
                                 </a>
-                                <form action="{{ url('/administrasi/jobdesk/'.$jobdesk->id) }}" method="POST" onsubmit="return confirm('Yakin hapus data ini?')">
+                                <form action="{{ url('/administrasi/jobdesk/delete/'.$jobdesk->id) }}" method="POST" onsubmit="return confirm('Yakin hapus data ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="dropdown-item text-danger" type="submit">

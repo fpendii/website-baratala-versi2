@@ -67,16 +67,18 @@ class SuratMasukControllerKaryawan extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SuratMasuk $suratMasuk)
+    public function edit($id)
     {
+        $suratMasuk = SuratMasuk::findOrFail($id);
         return view('karyawan.surat-masuk.edit', compact('suratMasuk'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SuratMasuk $suratMasuk)
+    public function update(Request $request, $id)
     {
+        $suratMasuk = SuratMasuk::findOrFail($id);
         // 1. Validasi data
         $validatedData = $request->validate([
             'judul' => 'required|string|max:255',
@@ -112,8 +114,10 @@ class SuratMasukControllerKaryawan extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SuratMasuk $suratMasuk)
+    public function destroy($id)
     {
+        $suratMasuk = SuratMasuk::findOrFail($id);
+
         // Hapus lampiran fisik (jika ada) sebelum menghapus record database
         if ($suratMasuk->lampiran) {
             Storage::disk('public')->delete($suratMasuk->lampiran);

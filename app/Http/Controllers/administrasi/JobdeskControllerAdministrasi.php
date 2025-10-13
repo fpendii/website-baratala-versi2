@@ -53,4 +53,13 @@ class JobdeskControllerAdministrasi extends Controller
         return redirect()->to('administrasi/jobdesk')
                          ->with('success', 'Jobdesk berhasil diperbarui');
     }
+
+    public function destroy($id)
+    {
+        $jobdesk = Jobdesk::findOrFail($id);
+        $jobdesk->delete();
+
+        return redirect()->to('administrasi/jobdesk')
+                         ->with('success', 'Jobdesk berhasil dihapus');
+    }
 }

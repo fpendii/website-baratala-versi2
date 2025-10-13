@@ -88,4 +88,18 @@ class SuratMasukControllerAdministrasi extends Controller
         return redirect()->to('administrasi/surat-masuk')
             ->with('success', 'Surat Masuk berhasil diperbarui.');
     }
+
+    public function destroy($id)
+    {
+        $suratMasuk = SuratMasuk::findOrFail($id);
+        // Hapus lampiran fisik (jika ada) sebelum menghapus record database
+        if ($suratMasuk->lampiran) {
+            Storage::disk('public')->delete($suratMasuk->lampiran);
+        }
+
+        $suratMasuk->delete();
+
+        return redirect()->to('administrasi/surat-masuk')
+            ->with('success', 'Surat Masuk berhasil dihapus.');
+    }
 }

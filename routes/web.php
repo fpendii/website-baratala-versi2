@@ -222,6 +222,13 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
     Route::post('keuangan/uang-masuk/store', [KeuanganControllerKaryawan::class, 'storeUangMasuk']);
 
     //Surat Masuk
-    Route::resource('surat-masuk', SuratMasukControllerKaryawan::class);
+    Route::get('surat-masuk', [SuratMasukControllerKaryawan::class, 'index'])->name('surat-masuk.index');
+    Route::get('surat-masuk/create', [SuratMasukControllerKaryawan::class, 'create'])->name('surat-masuk.create');
+    Route::post('surat-masuk/store', [SuratMasukControllerKaryawan::class, 'store'])->name('surat-masuk.store');
+    Route::get('surat-masuk/{id}', [SuratMasukControllerKaryawan::class, 'show'])->name('surat-masuk.show');
+    Route::get('surat-masuk/edit/{id}', [SuratMasukControllerKaryawan::class, 'edit'])->name('surat-masuk.edit');
+    Route::put('surat-masuk/update/{id}', [SuratMasukControllerKaryawan::class, 'update'])->name('surat-masuk.update');
+    Route::delete('surat-masuk/delete/{id}', [SuratMasukControllerKaryawan::class, 'destroy'])->name('surat-masuk.destroy');
+    Route::get('surat-masuk/download/{id}', [SuratMasukControllerKaryawan::class, 'downloadLampiran'])->name('surat-masuk.download');
 
 });

@@ -76,8 +76,10 @@ class SuratMasukControllerDirektur extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SuratMasuk $suratMasuk)
+    public function update(Request $request, $id)
     {
+        $suratMasuk = SuratMasuk::findOrFail($id);
+
         // 1. Validasi data
         $validatedData = $request->validate([
             'judul' => 'required|string|max:255',
