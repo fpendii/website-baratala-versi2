@@ -80,7 +80,7 @@ class RencanaControllerAdministrasi extends Controller
     {
         $rencana = Tugas::with(['pengguna', 'komentar.pengguna'])->findOrFail($id);
         // Ambil semua pengguna kecuali dirinya sendiri untuk penugasan
-        $users = Pengguna::where('id', '!=', auth()->id())->get();
+        $users = Pengguna::where('id', '!=', Auth::id())->get();
         return view('administrasi.rencana-kerja.edit', compact('rencana', 'users'));
     }
 

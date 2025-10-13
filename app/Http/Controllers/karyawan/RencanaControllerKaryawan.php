@@ -32,7 +32,7 @@ class RencanaControllerKaryawan extends Controller
     public function create()
     {
         // Ambil semua pengguna kecuali dirinya sendiri untuk penugasan
-        $users = Pengguna::where('id', '!=', auth()->id())->get();
+        $users = Pengguna::where('id', '!=', Auth::id())->get();
         return view('karyawan.rencana.create', compact('users'));
     }
 
@@ -105,7 +105,7 @@ class RencanaControllerKaryawan extends Controller
     {
         $rencana = Tugas::with(['pengguna', 'komentar.pengguna'])->findOrFail($id);
         // Ambil semua pengguna kecuali dirinya sendiri untuk penugasan
-        $users = Pengguna::where('id', '!=', auth()->id())->get();
+        $users = Pengguna::where('id', '!=', Auth::id())->get();
         return view('karyawan.rencana.edit', compact('rencana', 'users'));
     }
 

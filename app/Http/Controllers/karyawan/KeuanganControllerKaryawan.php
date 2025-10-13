@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class KeuanganControllerKaryawan extends Controller
 {
@@ -72,7 +73,7 @@ class KeuanganControllerKaryawan extends Controller
         try {
             $pengeluaran = new LaporanKeuangan();
             $pengeluaran->id_keuangan = Keuangan::first()->id;
-            $pengeluaran->id_pengguna = 1; // nanti bisa diganti auth()->id()
+            $pengeluaran->id_pengguna = Auth::id(); // nanti bisa diganti auth()->id()
             $pengeluaran->tanggal = $request->tanggal;
             $pengeluaran->keperluan = $request->keperluan;
             $pengeluaran->nominal = $nominal;
@@ -134,7 +135,7 @@ class KeuanganControllerKaryawan extends Controller
         try {
             $kasbon = new LaporanKeuangan();
             $kasbon->id_keuangan = Keuangan::first()->id;
-            $kasbon->id_pengguna = 1; // nanti bisa diganti auth()->id()
+            $kasbon->id_pengguna = Auth::id(); // nanti bisa diganti auth()->id()
             $kasbon->tanggal = $request->tanggal;
             $kasbon->keperluan = $request->keperluan;
             $kasbon->nominal = $nominal;
@@ -191,7 +192,7 @@ class KeuanganControllerKaryawan extends Controller
         try {
             $uangMasuk = new LaporanKeuangan();
             $uangMasuk->id_keuangan = Keuangan::first()->id;
-            $uangMasuk->id_pengguna = 1; // nanti bisa diganti auth()->id()
+            $uangMasuk->id_pengguna = Auth::id(); // nanti bisa diganti auth()->id()
             $uangMasuk->tanggal = $request->tanggal;
             $uangMasuk->keperluan = $request->keperluan;
             $uangMasuk->nominal = $nominal;

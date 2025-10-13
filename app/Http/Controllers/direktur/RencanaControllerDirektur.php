@@ -21,7 +21,7 @@ class RencanaControllerDirektur extends Controller
 
     public function create()
     {
-        $users = Pengguna::where('id', '!=', auth()->id())->get();
+        $users = Pengguna::where('id', '!=', Auth::id())->get();
         return view('direktur.rencana.create', compact('users'));
     }
 
