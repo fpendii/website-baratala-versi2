@@ -8,6 +8,9 @@ use App\Models\Tugas;
 use App\Models\Pengguna;
 use App\Models\Komentar; // Ditambahkan: Model Komentar diperlukan untuk fitur komentar
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use App\Helpers\WhatsAppHelper;
+use Illuminate\Support\Facades\Log;
 
 class RencanaControllerKaryawan extends Controller
 {
@@ -66,6 +69,9 @@ class RencanaControllerKaryawan extends Controller
         // Simpan tugas
         $tugas = Tugas::create($validated);
 
+        $this->sendWhatsAppNotificationToAdminAndDirector($tugas);
+
+
         // Ambil id pengguna dari input (pecah string jadi array)
         $penggunaIds = [];
         if (!empty($request->pengguna)) {
@@ -83,6 +89,49 @@ class RencanaControllerKaryawan extends Controller
 
         return redirect()->route('karyawan.rencana.index')->with('success', 'Rencana berhasil ditambahkan.');
     }
+
+    private function sendWhatsAppNotificationToAdminAndDirector($tugas)
+    {
+        // Tentukan salam otomatis berdasarkan waktu
+        $hour = now()->format('H');
+        if ($hour >= 5 && $hour < 12) {
+            $salam = 'Selamat Pagi';
+        } elseif ($hour >= 12 && $hour < 17) {
+            $salam = 'Selamat Siang';
+        } elseif ($hour >= 17 && $hour < 20) {
+            $salam = 'Selamat Sore';
+        } else {
+            $salam = 'Selamat Malam';
+        }
+
+        // Format pesan WA
+        $message = "👋 *Halo, {$salam} Direktur & Admin PD Baratala!*\n\n"
+            . "──────────────────────────────\n"
+            . "🗓️ *Rencana Kerja Baru Telah Dibuat*\n"
+            . "──────────────────────────────\n\n"
+            . "📌 *Judul:* _{$tugas->judul_rencana}_\n"
+            . "🧑‍💼 *Dibuat oleh:* _" . Auth::user()->nama . "_\n"
+            . "📅 *Tanggal Mulai:* _{$tugas->tanggal_mulai}_\n"
+            . "📅 *Tanggal Selesai:* _{$tugas->tanggal_selesai}_\n"
+            . "⚡ *Status:* _{$tugas->status}_\n"
+            . "📁 *Jenis:* _{$tugas->jenis}_\n\n"
+            . "🗂️ Silakan cek sistem untuk detail rencana kerja ini.\n\n"
+            . "──────────────────────────────\n"
+            . "📎 _Notifikasi otomatis dari Sistem Baratala_";
+
+        // Ambil semua pengguna dengan role direktur dan admin
+        $targets = \App\Models\Pengguna::whereIn('role', ['direktur', 'admin'])
+            ->whereNotNull('no_hp') // pastikan kolom nomor WhatsApp tidak kosong
+            ->pluck('no_hp')
+            ->toArray();
+
+        // Kirim pesan ke setiap nomor WA
+        foreach ($targets as $target) {
+            \App\Helpers\WhatsAppHelper::send($target, $message);
+        }
+    }
+
+
 
     /**
      * Menampilkan detail tugas, termasuk daftar pengguna dan komentar.
@@ -189,5 +238,97 @@ class RencanaControllerKaryawan extends Controller
         $tugas->delete();
 
         return redirect()->route('karyawan.rencana.index')->with('success', 'Rencana berhasil dihapus.');
+    }
+
+     public function updateStatus(Request $request, $id)
+    {
+        $tugas = Tugas::findOrFail($id);
+
+        // Simpan status lama sebelum diupdate
+        $oldStatus = ucfirst($tugas->status);
+
+        $validated = $request->validate([
+            'status' => 'required|string|in:belum dikerjakan,sedang dikerjakan,selesai',
+        ]);
+
+        $tugas->update($validated);
+
+        // Simpan status baru
+        $newStatus = ucfirst($tugas->status);
+
+        // === 🔔 Kirim Notifikasi WhatsApp ===
+        $this->sendWhatsAppStatusUpdate($tugas, $oldStatus, $newStatus);
+
+        return redirect()->back()->with('success', 'Status rencana berhasil diperbarui.');
+    }
+
+
+    private function sendWhatsAppStatusUpdate($tugas, $oldStatus, $newStatus)
+    {
+        // 1. Tentukan waktu salam otomatis
+        $hour = now()->format('H');
+        if ($hour >= 5 && $hour < 12) {
+            $salam = 'Selamat Pagi';
+        } elseif ($hour >= 12 && $hour < 17) {
+            $salam = 'Selamat Siang';
+        } elseif ($hour >= 17 && $hour < 20) {
+            $salam = 'Selamat Sore';
+        } else {
+            $salam = 'Selamat Malam';
+        }
+
+        // Asumsi user yang sedang login adalah yang melakukan update
+        $userUpdater = Auth::user()->nama;
+        // Ambil data pengguna yang membuat
+        $pengguna = Pengguna::find($tugas->id_pengguna);
+
+        // 2. Format Pesan WhatsApp
+        $message = "👋 *Halo, {$salam} Bapak/Ibu!*\n\n"
+            . "──────────────────────────────\n"
+            . "🔄 {$userUpdater} Baru Saja Mengupdate Status Rencana Kerja\n"
+            . "──────────────────────────────\n\n"
+            . "📌 *Rencana:* _{$tugas->judul_rencana}_\n"
+            // Asumsi model Tugas memiliki relasi 'user' (atau nama relasi lain) ke model 'Pengguna' (pembuat tugas)
+            . "👤 *Dibuat oleh:* _{$pengguna->nama}_\n"
+            . "➡️ *Diubah oleh:* _{$userUpdater}_\n"
+            . "🔄 *Perubahan Status:*\n"
+            . "   • Dari: _" . $oldStatus . "_\n"
+            . "   • Menjadi: *_{$newStatus}_*\n"
+            . "📅 *Batas Waktu:* _" . Carbon::parse($tugas->tanggal_selesai)->format('d M Y') . "_\n\n"
+            . "🔗 Silakan cek detail di sistem untuk memantau kemajuan.\n\n"
+            . "──────────────────────────────\n"
+            . "📎 _Notifikasi otomatis dari Sistem Baratala_";
+
+
+        // 3. Ambil Daftar Pengguna Target (Direktur dan Admin)
+        $targetRoles = ['admin', 'direktur'];
+
+        // CARA MENGAMBIL PENGGUNA (Pilih salah satu, paling umum adalah menggunakan kolom 'role')
+
+        // OPSI 1: Jika model Pengguna memiliki kolom 'role' langsung
+        $penggunaTarget = Pengguna::whereIn('role', $targetRoles)->get();
+
+        /* // OPSI 2: Jika model Pengguna menggunakan relasi many-to-many (seperti Spatie)
+        // Pastikan model Pengguna memiliki relasi 'roles'
+        $penggunaTarget = Pengguna::whereHas('roles', function ($query) use ($targetRoles) {
+            $query->whereIn('name', $targetRoles);
+        })->get();
+        */
+
+
+        // 4. Kirim notifikasi ke setiap pengguna
+        $sentCount = 0;
+        foreach ($penggunaTarget as $pengguna) {
+            // Pastikan kolom nomor HP ada, berisi data, dan helper WA Anda siap mengirim
+            if ($pengguna->no_hp) {
+                WhatsAppHelper::send($pengguna->no_hp, $message);
+                $sentCount++;
+            }
+        }
+
+        // Opsional: Tambahkan logging atau notifikasi jika tidak ada pengguna yang ditemukan/terkirim
+        if ($sentCount === 0) {
+            Log::warning('WA Status Update: Tidak ada Admin/Direktur dengan no_hp yang valid ditemukan.');
+        }
     }
 }

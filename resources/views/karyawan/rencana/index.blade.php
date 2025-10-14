@@ -21,6 +21,13 @@
         </div>
     @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     {{-- Card Daftar Rencana Kerja --}}
     <div class="card">
         <h5 class="card-header border-bottom">Daftar Semua Rencana Kerja</h5>
@@ -103,21 +110,59 @@
                                     {{ ucfirst($currentPrioritas) }}
                                 </span>
                             </td>
+
+                            {{--------------------------------------------------}}
+                            {{-- FITUR UPDATE STATUS DENGAN DROPDOWN (3 STATUS) --}}
+                            {{--------------------------------------------------}}
                             <td>
                                 @php
+                                    $statusList = ['belum dikerjakan', 'sedang dikerjakan', 'selesai'];
+                                    $currentStatus = strtolower($item->status);
                                     $statusClass = [
                                         'selesai' => 'success',
                                         'sedang dikerjakan' => 'primary',
-                                        'direview' => 'info',
-                                        'ditunda' => 'secondary',
                                         'belum dikerjakan' => 'warning',
                                     ];
-                                    $currentStatus = strtolower($item->status);
+                                    // Handle status lain yang mungkin terkirim dari database (misal: 'direview', 'ditunda')
+                                    // dan petakan ke badge yang sesuai, atau default ke secondary.
+                                    $badgeClass = $statusClass[$currentStatus] ?? 'secondary';
+                                    if ($currentStatus == 'direview' || $currentStatus == 'ditunda') {
+                                        $badgeClass = ($currentStatus == 'direview') ? 'info' : 'secondary';
+                                    }
                                 @endphp
-                                <span class="badge bg-label-{{ $statusClass[$currentStatus] ?? 'secondary' }}">
-                                    {{ ucfirst($currentStatus) }}
-                                </span>
+                                <div class="dropdown">
+                                    <button type="button"
+                                        class="btn btn-sm badge bg-label-{{ $badgeClass }} dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        style="cursor: pointer;">
+                                        {{ ucfirst($currentStatus) }}
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        {{-- Loop hanya untuk 3 status yang diinginkan --}}
+                                        @foreach ($statusList as $status)
+                                            <form action="{{ url('karyawan/rencana/'.$item->id.'/update-status') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="status" value="{{ $status }}">
+                                                <button type="submit"
+                                                        class="dropdown-item"
+                                                        {{ $currentStatus === $status ? 'disabled' : '' }}>
+                                                    <span class="badge bg-label-{{ $statusClass[$status] ?? 'secondary' }} me-1"></span>
+                                                    {{ ucfirst($status) }}
+                                                    @if ($currentStatus === $status)
+                                                        <i class="ri ri-check-line text-success ms-1"></i>
+                                                    @endif
+                                                </button>
+                                            </form>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </td>
+
+                            {{--------------------------------------------------}}
+                            {{-- KOLOM AKSI (MODAL DETAIL DI SINI) --}}
+                            {{--------------------------------------------------}}
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none"
@@ -125,11 +170,27 @@
                                         <i class="icon-base ri ri-more-2-line icon-18px"></i>
                                     </button>
                                     <div class="dropdown-menu">
+                                        {{-- TOMBOL UNTUK DETAIL --}}
+                                        <a class="dropdown-item btn-detail-rencana" href="javascript:void(0);"
+                                            data-bs-toggle="modal" data-bs-target="#detailRencanaModal"
+                                            data-judul="{{ $item->judul_rencana }}"
+                                            data-jenis="{{ ucfirst($item->jenis) }}"
+                                            data-deskripsi="{{ $item->deskripsi ?? 'Tidak ada deskripsi.' }}"
+                                            data-mulai="{{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') }}"
+                                            data-selesai="{{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y') }}"
+                                            data-prioritas="{{ strtolower($item->prioritas) }}"
+                                            data-status="{{ strtolower($item->status) }}"
+                                            data-lampiran="{{ $item->lampiran ? asset('storage/public/' . $item->lampiran) : '' }}">
+                                            <i class="icon-base ri ri-eye-line icon-18px me-1"></i> Detail
+                                        </a>
+
+                                        {{-- Tombol Edit yang sudah ada --}}
                                         <a class="dropdown-item"
                                             href="{{ url('karyawan/rencana/'.$item->id.'/edit') }}">
                                             <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
                                             Edit
                                         </a>
+                                        {{-- Form Delete yang sudah ada --}}
                                         <form action="{{ url('/karyawan/rencana/' . $item->id) }}" method="POST"
                                             onsubmit="return confirm('Yakin hapus data ini?')">
                                             @csrf
@@ -161,3 +222,143 @@
         </div>
     </div>
 @endsection
+
+{{--------------------------------------------------}}
+{{-- MODAL DETAIL RENCANA KERJA --}}
+{{--------------------------------------------------}}
+<div class="modal fade" id="detailRencanaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="icon-base ri ri-file-list-line me-2"></i> Detail Rencana Kerja
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <h6 class="text-primary border-bottom pb-2 mb-3">Informasi Utama</h6>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Judul Rencana:</strong>
+                        <span id="detail-judul" class="text-wrap text-end fw-bold"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Jenis:</strong>
+                        <span id="detail-jenis"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Prioritas:</strong>
+                        <span id="detail-prioritas"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Status:</strong>
+                        <span id="detail-status"></span>
+                    </li>
+                </ul>
+
+                <h6 class="text-primary border-bottom pb-2 mb-3">Periode Waktu</h6>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Tanggal Mulai:</strong>
+                        <span id="detail-mulai"></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Batas Waktu (Selesai):</strong>
+                        <span id="detail-selesai"></span>
+                    </li>
+                </ul>
+
+                <h6 class="text-primary border-bottom pb-2 mb-3">Deskripsi & Lampiran</h6>
+                <div class="p-3 border rounded mb-3">
+                    <strong>Deskripsi Tugas:</strong>
+                    <p id="detail-deskripsi" class="mb-0 mt-1"></p>
+                </div>
+
+                <div class="p-3 border rounded">
+                    <strong>Lampiran:</strong>
+                    <div id="detail-lampiran-container" class="mt-2">
+                        <span class="text-muted">Tidak ada lampiran</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const detailRencanaModal = document.getElementById('detailRencanaModal');
+
+    detailRencanaModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const data = {
+            judul: button.getAttribute('data-judul'),
+            jenis: button.getAttribute('data-jenis'),
+            deskripsi: button.getAttribute('data-deskripsi'),
+            mulai: button.getAttribute('data-mulai'),
+            selesai: button.getAttribute('data-selesai'),
+            prioritas: button.getAttribute('data-prioritas'),
+            status: button.getAttribute('data-status'),
+            lampiran: button.getAttribute('data-lampiran')
+        };
+
+        // Mapping class untuk status dan prioritas
+        const prioritasClassMap = {
+            'tinggi': 'danger',
+            'sedang': 'warning',
+            'rendah': 'secondary',
+        };
+        // Mapping status yang disederhanakan
+        const statusClassMap = {
+            'selesai': 'success',
+            'sedang dikerjakan': 'primary',
+            'belum dikerjakan': 'warning',
+            // Menambahkan mapping untuk status yang mungkin ada dari data lama
+            'direview': 'info',
+            'ditunda': 'secondary',
+        };
+
+        // Mengisi data teks
+        document.getElementById('detail-judul').textContent = data.judul;
+        document.getElementById('detail-deskripsi').textContent = data.deskripsi;
+        document.getElementById('detail-mulai').textContent = data.mulai;
+        document.getElementById('detail-selesai').textContent = data.selesai;
+
+        // Badge Prioritas
+        const currentPrioritasClass = prioritasClassMap[data.prioritas] || 'light';
+        const prioritasBadge = document.createElement('span');
+        prioritasBadge.className = 'badge bg-' + currentPrioritasClass;
+        prioritasBadge.textContent = data.prioritas.charAt(0).toUpperCase() + data.prioritas.slice(1);
+        document.getElementById('detail-prioritas').innerHTML = '';
+        document.getElementById('detail-prioritas').appendChild(prioritasBadge);
+
+        // Badge Status
+        const currentStatusClass = statusClassMap[data.status] || 'secondary';
+        const statusBadge = document.createElement('span');
+        statusBadge.className = 'badge bg-label-' + currentStatusClass;
+        statusBadge.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+        document.getElementById('detail-status').innerHTML = '';
+        document.getElementById('detail-status').appendChild(statusBadge);
+
+        // Badge Jenis
+        const jenisBadge = document.createElement('span');
+        jenisBadge.className = 'badge bg-label-info';
+        jenisBadge.textContent = data.jenis;
+        document.getElementById('detail-jenis').innerHTML = '';
+        document.getElementById('detail-jenis').appendChild(jenisBadge);
+
+
+        // Lampiran
+        const lampiranContainer = document.getElementById('detail-lampiran-container');
+        lampiranContainer.innerHTML = data.lampiran
+            ? `<a href="${data.lampiran}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="bx bx-paperclip me-1"></i> Lihat Lampiran</a>`
+            : '<span class="text-muted">Tidak ada lampiran</span>';
+    });
+});
+</script>
+@endpush

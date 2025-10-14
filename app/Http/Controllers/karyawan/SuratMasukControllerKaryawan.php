@@ -7,6 +7,8 @@ use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; // Import Storage facade
 use App\Helpers\WhatsAppHelper; // Import helper WhatsApp
+use Illuminate\Support\Facades\Auth;
+use App\Models\User; // Asumsi Anda butuh model User jika ingin kirim ke orang tertentu atau grup
 
 class SuratMasukControllerKaryawan extends Controller
 {

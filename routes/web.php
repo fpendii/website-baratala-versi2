@@ -198,6 +198,7 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
     Route::put('rencana/{id}', [RencanaControllerKaryawan::class, 'update'])->name('rencana.update');
     Route::get('rencana', [RencanaControllerKaryawan::class, 'index'])->name('rencana.index');
     Route::delete('rencana/delete/{id}', [RencanaControllerKaryawan::class, 'destroy'])->name('rencana.destroy');
+    Route::patch('rencana/{id}/update-status', [RencanaControllerKaryawan::class, 'updateStatus'])->name('rencana.updateStatus');
 
     Route::post('rencana/komentar/{id}', [RencanaControllerKaryawan::class, 'komentar'])->name('rencana.komentar');
 
