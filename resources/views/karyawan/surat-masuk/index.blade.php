@@ -107,6 +107,8 @@
                                             <i class="icon-base ri ri-eye-line icon-18px me-1"></i> Detail
                                         </a>
 
+                                        {{-- hanya pegguna yang upload bisa edit dan hapus --}}
+                                        @if ($item->id_pengguna == Auth::id())
                                         {{-- Tombol Edit --}}
                                         <a class="dropdown-item"
                                             href="{{ url('/karyawan/surat-masuk/edit/' . $item->id) }}">
@@ -123,6 +125,7 @@
                                                 Delete
                                             </button>
                                         </form>
+                                        @endif
                                     </div>
                                 </div>
 
