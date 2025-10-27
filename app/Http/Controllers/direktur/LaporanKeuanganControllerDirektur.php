@@ -11,6 +11,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 
 class LaporanKeuanganControllerDirektur extends Controller
@@ -57,17 +59,27 @@ class LaporanKeuanganControllerDirektur extends Controller
     {
         $laporan = LaporanKeuangan::findOrFail($id);
 
+        // Hanya proses jika persetujuan dikirim (untuk keamanan)
+        if (!in_array($request->persetujuan, ['disetujui', 'ditolak'])) {
+             return back()->with('error', 'Pilihan persetujuan tidak valid.');
+        }
+
+        // Simpan status sebelum update
+        $isApproved = ($request->persetujuan === 'disetujui');
+
         // Mulai transaksi
         DB::beginTransaction();
 
         try {
             // Update status persetujuan_direktur
-            if ($request->persetujuan === 'disetujui') {
+            if ($isApproved) {
                 $laporan->status_persetujuan = 'disetujui';
 
-                // Jika disetujui, update uang kas
+                // Jika disetujui, update uang kas (pengurangan)
                 $keuangan = Keuangan::first();
-                if ($keuangan->nominal < $laporan->nominal) {
+                if (!$keuangan || $keuangan->nominal < $laporan->nominal) {
+                    // Jika saldo tidak mencukupi, rollback dan kembalikan error
+                    DB::rollBack();
                     return back()->with('error', 'Saldo kas tidak mencukupi untuk pengeluaran ini.');
                 }
                 $keuangan->nominal -= $laporan->nominal;
@@ -75,18 +87,50 @@ class LaporanKeuanganControllerDirektur extends Controller
             } else {
                 $laporan->status_persetujuan = 'ditolak';
             }
+
             $laporan->catatan = $request->catatan;
             $laporan->save();
 
             // Commit transaksi
             DB::commit();
 
-            return redirect()->route('direktur.keuangan-laporan.index')->with('success', 'Persetujuan laporan keuangan berhasil diperbarui.');
+            // Redirect ke route generate PDF jika disetujui
+            if ($isApproved) {
+                return redirect()->route('direktur.keuangan-laporan.generate-pdf', ['id' => $laporan->id])
+                                 ->with('success', 'Laporan berhasil disetujui. Dokumen bukti pengeluaran sedang dibuat.');
+            }
+
+            // Redirect normal jika ditolak
+            return redirect()->route('direktur.keuangan-laporan.index')
+                             ->with('success', 'Persetujuan laporan keuangan berhasil diperbarui (Ditolak).');
+
         } catch (\Exception $e) {
             // Rollback transaksi jika terjadi error
             DB::rollBack();
             Log::error('Error updating laporan keuangan approval: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan saat memperbarui persetujuan laporan keuangan.');
         }
+    }
+
+    public function generatePDF($id)
+    {
+        // Pastikan laporan sudah disetujui sebelum mencoba membuat PDF
+        $laporan = LaporanKeuangan::with('pengguna', 'penerimaRelasi')->findOrFail($id);
+
+        if ($laporan->status_persetujuan !== 'disetujui') {
+            return redirect()->route('direktur.keuangan-laporan.index')->with('error', 'Dokumen PDF hanya dapat dibuat untuk laporan yang disetujui.');
+        }
+
+        // Tambahkan package PDF di sini jika belum di-import di atas
+        $pdf = app('dompdf.wrapper');
+
+        // Load view blade untuk PDF
+        $pdf->loadView('direktur.laporan_keuangan.bukti_persetujuan_pdf', compact('laporan'));
+
+        // Nama file PDF
+        $fileName = 'Bukti_Pengeluaran_' . $laporan->id . '_' . Carbon::now()->format('Ymd') . '.pdf';
+
+        // Unduh PDF
+        return $pdf->download($fileName);
     }
 }

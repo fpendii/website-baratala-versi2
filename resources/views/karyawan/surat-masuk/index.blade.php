@@ -147,47 +147,77 @@
     {{-- MODAL DETAIL SURAT MASUK --}}
     {{-- ================================================================= --}}
     <div class="modal fade" id="detailSuratModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalDetailTitle">Detail Surat Masuk</h5>
+                    <h5 class="modal-title">
+                        <i class="bx bx-envelope me-2 text-primary"></i> Detail Surat Masuk
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body p-4">
+
+                    {{-- Bagian Informasi Surat --}}
+                    <h6 class="text-primary border-bottom pb-2 mb-3">Informasi Surat</h6>
                     <div class="row">
                         <div class="col-12 mb-3">
-                            <h6>Judul Surat:</h6>
-                            <p class="fw-bold" id="detailJudul"></p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <h6>Nomor Surat:</h6>
-                            <p id="detailNomor"></p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <h6>Pengirim:</h6>
-                            <p id="detailPengirim"></p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <h6>Tanggal Terima:</h6>
-                            <p id="detailTanggal"></p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <h6>Prioritas:</h6>
-                            <p id="detailPrioritas"></p>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <h6>Keterangan:</h6>
-                            <div class="p-3 bg-light rounded" style="white-space: pre-wrap;" id="detailKeterangan"></div>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <h6>Lampiran:</h6>
-                            <a href="#" target="_blank" id="detailLampiran"
-                                class="btn btn-sm btn-outline-info d-none">
-                                <i class="bx bx-paperclip me-1"></i> Lihat Lampiran
-                            </a>
-                            <span id="noLampiranText" class="text-muted d-none">Tidak ada lampiran.</span>
+                            <strong class="d-block mb-1">Judul Surat:</strong>
+                            <h4 class="fw-bold text-dark" id="detailJudul"></h4>
                         </div>
                     </div>
+
+                    {{-- Detail Metadata Surat menggunakan List Group --}}
+                    <ul class="list-group list-group-flush mb-4 border rounded">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="me-auto">
+                                <i class="bx bx-hash me-2 text-info"></i>
+                                <strong>Nomor Surat:</strong>
+                            </div>
+                            <span id="detailNomor" class="text-wrap text-end text-dark fw-medium"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="me-auto">
+                                <i class="bx bx-user me-2 text-success"></i>
+                                <strong>Pengirim:</strong>
+                            </div>
+                            <span id="detailPengirim" class="text-wrap text-end text-dark fw-medium"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="me-auto">
+                                <i class="bx bx-calendar me-2 text-secondary"></i>
+                                <strong>Tanggal Terima:</strong>
+                            </div>
+                            <span id="detailTanggal" class="text-wrap text-end text-dark fw-medium"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="me-auto">
+                                <i class="bx bx-bolt-circle me-2 text-warning"></i>
+                                <strong>Prioritas:</strong>
+                            </div>
+                            {{-- Prioritas akan diisi oleh JS sebagai badge --}}
+                            <span id="detailPrioritas"></span>
+                        </li>
+                    </ul>
+
+                    {{-- Bagian Keterangan --}}
+                    <h6 class="text-primary border-bottom pb-2 mb-3">Keterangan / Isi Ringkas</h6>
+                    <div class="p-3 bg-light rounded mb-4">
+                        <p style="white-space: pre-wrap; margin-bottom: 0;" class="text-secondary" id="detailKeterangan">
+                        </p>
+                    </div>
+
+                    {{-- Bagian Lampiran --}}
+                    <h6 class="text-primary border-bottom pb-2 mb-3">Lampiran</h6>
+                    <div class="d-flex align-items-center">
+                        <a href="#" target="_blank" id="detailLampiran"
+                            class="btn btn-sm btn-outline-info d-none shadow-sm">
+                            <i class="bx bx-paperclip me-1"></i> Lihat Lampiran
+                        </a>
+                        <span id="noLampiranText" class="text-muted ms-3 d-none">
+                            <i class="bx bx-info-circle me-1"></i> Tidak ada lampiran.
+                        </span>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -196,55 +226,55 @@
                 </div>
             </div>
         </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const detailModal = document.getElementById('detailSuratModal');
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const detailModal = document.getElementById('detailSuratModal');
+            // Fungsi yang dijalankan saat modal akan ditampilkan
+            detailModal.addEventListener('show.bs.modal', function(event) {
+                // Tombol yang memicu modal
+                const button = event.relatedTarget;
 
-                // Fungsi yang dijalankan saat modal akan ditampilkan
-                detailModal.addEventListener('show.bs.modal', function(event) {
-                    // Tombol yang memicu modal
-                    const button = event.relatedTarget;
+                // Ekstrak data dari data-* attributes yang disematkan di tombol
+                const judul = button.getAttribute('data-judul');
+                const nomor = button.getAttribute('data-nomor');
+                const pengirim = button.getAttribute('data-pengirim');
+                const tanggal = button.getAttribute('data-tanggal');
+                const prioritas = button.getAttribute('data-prioritas');
+                const keterangan = button.getAttribute('data-keterangan');
+                const lampiranUrl = button.getAttribute('data-lampiran');
 
-                    // Ekstrak data dari data-* attributes yang disematkan di tombol
-                    const judul = button.getAttribute('data-judul');
-                    const nomor = button.getAttribute('data-nomor');
-                    const pengirim = button.getAttribute('data-pengirim');
-                    const tanggal = button.getAttribute('data-tanggal');
-                    const prioritas = button.getAttribute('data-prioritas');
-                    const keterangan = button.getAttribute('data-keterangan');
-                    const lampiranUrl = button.getAttribute('data-lampiran');
+                // Tentukan kelas badge untuk Prioritas
+                let badgeClass = 'secondary';
+                if (prioritas.toLowerCase() === 'tinggi') {
+                    badgeClass = 'danger';
+                } else if (prioritas.toLowerCase() === 'sedang') {
+                    badgeClass = 'warning';
+                }
 
-                    // Tentukan kelas badge untuk Prioritas
-                    let badgeClass = 'secondary';
-                    if (prioritas.toLowerCase() === 'tinggi') {
-                        badgeClass = 'danger';
-                    } else if (prioritas.toLowerCase() === 'sedang') {
-                        badgeClass = 'warning';
-                    }
+                // Update konten modal
+                document.getElementById('detailJudul').textContent = judul;
+                document.getElementById('detailNomor').textContent = nomor;
+                document.getElementById('detailPengirim').textContent = pengirim;
+                document.getElementById('detailTanggal').textContent = tanggal;
+                document.getElementById('detailPrioritas').innerHTML =
+                    `<span class="badge bg-${badgeClass}">${prioritas}</span>`;
+                document.getElementById('detailKeterangan').textContent = keterangan;
 
-                    // Update konten modal
-                    document.getElementById('detailJudul').textContent = judul;
-                    document.getElementById('detailNomor').textContent = nomor;
-                    document.getElementById('detailPengirim').textContent = pengirim;
-                    document.getElementById('detailTanggal').textContent = tanggal;
-                    document.getElementById('detailPrioritas').innerHTML =
-                        `<span class="badge bg-${badgeClass}">${prioritas}</span>`;
-                    document.getElementById('detailKeterangan').textContent = keterangan;
+                const lampiranLink = document.getElementById('detailLampiran');
+                const noLampiranText = document.getElementById('noLampiranText');
 
-                    const lampiranLink = document.getElementById('detailLampiran');
-                    const noLampiranText = document.getElementById('noLampiranText');
-
-                    if (lampiranUrl) {
-                        lampiranLink.href = lampiranUrl;
-                        lampiranLink.classList.remove('d-none');
-                        noLampiranText.classList.add('d-none');
-                    } else {
-                        lampiranLink.href = '#';
-                        lampiranLink.classList.add('d-none');
-                        noLampiranText.classList.remove('d-none');
-                    }
-                });
+                if (lampiranUrl) {
+                    lampiranLink.href = lampiranUrl;
+                    lampiranLink.classList.remove('d-none');
+                    noLampiranText.classList.add('d-none');
+                } else {
+                    lampiranLink.href = '#';
+                    lampiranLink.classList.add('d-none');
+                    noLampiranText.classList.remove('d-none');
+                }
             });
-        </script>
-    @endsection
+        });
+    </script>
+@endsection

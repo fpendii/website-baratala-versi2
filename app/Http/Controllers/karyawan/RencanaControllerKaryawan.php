@@ -60,10 +60,11 @@ class RencanaControllerKaryawan extends Controller
         // Simpan user yang membuat tugas (sebagai pembuat)
         $validated['id_pengguna'] = Auth::id();
 
-        // Simpan file lampiran jika ada
+      
+
         if ($request->hasFile('lampiran')) {
-            $lampiranPath = $request->file('lampiran')->store('public/uploads');
-            $validated['lampiran'] = str_replace('public/', '', $lampiranPath);
+            $filePath = $request->file('lampiran')->store('rencana_kerja_lampiran', 'public');
+            $validated['lampiran'] = $filePath;
         }
 
         // Simpan tugas

@@ -180,7 +180,7 @@
                                             data-selesai="{{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y') }}"
                                             data-prioritas="{{ strtolower($item->prioritas) }}"
                                             data-status="{{ strtolower($item->status) }}"
-                                            data-lampiran="{{ $item->lampiran ? asset('storage/public/' . $item->lampiran) : '' }}">
+                                            data-lampiran="{{ $item->lampiran ? asset('storage/' . $item->lampiran) : '' }}">
                                             <i class="icon-base ri ri-eye-line icon-18px me-1"></i> Detail
                                         </a>
 
@@ -191,7 +191,7 @@
                                             Edit
                                         </a>
                                         {{-- Form Delete yang sudah ada --}}
-                                        <form action="{{ url('/karyawan/rencana/' . $item->id) }}" method="POST"
+                                        <form action="{{ url('/karyawan/rencana/delete/' . $item->id) }}" method="POST"
                                             onsubmit="return confirm('Yakin hapus data ini?')">
                                             @csrf
                                             @method('DELETE')

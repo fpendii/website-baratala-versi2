@@ -17,25 +17,25 @@
                 {{-- Judul Rencana (READONLY) --}}
                 <div class="mb-3">
                     <label for="judul_rencana" class="form-label">Judul Rencana</label>
-                    <input type="text" id="judul_rencana" name="judul_rencana" class="form-control" value="{{ $rencana->judul_rencana }}" readonly>
+                    <input type="text" id="judul_rencana" name="judul_rencana" class="form-control" value="{{ $rencana->judul_rencana }}" >
                 </div>
 
                 {{-- Deskripsi (READONLY) --}}
                 <div class="mb-3">
                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                    <textarea id="deskripsi" name="deskripsi" class="form-control" rows="5" readonly>{{ $rencana->deskripsi }}</textarea>
+                    <textarea id="deskripsi" name="deskripsi" class="form-control" rows="5" >{{ $rencana->deskripsi }}</textarea>
                 </div>
 
                 <div class="row">
                     {{-- Tanggal Mulai (READONLY) --}}
                     <div class="col-md-6 mb-3">
                         <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
-                        <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control" value="{{ $rencana->tanggal_mulai }}" readonly>
+                        <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control" value="{{ $rencana->tanggal_mulai }}" >
                     </div>
                     {{-- Tanggal Selesai (READONLY) --}}
                     <div class="col-md-6 mb-3">
                         <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
-                        <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control" value="{{ $rencana->tanggal_selesai }}" readonly>
+                        <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control" value="{{ $rencana->tanggal_selesai }}" >
                     </div>
                 </div>
 

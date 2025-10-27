@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class KeuanganControllerKaryawan extends Controller
 {
@@ -237,5 +238,27 @@ class KeuanganControllerKaryawan extends Controller
 
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
+    }
+
+    public function generatePDF($id)
+    {
+        // Pastikan laporan sudah disetujui sebelum mencoba membuat PDF
+        $laporan = LaporanKeuangan::with('pengguna', 'penerimaRelasi')->findOrFail($id);
+
+        if ($laporan->status_persetujuan !== 'disetujui') {
+            return redirect()->route('karyawan.keuangan.index')->with('error', 'Dokumen PDF hanya dapat dibuat untuk laporan yang disetujui.');
+        }
+
+        // Tambahkan package PDF di sini jika belum di-import di atas
+        $pdf = app('dompdf.wrapper');
+
+        // Load view blade untuk PDF
+        $pdf->loadView('pdf.bukti_persetujuan_pdf', compact('laporan'));
+
+        // Nama file PDF
+        $fileName = 'Bukti_Pengeluaran_' . $laporan->id . '_' . Carbon::now()->format('Ymd') . '.pdf';
+
+        // Unduh PDF
+        return $pdf->download($fileName);
     }
 }

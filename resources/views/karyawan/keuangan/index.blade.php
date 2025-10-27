@@ -29,7 +29,8 @@
                     <p class="mb-2">Kantor</p>
                     <h4 class="text-primary mb-0">Rp{{ number_format($uangKas->nominal, 0, ',', '.') }}</h4>
                 </div>
-                <img src="/image/icon-uang.png" class="position-absolute bottom-0 end-0 me-5 mb-5" width="83" alt="kas" />
+                <img src="/image/icon-uang.png" class="position-absolute bottom-0 end-0 me-5 mb-5" width="83"
+                    alt="kas" />
             </div>
         </div>
 
@@ -88,9 +89,14 @@
                                     <label for="filter_jenis" class="form-label">Jenis</label>
                                     <select name="filter_jenis" id="filter_jenis" class="form-select">
                                         <option value="">-- Semua Jenis --</option>
-                                        <option value="uang_masuk" {{ request('filter_jenis') == 'uang_masuk' ? 'selected' : '' }}>Uang Masuk</option>
-                                        <option value="pengeluaran" {{ request('filter_jenis') == 'pengeluaran' ? 'selected' : '' }}>Pengeluaran</option>
-                                        <option value="kasbon" {{ request('filter_jenis') == 'kasbon' ? 'selected' : '' }}>Kasbon</option>
+                                        <option value="uang_masuk"
+                                            {{ request('filter_jenis') == 'uang_masuk' ? 'selected' : '' }}>Uang Masuk
+                                        </option>
+                                        <option value="pengeluaran"
+                                            {{ request('filter_jenis') == 'pengeluaran' ? 'selected' : '' }}>Pengeluaran
+                                        </option>
+                                        <option value="kasbon" {{ request('filter_jenis') == 'kasbon' ? 'selected' : '' }}>
+                                            Kasbon</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
@@ -138,9 +144,11 @@
                                             @case('uang_masuk')
                                                 <span class="badge bg-success">Uang Masuk</span>
                                             @break
+
                                             @case('pengeluaran')
                                                 <span class="badge bg-danger">Pengeluaran</span>
                                             @break
+
                                             @default
                                                 <span class="badge bg-warning text-dark">Kasbon</span>
                                         @endswitch
@@ -152,6 +160,7 @@
                                     <td>
                                         <button class="btn btn-sm btn-outline-primary btn-detail-laporan"
                                             data-bs-toggle="modal" data-bs-target="#detailModal"
+                                            data-id="{{ $laporan->id }}" {{-- <- TAMBAHKAN ID INI --}}
                                             data-tanggal="{{ \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') }}"
                                             data-pengguna="{{ $laporan->pengguna->nama ?? '-' }}"
                                             data-keperluan="{{ $laporan->keperluan }}"
@@ -159,118 +168,133 @@
                                             data-jenis="{{ $laporan->jenis }}"
                                             data-metode="{{ ucfirst($laporan->jenis_uang ?? '-') }}"
                                             data-bukti="{{ $laporan->bukti_transaksi ? asset('storage/' . $laporan->bukti_transaksi) : '' }}"
+                                            data-status="{{ $laporan->status_persetujuan }}" {{-- <- TAMBAHKAN STATUS MENTAH INI --}}
                                             data-status-teks="{{ ucfirst($laporan->status_persetujuan) }}"
                                             data-catatan="{{ $laporan->catatan ?? 'Tidak ada catatan.' }}">
-                                            <i class="ri ri-eye-line me-1"></i> Detail
+                                            <i class="ri ri-eye-line me-1"></i>
+                                            Detail
                                         </button>
                                     </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="text-center">Belum ada data keuangan</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">Belum ada data keuangan</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
 
-                    <div class="container">
-                        <div class="d-flex justify-content-end mt-3">
-                            {{ $laporanKeuangan->links('pagination::bootstrap-5') }}
+                        <div class="container">
+                            <div class="d-flex justify-content-end mt-3">
+                                {{ $laporanKeuangan->links('pagination::bootstrap-5') }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {{-- MODAL DETAIL --}}
-    <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="icon-base ri ri-file-list-line me-2"></i> Detail Transaksi
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between"><strong>Tanggal:</strong><span id="detail-tanggal"></span></li>
-                        <li class="list-group-item d-flex justify-content-between"><strong>Pengguna:</strong><span id="detail-pengguna"></span></li>
-                        <li class="list-group-item d-flex justify-content-between"><strong>Jenis:</strong><span id="detail-jenis"></span></li>
-                        <li class="list-group-item d-flex justify-content-between"><strong>Nominal:</strong><span id="detail-nominal"></span></li>
-                        <li class="list-group-item d-flex justify-content-between"><strong>Metode:</strong><span id="detail-metode"></span></li>
-                        <li class="list-group-item"><strong>Keperluan:</strong><p id="detail-keperluan" class="mb-0 mt-1"></p></li>
-                        <li class="list-group-item d-flex justify-content-between"><strong>Status:</strong><span id="detail-status"></span></li>
-                    </ul>
-
-                    <div class="mt-3 p-3 border rounded bg-light">
-                        <strong>Catatan Direktur:</strong>
-                        <p id="detail-catatan" class="mb-0 mt-1 fst-italic"></p>
+        {{-- MODAL DETAIL --}}
+        <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="icon-base ri ri-file-list-line me-2"></i> Detail Transaksi
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <div class="modal-body p-4">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between"><strong>Tanggal:</strong><span
+                                    id="detail-tanggal"></span></li>
+                            <li class="list-group-item d-flex justify-content-between"><strong>Pengguna:</strong><span
+                                    id="detail-pengguna"></span></li>
+                            <li class="list-group-item d-flex justify-content-between"><strong>Jenis:</strong><span
+                                    id="detail-jenis"></span></li>
+                            <li class="list-group-item d-flex justify-content-between"><strong>Nominal:</strong><span
+                                    id="detail-nominal"></span></li>
+                            <li class="list-group-item d-flex justify-content-between"><strong>Metode:</strong><span
+                                    id="detail-metode"></span></li>
+                            <li class="list-group-item"><strong>Keperluan:</strong>
+                                <p id="detail-keperluan" class="mb-0 mt-1"></p>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between"><strong>Status:</strong><span
+                                    id="detail-status"></span></li>
+                        </ul>
 
-                    <div class="mt-3 p-3 border rounded">
-                        <strong>Bukti Transaksi:</strong>
-                        <div id="detail-bukti-container" class="mt-2">
-                            <span class="text-muted">Tidak ada bukti</span>
+                        <div class="mt-3 p-3 border rounded bg-light">
+                            <strong>Catatan Direktur:</strong>
+                            <p id="detail-catatan" class="mb-0 mt-1 fst-italic"></p>
+                        </div>
+
+                        <div class="mt-3 p-3 border rounded">
+                            <strong>Bukti Transaksi:</strong>
+                            <div id="detail-bukti-container" class="mt-2">
+                                <span class="text-muted">Tidak ada bukti</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Tutup</button>
+                        {{-- Tombol Generate PDF akan diatur visibilitas dan href-nya oleh JS --}}
+                        <a href="#" id="btn-generate-pdf" class="btn btn-primary d-none">
+                            <i class="ri ri-file-pdf-line me-1"></i> Generate PDF
+                        </a>
+                        </div>
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection
 
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const detailModal = document.getElementById('detailModal');
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const detailModal = document.getElementById('detailModal');
 
-    detailModal.addEventListener('show.bs.modal', function(event) {
-        const button = event.relatedTarget;
-        const data = {
-            tanggal: button.getAttribute('data-tanggal'),
-            pengguna: button.getAttribute('data-pengguna'),
-            keperluan: button.getAttribute('data-keperluan'),
-            nominal: button.getAttribute('data-nominal'),
-            jenis: button.getAttribute('data-jenis'),
-            metode: button.getAttribute('data-metode'),
-            bukti: button.getAttribute('data-bukti'),
-            statusTeks: button.getAttribute('data-status-teks'),
-            catatan: button.getAttribute('data-catatan')
-        };
+                detailModal.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget;
+                    const data = {
+                        tanggal: button.getAttribute('data-tanggal'),
+                        pengguna: button.getAttribute('data-pengguna'),
+                        keperluan: button.getAttribute('data-keperluan'),
+                        nominal: button.getAttribute('data-nominal'),
+                        jenis: button.getAttribute('data-jenis'),
+                        metode: button.getAttribute('data-metode'),
+                        bukti: button.getAttribute('data-bukti'),
+                        statusTeks: button.getAttribute('data-status-teks'),
+                        catatan: button.getAttribute('data-catatan')
+                    };
 
-        document.getElementById('detail-tanggal').textContent = data.tanggal;
-        document.getElementById('detail-pengguna').textContent = data.pengguna;
-        document.getElementById('detail-keperluan').textContent = data.keperluan;
-        document.getElementById('detail-nominal').textContent = 'Rp' + data.nominal;
-        document.getElementById('detail-metode').textContent = data.metode;
-        document.getElementById('detail-catatan').textContent = data.catatan;
+                    document.getElementById('detail-tanggal').textContent = data.tanggal;
+                    document.getElementById('detail-pengguna').textContent = data.pengguna;
+                    document.getElementById('detail-keperluan').textContent = data.keperluan;
+                    document.getElementById('detail-nominal').textContent = 'Rp' + data.nominal;
+                    document.getElementById('detail-metode').textContent = data.metode;
+                    document.getElementById('detail-catatan').textContent = data.catatan;
 
-        // Jenis badge
-        const jenisBadge = document.createElement('span');
-        jenisBadge.className = 'badge bg-' + (data.jenis === 'uang_masuk' ? 'success' :
-            data.jenis === 'pengeluaran' ? 'danger' : 'warning text-dark');
-        jenisBadge.textContent = data.jenis.replace('_', ' ').toUpperCase();
-        document.getElementById('detail-jenis').innerHTML = '';
-        document.getElementById('detail-jenis').appendChild(jenisBadge);
+                    // Jenis badge
+                    const jenisBadge = document.createElement('span');
+                    jenisBadge.className = 'badge bg-' + (data.jenis === 'uang_masuk' ? 'success' :
+                        data.jenis === 'pengeluaran' ? 'danger' : 'warning text-dark');
+                    jenisBadge.textContent = data.jenis.replace('_', ' ').toUpperCase();
+                    document.getElementById('detail-jenis').innerHTML = '';
+                    document.getElementById('detail-jenis').appendChild(jenisBadge);
 
-        // Status badge
-        const statusBadge = document.createElement('span');
-        statusBadge.className = 'badge bg-secondary';
-        statusBadge.textContent = data.statusTeks;
-        document.getElementById('detail-status').innerHTML = '';
-        document.getElementById('detail-status').appendChild(statusBadge);
+                    // Status badge
+                    const statusBadge = document.createElement('span');
+                    statusBadge.className = 'badge bg-secondary';
+                    statusBadge.textContent = data.statusTeks;
+                    document.getElementById('detail-status').innerHTML = '';
+                    document.getElementById('detail-status').appendChild(statusBadge);
 
-        // Bukti transaksi
-        const buktiContainer = document.getElementById('detail-bukti-container');
-        buktiContainer.innerHTML = data.bukti
-            ? `<a href="${data.bukti}" target="_blank" class="btn btn-outline-primary btn-sm">Lihat Bukti</a>`
-            : '<span class="text-muted">Tidak ada bukti</span>';
-    });
-});
-</script>
-@endpush
+                    // Bukti transaksi
+                    const buktiContainer = document.getElementById('detail-bukti-container');
+                    buktiContainer.innerHTML = data.bukti ?
+                        `<a href="${data.bukti}" target="_blank" class="btn btn-outline-primary btn-sm">Lihat Bukti</a>` :
+                        '<span class="text-muted">Tidak ada bukti</span>';
+                });
+            });
+        </script>
+    @endpush

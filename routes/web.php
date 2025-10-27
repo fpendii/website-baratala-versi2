@@ -92,6 +92,7 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::resource('keuangan-laporan', LaporanKeuanganControllerDirektur::class)->only(['index', 'show']);
     Route::get('keuangan-laporan/persetujuan/{id}', [LaporanKeuanganControllerDirektur::class, 'persetujuan'])->name('keuangan-laporan.persetujuan');
     Route::put('keuangan-laporan/persetujuan/{id}', [LaporanKeuanganControllerDirektur::class, 'updatePersetujuan'])->name('keuangan-laporan.updatePersetujuan');
+    Route::get('keuangan-laporan/generate-pdf/{id}', [LaporanKeuanganControllerDirektur::class, 'generatePDF'])->name('keuangan-laporan.generate-pdf');
 
     // Laporan Jobdesk
     Route::get('jobdesk-laporan', [LaporanJobdeskControllerDirektur::class, 'index'])->name('laporan-jobdesk.index');
@@ -214,13 +215,15 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
     Route::get('profil', [ProfilControllerKaryawan::class, 'index']);
 
     // Keuangan
-    Route::get('keuangan', [KeuanganControllerKaryawan::class, 'index']);
+    Route::get('keuangan', [KeuanganControllerKaryawan::class, 'index'])->name('keuangan.index');
     Route::get('keuangan/pengeluaran/create', [KeuanganControllerKaryawan::class, 'createPengeluaran']);
     Route::post('keuangan/pengeluaran/store', [KeuanganControllerKaryawan::class, 'storePengeluaran']);
     Route::get('keuangan/kasbon/create', [KeuanganControllerKaryawan::class, 'createKasbon']);
     Route::post('keuangan/kasbon/store', [KeuanganControllerKaryawan::class, 'storeKasbon']);
     Route::get('keuangan/uang-masuk/create', [KeuanganControllerKaryawan::class, 'createUangMasuk']);
     Route::post('keuangan/uang-masuk/store', [KeuanganControllerKaryawan::class, 'storeUangMasuk']);
+    // Route baru untuk menghasilkan PDF
+    Route::get('/laporan-keuangan/{id}/generate-pdf', [KeuanganControllerKaryawan::class, 'generatePDF'])->name('karyawan   .keuangan-laporan.generate-pdf');
 
     //Surat Masuk
     Route::get('surat-masuk', [SuratMasukControllerKaryawan::class, 'index'])->name('surat-masuk.index');
@@ -231,5 +234,4 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
     Route::put('surat-masuk/update/{id}', [SuratMasukControllerKaryawan::class, 'update'])->name('surat-masuk.update');
     Route::delete('surat-masuk/delete/{id}', [SuratMasukControllerKaryawan::class, 'destroy'])->name('surat-masuk.destroy');
     Route::get('surat-masuk/download/{id}', [SuratMasukControllerKaryawan::class, 'downloadLampiran'])->name('surat-masuk.download');
-
 });
