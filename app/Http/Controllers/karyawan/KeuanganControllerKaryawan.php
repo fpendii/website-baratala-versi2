@@ -36,7 +36,7 @@ class KeuanganControllerKaryawan extends Controller
             $query->where('id_pengguna', $request->filter_pengguna);
         }
 
-        $laporanKeuangan = $query->orderBy('tanggal', 'desc')->paginate(15)->withQueryString();
+        $laporanKeuangan = $query->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
 
         $uangKas = Keuangan::first();
         $uangKeluar = LaporanKeuangan::where('jenis', 'pengeluaran')->sum('nominal');

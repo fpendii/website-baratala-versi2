@@ -87,7 +87,7 @@
 
                         <!-- Keperluan -->
                         <div class="mb-3">
-                            <label for="keperluan" class="form-label">Keperluan</label>
+                            <label for="keperluan" class="form-label">Catatan</label>
                             <textarea name="keperluan" id="keperluan" class="form-control @error('keperluan') is-invalid @enderror" rows="3"
                                 placeholder="Catatan Uang Masuk" required>{{ old('keperluan') }}</textarea>
                             @error('keperluan')
@@ -111,7 +111,7 @@
                             <input type="file" name="lampiran" id="lampiran"
                                 class="form-control @error('lampiran') is-invalid @enderror" accept=".jpg,.jpeg,.png,.pdf">
                             <small class="text-muted">
-                                Unggah berkas atau gambar terkait pengeluaran kas (misalnya nota atau bukti transfer).
+                                Unggah berkas atau gambar terkait uang masuk (misalnya nota atau bukti transfer).
                             </small>
                             @error('lampiran')
                                 <div class="invalid-feedback">{{ $message }}</div>
