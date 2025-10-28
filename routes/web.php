@@ -54,7 +54,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/lupa-password', [AuthController::class, 'showLinkRequestForm'])->name('password.request');
     Route::post('/lupa-password', [AuthController::class, 'sendResetLink'])->name('password.email');
 
-    Route::get('/reset-password{toke}', [AuthController::class, 'showResetForm'])->name('password.reset');
+    Route::get('/reset-password/{toke}', [AuthController::class, 'showResetForm'])->name('password.reset');
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
 

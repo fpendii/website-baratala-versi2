@@ -58,11 +58,11 @@ class AuthController extends Controller
                 'id'       => $user->id,
             ]);
 
-            if($user->role == 'admin') {
+            if ($user->role == 'admin') {
                 return redirect()->intended('/administrasi/dashboard');
-            } elseif($user->role == 'direktur') {
+            } elseif ($user->role == 'direktur') {
                 return redirect()->intended('/direktur/dashboard');
-            } elseif(in_array($user->role, ['karyawan', 'kepala teknik', 'enginer', 'produksi', 'keuangan'])) {
+            } elseif (in_array($user->role, ['karyawan', 'kepala teknik', 'enginer', 'produksi', 'keuangan'])) {
                 return redirect()->intended('/karyawan/dashboard');
             }
 
@@ -95,33 +95,41 @@ class AuthController extends Controller
     {
         $request->validate(['email' => 'required|email']);
 
-    try {
-        $token = Str::random(64);
+        try {
+            // 🔎 Cek apakah email ada di tabel pengguna
+            $user = DB::table('pengguna')->where('email', $request->email)->first();
+            if (!$user) {
+                Log::warning('Percobaan reset password dengan email tidak terdaftar: ' . $request->email);
+                return back()->withErrors(['email' => 'Email tidak ditemukan dalam sistem kami.']);
+            }
 
-        DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => $request->email],
-            ['token' => $token, 'created_at' => now()]
-        );
+            $token = Str::random(64);
 
-        $link = url("/reset-password/$token?email=" . urlencode($request->email));
+            DB::table('password_reset_tokens')->updateOrInsert(
+                ['email' => $request->email],
+                ['token' => $token, 'created_at' => now()]
+            );
 
-        // ✅ Tambahkan log sebelum kirim email
-        Log::info('Reset password link dibuat untuk: ' . $request->email);
-        Log::info('Link reset: ' . $link);
+            $link = url("/reset-password/$token?email=" . urlencode($request->email));
 
-        Mail::raw("Klik link berikut untuk reset password kamu: $link", function ($message) use ($request) {
-            $message->to($request->email)
+            // ✅ Tambahkan log sebelum kirim email
+            Log::info('Reset password link dibuat untuk: ' . $request->email);
+            Log::info('Link reset: ' . $link);
+
+            Mail::raw("Klik link berikut untuk reset password kamu: $link", function ($message) use ($request) {
+                $message->to($request->email)
                     ->subject('Reset Password');
-        });
+            });
 
-        Log::info('Email reset password dikirim ke: ' . $request->email);
+            Log::info('Email reset password dikirim ke: ' . $request->email);
 
-        return back()->with('status', 'Link reset password telah dikirim ke email kamu!');
-    } catch (\Exception $e) {
-        Log::error('Gagal mengirim email reset password: ' . $e->getMessage());
-        return back()->withErrors(['email' => 'Gagal mengirim email. Silakan coba lagi.']);
+            return back()->with('status', 'Link reset password telah dikirim ke email kamu!');
+        } catch (\Exception $e) {
+            Log::error('Gagal mengirim email reset password: ' . $e->getMessage());
+            return back()->withErrors(['email' => 'Gagal mengirim email. Silakan coba lagi.']);
+        }
     }
-    }
+
 
     public function showResetForm(Request $request, $token)
     {
