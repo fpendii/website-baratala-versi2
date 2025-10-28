@@ -9,12 +9,12 @@
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
 
-    <title>Demo: Login Basic - Pages | Materio - Bootstrap Dashboard FREE</title>
+    <title>Baratala Tuntung Pandang</title>
 
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/template-admin/assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/image/logo.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -73,7 +73,7 @@
                     <!-- /Logo -->
 
                     <div class="card-body mt-1">
-                        <h4 class="mb-1">Welcome di Baratala! 👋🏻</h4>
+                        <h4 class="mb-1">Selamat Datang di Baratala Tuntung Pandang! 👋🏻</h4>
                         <p class="mb-5">Masukkan Email dan Password anda untuk mengakses halaman</p>
 
                         <form id="formAuthentication" class="mb-5" action="{{ url('/login') }}" method="POST">

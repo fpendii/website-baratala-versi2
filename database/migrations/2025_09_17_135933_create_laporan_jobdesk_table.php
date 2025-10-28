@@ -14,7 +14,7 @@ class CreateLaporanJobdeskTable extends Migration
             $table->unsignedBigInteger('id_jobdesk');
             $table->text('deskripsi');
             $table->string('lampiran');
-            $table->enum('status', ['dikerjakan', 'tidak-dikerjakan']);
+            $table->enum('status', ['belum-dikerjakan', 'on-progress', 'tidak-dikerjakan', 'selesai']);
             $table->timestamps();
 
             $table->foreign('id_pengguna')->references('id')->on('pengguna')->onDelete('cascade');
