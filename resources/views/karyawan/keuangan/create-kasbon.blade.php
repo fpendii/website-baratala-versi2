@@ -70,16 +70,9 @@
                         <!-- Penerima -->
                         <div class="mb-3">
                             <label for="penerima" class="form-label">Penerima</label>
-                            <select name="penerima" id="penerima"
-                                class="form-select @error('penerima') is-invalid @enderror" required>
-                                <option value="">-- Pilih Penerima --</option>
-                                @foreach ($daftarKaryawan as $item)
-                                    <option value="{{ $item->id }}"
-                                        {{ old('penerima') == $item->id ? 'selected' : '' }}>
-                                        {{ $item->nama }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <input type="text" name="penerima" id="penerima"
+                                class="form-control @error('penerima') is-invalid @enderror"
+                                placeholder="Masukkan nama penerima" value="{{ old('penerima') }}" required>
                             @error('penerima')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

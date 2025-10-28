@@ -230,6 +230,7 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
     Route::post('keuangan/uang-masuk/store', [KeuanganControllerKaryawan::class, 'storeUangMasuk']);
     // Route baru untuk menghasilkan PDF
     Route::get('/laporan-keuangan/{id}/generate-pdf', [KeuanganControllerKaryawan::class, 'generatePDF'])->name('karyawan   .keuangan-laporan.generate-pdf');
+    Route::get('keuangan/export', [KeuanganControllerKaryawan::class, 'exportExcel'])->name('keuangan.export');
 
     //Surat Masuk
     Route::get('surat-masuk', [SuratMasukControllerKaryawan::class, 'index'])->name('surat-masuk.index');

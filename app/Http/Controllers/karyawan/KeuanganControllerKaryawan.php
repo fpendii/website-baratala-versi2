@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Exports\LaporanKeuanganExport;
+use Maatwebsite\Excel\Facades\Excel; // Pastikan ini di-import
 
 class KeuanganControllerKaryawan extends Controller
 {
@@ -37,6 +39,7 @@ class KeuanganControllerKaryawan extends Controller
         }
 
         $laporanKeuangan = $query->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
+
 
         $uangKas = Keuangan::first();
         $uangKeluar = LaporanKeuangan::where('jenis', 'pengeluaran')->sum('nominal');
@@ -330,5 +333,17 @@ class KeuanganControllerKaryawan extends Controller
 
         // Unduh PDF
         return $pdf->download($fileName);
+    }
+
+    public function exportExcel(Request $request)
+    {
+        // Ambil semua parameter filter dari request (sama seperti di index/show data)
+        $filters = $request->only(['filter_tanggal', 'filter_jenis', 'filter_pengguna']);
+
+        // Tentukan nama file
+        $namaFile = 'Laporan_Keuangan_' . now()->format('Ymd_His') . '.xlsx';
+
+        // Lakukan export menggunakan kelas yang sudah dibuat
+        return Excel::download(new LaporanKeuanganExport($filters), $namaFile);
     }
 }

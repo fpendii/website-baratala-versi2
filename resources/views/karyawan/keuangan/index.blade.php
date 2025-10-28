@@ -33,7 +33,7 @@
                     alt="kas" />
             </div>
         </div>
-        
+
         <div class="col-md-12 col-lg-4">
             <div class="card">
                 <div class="card-body text-nowrap">
@@ -73,7 +73,8 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Daftar Transaksi</h5>
                     <div class="d-flex gap-2">
-                        <a href="{{ url('keuangan/export') }}" class="btn btn-outline-success btn-sm">
+                        <a href="{{ url('karyawan/keuangan/export') }}?filter_tanggal={{ request('filter_tanggal') }}&filter_jenis={{ request('filter_jenis') }}&filter_pengguna={{ request('filter_pengguna') }}"
+                            class="btn btn-outline-success btn-sm">
                             Export Excel
                         </a>
                         <a href="{{ url('karyawan/keuangan/pengeluaran/create') }}" class="btn btn-danger btn-sm">
@@ -138,7 +139,7 @@
                         <thead class="table-dark">
                             <tr>
                                 <th>Tanggal</th>
-                                <th>Pengguna</th>
+                                <th>Penerima</th>
                                 <th>Keperluan</th>
                                 <th>Jenis</th>
                                 <th>Nominal</th>
@@ -150,7 +151,7 @@
                             @forelse ($laporanKeuangan as $laporan)
                                 <tr>
                                     <td>{{ \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') }}</td>
-                                    <td>{{ $laporan->pengguna->nama ?? '-' }}</td>
+                                    <td>{{ $laporan->penerima ?? '-' }}</td>
                                     <td>{{ $laporan->keperluan }}</td>
                                     <td>
                                         @switch($laporan->jenis)
@@ -175,7 +176,7 @@
                                             data-bs-toggle="modal" data-bs-target="#detailModal"
                                             data-id="{{ $laporan->id }}" {{-- <- TAMBAHKAN ID INI --}}
                                             data-tanggal="{{ \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') }}"
-                                            data-pengguna="{{ $laporan->pengguna->nama ?? '-' }}"
+                                            data-pengguna="{{ $laporan->penerima ?? '-' }}"
                                             data-keperluan="{{ $laporan->keperluan }}"
                                             data-nominal="{{ number_format($laporan->nominal, 0, ',', '.') }}"
                                             data-jenis="{{ $laporan->jenis }}"
@@ -221,7 +222,7 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between"><strong>Tanggal:</strong><span
                                     id="detail-tanggal"></span></li>
-                            <li class="list-group-item d-flex justify-content-between"><strong>Pengguna:</strong><span
+                            <li class="list-group-item d-flex justify-content-between"><strong>Penerima:</strong><span
                                     id="detail-pengguna"></span></li>
                             <li class="list-group-item d-flex justify-content-between"><strong>Jenis:</strong><span
                                     id="detail-jenis"></span></li>
