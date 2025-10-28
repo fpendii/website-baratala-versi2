@@ -27,12 +27,25 @@
                 <div class="card-body text-nowrap">
                     <h5 class="card-title mb-0">Uang Kas</h5>
                     <p class="mb-2">Kantor</p>
-                    <h4 class="text-primary mb-0">Rp{{ number_format($uangKas->nominal, 0, ',', '.') }}</h4>
+                    <h4 class="text-primary mb-0">Rp{{ number_format($uangKas->uang_kas, 0, ',', '.') }}</h4>
                 </div>
                 <img src="/image/icon-uang.png" class="position-absolute bottom-0 end-0 me-5 mb-5" width="83"
                     alt="kas" />
             </div>
         </div>
+        
+        <div class="col-md-12 col-lg-4">
+            <div class="card">
+                <div class="card-body text-nowrap">
+                    <h5 class="card-title mb-0">Uang di Rekening</h5>
+                    <p class="mb-2">Saldo Bank</p>
+                    <h4 class="text-info mb-0">Rp{{ number_format($uangKas->uang_rekening ?? 0, 0, ',', '.') }}</h4>
+                </div>
+                <img src="/image/icon-bank.png" class="position-absolute bottom-0 end-0 me-5 mb-5" width="83"
+                    alt="rekening" />
+            </div>
+        </div>
+
 
         <div class="col-md-12 col-lg-4">
             <div class="card">
@@ -236,13 +249,12 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         {{-- Tombol Generate PDF akan diatur visibilitas dan href-nya oleh JS --}}
                         <a href="#" id="btn-generate-pdf" class="btn btn-primary d-none">
                             <i class="ri ri-file-pdf-line me-1"></i> Generate PDF
                         </a>
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>

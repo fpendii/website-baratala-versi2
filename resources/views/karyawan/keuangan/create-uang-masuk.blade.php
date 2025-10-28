@@ -36,7 +36,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0">Tambah Pengeluaran Kas</h5>
+                    <h5 class="mb-0">Tambah Uang Masuk</h5>
                 </div>
                 <div class="card-body">
                     <form id="pengeluaranForm" action="{{ url('karyawan/keuangan/uang-masuk/store') }}" enctype="multipart/form-data" method="POST">
@@ -89,7 +89,7 @@
                         <div class="mb-3">
                             <label for="keperluan" class="form-label">Keperluan</label>
                             <textarea name="keperluan" id="keperluan" class="form-control @error('keperluan') is-invalid @enderror" rows="3"
-                                placeholder="Keperluan pengeluaran" required>{{ old('keperluan') }}</textarea>
+                                placeholder="Catatan Uang Masuk" required>{{ old('keperluan') }}</textarea>
                             @error('keperluan')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

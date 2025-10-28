@@ -68,38 +68,68 @@ class KeuanganControllerKaryawan extends Controller
         ]);
 
         // Bersihkan nominal -> hapus titik/koma pemisah ribuan
+        // Menggunakan (int) atau (float) untuk memastikan konversi ke tipe numerik jika diperlukan,
+        // tetapi karena database menggunakan DECIMAL(15,2), kita biarkan sebagai string angka bersih,
+        // namun untuk perbandingan dan pengurangan kita perlu konversi.
         $nominal = preg_replace('/[^0-9]/', '', $request->nominal);
+        $nominalNumeric = (float)$nominal; // Konversi ke float untuk operasi matematika
 
         DB::beginTransaction();
         try {
             $pengeluaran = new LaporanKeuangan();
-            $pengeluaran->id_keuangan = Keuangan::first()->id;
+            // Menggunakan Keuangan::first() untuk mendapatkan baris data keuangan utama
+            $keuangan = Keuangan::first();
+
+            // Cek apakah data Keuangan tersedia
+            if (!$keuangan) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Data Keuangan utama tidak ditemukan.')->withInput();
+            }
+
+            $pengeluaran->id_keuangan = $keuangan->id;
             $pengeluaran->id_pengguna = Auth::id(); // nanti bisa diganti auth()->id()
             $pengeluaran->tanggal = $request->tanggal;
             $pengeluaran->keperluan = $request->keperluan;
-            $pengeluaran->nominal = $nominal;
+            $pengeluaran->nominal = $nominalNumeric; // Simpan sebagai angka
             $pengeluaran->penerima = $request->penerima;
             $pengeluaran->jenis = 'pengeluaran';
             $pengeluaran->jenis_uang = $request->jenis_uang;
             $pengeluaran->persetujuan_direktur = $request->persetujuan_direktur;
 
 
-            // jika memerplukan persetujuan direktur
-            if($request->persetujuan_direktur == 1){
+            // jika memerlukan persetujuan direktur
+            if ($request->persetujuan_direktur == 1) {
                 // Jika perlu persetujuan direktur, set status menunggu
-
                 $pengeluaran->status_persetujuan = 'menunggu';
             } else {
                 // Jika tidak perlu persetujuan, langsung set disetujui
                 $pengeluaran->status_persetujuan = 'tanpa persetujuan';
 
-                // Kurangi sisa uang kas
-                $uangKas = Keuangan::first();
-                if ($uangKas->nominal < $nominal) {
-                    return redirect()->to('/karyawan/keuangan/pengeluaran/create')->with('error', 'Saldo kas tidak mencukupi!')->withInput();
+                // --- Logika Pengurangan Saldo berdasarkan jenis_uang ---
+                $jenisUang = $request->jenis_uang;
+
+                if ($jenisUang == 'kas') {
+                    // Kurangi sisa uang kas
+                    if ($keuangan->uang_kas < $nominalNumeric) {
+                        DB::rollBack();
+                        return redirect()->to('/karyawan/keuangan/pengeluaran/create')->with('error', 'Saldo **Kas** tidak mencukupi!')->withInput();
+                    }
+                    $keuangan->uang_kas -= $nominalNumeric;
+                } elseif ($jenisUang == 'bank') {
+                    // Kurangi sisa uang rekening
+                    if ($keuangan->uang_rekening < $nominalNumeric) {
+                        DB::rollBack();
+                        return redirect()->to('/karyawan/keuangan/pengeluaran/create')->with('error', 'Saldo **Bank** tidak mencukupi!')->withInput();
+                    }
+                    $keuangan->uang_rekening -= $nominalNumeric;
                 }
-                $uangKas->nominal -= $nominal;
-                $uangKas->save();
+
+                // Juga kurangi kolom 'nominal' yang merupakan total (kas + rekening)
+                $keuangan->nominal -= $nominalNumeric;
+
+                // Simpan perubahan pada tabel Keuangan
+                $keuangan->save();
+                // --------------------------------------------------------
             }
 
 
@@ -138,44 +168,68 @@ class KeuanganControllerKaryawan extends Controller
             'keperluan' => 'required|string',
             'nominal' => 'required|string',
             'jenis_uang' => 'required|in:kas,bank',
-            'status_persetujuan' => 'required',
+            'status_persetujuan' => 'required|in:menunggu,disetujui,tanpa persetujuan', // Sesuaikan opsi status
         ]);
 
         // Bersihkan nominal -> hapus titik/koma pemisah ribuan
         $nominal = preg_replace('/[^0-9]/', '', $request->nominal);
+        $nominalNumeric = (float)$nominal; // Konversi ke float untuk operasi matematika
 
         DB::beginTransaction();
         try {
             $kasbon = new LaporanKeuangan();
-            $kasbon->id_keuangan = Keuangan::first()->id;
-            $kasbon->id_pengguna = Auth::id(); // nanti bisa diganti auth()->id()
+            $keuangan = Keuangan::first();
+
+            // Cek apakah data Keuangan tersedia
+            if (!$keuangan) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Data Keuangan utama tidak ditemukan.')->withInput();
+            }
+
+            $kasbon->id_keuangan = $keuangan->id;
+            $kasbon->id_pengguna = Auth::id();
             $kasbon->tanggal = $request->tanggal;
             $kasbon->keperluan = $request->keperluan;
-            $kasbon->nominal = $nominal;
+            $kasbon->nominal = $nominalNumeric;
             $kasbon->penerima = $request->penerima;
             $kasbon->jenis = 'kasbon';
             $kasbon->jenis_uang = $request->jenis_uang;
-            $kasbon->persetujuan_direktur = $request->status_persetujuan;
+            $kasbon->status_persetujuan = $request->status_persetujuan;
+            $kasbon->persetujuan_direktur = $request->status_persetujuan == 'menunggu' ? 1 : 0; // Sesuaikan jika perlu kolom ini
 
-            // // Upload lampiran
-            // if ($request->hasFile('lampiran')) {
-            //     $file = $request->file('lampiran');
-            //     $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            //     $file->move(public_path('uploads/lampiran'), $filename);
-            //     $kasbon->lampiran = $filename;
-            // }
+            // Logika Pengurangan Saldo hanya jika status_persetujuan BUKAN 'menunggu'
+            if ($request->status_persetujuan != 'menunggu') {
+                $jenisUang = $request->jenis_uang;
 
-            // Kurangi sisa uang kas
-            $uangKas = Keuangan::first();
-            if ($uangKas->nominal < $nominal) {
-                return redirect()->to('/karyawan/keuangan/kasbon/create')->with('error', 'Saldo kas tidak mencukupi!')->withInput();
+                if ($jenisUang == 'kas') {
+                    // Kurangi sisa uang kas
+                    if ($keuangan->uang_kas < $nominalNumeric) {
+                        DB::rollBack();
+                        return redirect()->to('/karyawan/keuangan/kasbon/create')->with('error', 'Saldo **Kas** tidak mencukupi!')->withInput();
+                    }
+                    $keuangan->uang_kas -= $nominalNumeric;
+                } elseif ($jenisUang == 'bank') {
+                    // Kurangi sisa uang rekening
+                    if ($keuangan->uang_rekening < $nominalNumeric) {
+                        DB::rollBack();
+                        return redirect()->to('/karyawan/keuangan/kasbon/create')->with('error', 'Saldo **Bank** tidak mencukupi!')->withInput();
+                    }
+                    $keuangan->uang_rekening -= $nominalNumeric;
+                }
+
+                // Kurangi juga kolom 'nominal' yang merupakan total (kas + rekening)
+                $keuangan->nominal -= $nominalNumeric;
+
+                // Simpan perubahan pada tabel Keuangan
+                $keuangan->save();
             }
 
+            // Simpan data kasbon (laporan keuangan)
             $kasbon->save();
 
             DB::commit();
 
-            return redirect()->to('/karyawan/keuangan')->with('success', 'Kasbon berhasil disimpan.');
+            return redirect()->to('/karyawan/keuangan')->with('success', 'Kasbon berhasil disimpan dengan status ' . $request->status_persetujuan . '.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Gagal menyimpan kasbon: ' . $e->getMessage());
@@ -184,13 +238,15 @@ class KeuanganControllerKaryawan extends Controller
         }
     }
 
-    public function createUangMasuk(){
+    public function createUangMasuk()
+    {
         $daftarKaryawan = Pengguna::get();
 
         return view('karyawan.keuangan.create-uang-masuk', compact('daftarKaryawan'));
     }
 
-    public function storeUangMasuk(Request $request){
+    public function storeUangMasuk(Request $request)
+    {
         $request->validate([
             'tanggal' => 'required|date',
             'keperluan' => 'required|string',
@@ -200,32 +256,46 @@ class KeuanganControllerKaryawan extends Controller
 
         // Bersihkan nominal -> hapus titik/koma pemisah ribuan
         $nominal = preg_replace('/[^0-9]/', '', $request->nominal);
+        $nominalNumeric = (float)$nominal; // Konversi ke float untuk operasi matematika
 
         DB::beginTransaction();
         try {
             $uangMasuk = new LaporanKeuangan();
-            $uangMasuk->id_keuangan = Keuangan::first()->id;
-            $uangMasuk->id_pengguna = Auth::id(); // nanti bisa diganti auth()->id()
+            $keuangan = Keuangan::first();
+
+            // Cek apakah data Keuangan tersedia
+            if (!$keuangan) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Data Keuangan utama tidak ditemukan.')->withInput();
+            }
+
+            $uangMasuk->id_keuangan = $keuangan->id;
+            $uangMasuk->id_pengguna = Auth::id();
             $uangMasuk->tanggal = $request->tanggal;
             $uangMasuk->keperluan = $request->keperluan;
-            $uangMasuk->nominal = $nominal;
+            $uangMasuk->nominal = $nominalNumeric;
             $uangMasuk->penerima = $request->penerima;
             $uangMasuk->jenis = 'uang_masuk';
             $uangMasuk->jenis_uang = $request->jenis_uang;
             $uangMasuk->persetujuan_direktur = 0; // uang masuk tidak perlu persetujuan direktur
 
-            // // Upload lampiran
-            // if ($request->hasFile('lampiran')) {
-            //     $file = $request->file('lampiran');
-            //     $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            //     $file->move(public_path('uploads/lampiran'), $filename);
-            //     $uangMasuk->lampiran = $filename;
-            // }
+            // --- Logika Penambahan Saldo berdasarkan jenis_uang ---
+            $jenisUang = $request->jenis_uang;
 
-            // Tambah sisa uang kas
-            $uangKas = Keuangan::first();
-            $uangKas->nominal += $nominal;
-            $uangKas->save();
+            if ($jenisUang == 'kas') {
+                // Tambah sisa uang kas
+                $keuangan->uang_kas += $nominalNumeric;
+            } elseif ($jenisUang == 'bank') {
+                // Tambah sisa uang rekening
+                $keuangan->uang_rekening += $nominalNumeric;
+            }
+
+            // Tambah juga kolom 'nominal' yang merupakan total (kas + rekening)
+            $keuangan->nominal += $nominalNumeric;
+
+            // Simpan perubahan pada tabel Keuangan
+            $keuangan->save();
+            // --------------------------------------------------------
 
             $uangMasuk->save();
 
