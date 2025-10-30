@@ -17,7 +17,7 @@ class SuratMasukControllerKaryawan extends Controller
      */
     public function index()
     {
-        $suratMasuk = SuratMasuk::orderBy('tanggal_terima', 'desc')->get();
+        $suratMasuk = SuratMasuk::orderBy('created_at', 'desc')->get();
         return view('karyawan.surat-masuk.index', compact('suratMasuk'));
     }
 
@@ -48,6 +48,9 @@ class SuratMasukControllerKaryawan extends Controller
             $filePath = $request->file('lampiran')->store('surat_masuk_lampiran', 'public');
             $validatedData['lampiran'] = $filePath;
         }
+
+        $id_pengguna = Auth::id();
+        $validatedData['id_pengguna'] = $id_pengguna;
 
         $suratMasuk = SuratMasuk::create($validatedData);
 

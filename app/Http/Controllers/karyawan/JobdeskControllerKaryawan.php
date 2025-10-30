@@ -50,7 +50,7 @@ class JobdeskControllerKaryawan extends Controller
         $validatedData = $request->validate([
             'id_jobdesk' => 'required|exists:jobdesk,id',
             'deskripsi' => 'required|string',
-            'status' => 'required|string|in:dikerjakan,tidak-dikerjakan',
+            'status' => 'required|string',
             'lampiran' => 'nullable|file|mimes:pdf,doc,docx,jpeg,png|max:2048',
         ]);
 
