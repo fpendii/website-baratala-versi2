@@ -6,7 +6,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h5 class="mb-0">Detail Laporan Jobdesk</h5>
-        <a href="{{ route('karyawan.jobdesk.index') }}" class="btn btn-secondary btn-sm">Kembali</a>
+        <a href="{{ route('jobdesk.index') }}" class="btn btn-secondary btn-sm">Kembali</a>
     </div>
 
     <div class="card p-4">

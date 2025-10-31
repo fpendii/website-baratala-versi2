@@ -21,7 +21,7 @@
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Detail Rencana Kerja</h5>
-                    <a href="{{ route('karyawan.rencana.edit', $tugas->id) }}" class="btn btn-sm btn-warning">
+                    <a href="{{ route('rencana.edit', $tugas->id) }}" class="btn btn-sm btn-warning">
                         <i class="bx bx-edit-alt me-1"></i> Edit Status & Detail
                     </a>
                 </div>
@@ -114,7 +114,7 @@
                 </div>
             </div>
 
-            <a href="{{ route('karyawan.rencana.index') }}" class="btn btn-secondary mt-3">
+            <a href="{{ route('rencana.index') }}" class="btn btn-secondary mt-3">
                 <i class="bx bx-arrow-back me-1"></i> Kembali ke Daftar Rencana
             </a>
         </div>
@@ -157,7 +157,7 @@
 <div class="modal fade" id="tambahKomentarModal" tabindex="-1" aria-labelledby="tambahKomentarModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="{{ route('karyawan.rencana.komentar', $tugas->id) }}" method="POST">
+            <form action="{{ route('rencana.komentar', $tugas->id) }}" method="POST">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="tambahKomentarModalLabel">Tulis Komentar & Masukan</h5>

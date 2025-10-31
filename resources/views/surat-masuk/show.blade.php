@@ -12,10 +12,10 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Informasi Detail Surat Masuk</h5>
             <div class="btn-group">
-                <a href="{{ route('direktur.surat-masuk.edit', $suratMasuk->id) }}" class="btn btn-sm btn-warning me-2">
+                <a href="{{ route('surat-masuk.edit', $suratMasuk->id) }}" class="btn btn-sm btn-warning me-2">
                     <i class="bx bx-edit-alt me-1"></i> Edit
                 </a>
-                <a href="{{ route('direktur.surat-masuk.index') }}" class="btn btn-sm btn-outline-secondary">
+                <a href="{{ route('surat-masuk.index') }}" class="btn btn-sm btn-outline-secondary">
                     <i class="bx bx-arrow-back me-1"></i> Kembali
                 </a>
             </div>
@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <a href="{{ route('direktur.surat-masuk.index') }}" class="btn btn-secondary mt-3">
+    <a href="{{ route('surat-masuk.index') }}" class="btn btn-secondary mt-3">
         <i class="bx bx-arrow-back me-1"></i> Kembali ke Daftar Surat
     </a>
 </div>

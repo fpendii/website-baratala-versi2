@@ -10,7 +10,7 @@
                 <h5 class="mb-0">Tambah Laporan Jobdesk</h5>
             </div>
             <div class="card-body">
-                <form method="POST" action="{{ route('karyawan.jobdesk.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('jobdesk.store') }}" enctype="multipart/form-data">
                     @csrf
 
                     <!-- Dropdown Jobdesk -->
@@ -70,7 +70,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">Kirim Laporan</button>
-                    <a href="{{ route('karyawan.jobdesk.index') }}" class="btn btn-outline-secondary">Batal</a>
+                    <a href="{{ route('jobdesk.index') }}" class="btn btn-outline-secondary">Batal</a>
                 </form>
             </div>
         </div>

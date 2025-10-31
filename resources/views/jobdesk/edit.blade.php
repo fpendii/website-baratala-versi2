@@ -10,7 +10,7 @@
 <h5 class="mb-0">Edit Laporan Jobdesk</h5>
 </div>
 <div class="card-body">
-<form method="POST" action="{{ route('karyawan.jobdesk.update', $laporan->id) }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('jobdesk.update', $laporan->id) }}" enctype="multipart/form-data">
 @csrf
 @method('PUT')
 
@@ -64,7 +64,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Perbarui Laporan</button>
-            <a href="{{ route('karyawan.jobdesk.index') }}" class="btn btn-outline-secondary">Batal</a>
+            <a href="{{ route('jobdesk.index') }}" class="btn btn-outline-secondary">Batal</a>
         </form>
     </div>
 </div>

@@ -73,17 +73,17 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Daftar Transaksi</h5>
                     <div class="d-flex gap-2">
-                        <a href="{{ url('karyawan/keuangan/export') }}?filter_tanggal={{ request('filter_tanggal') }}&filter_jenis={{ request('filter_jenis') }}&filter_pengguna={{ request('filter_pengguna') }}"
+                        <a href="{{ url('keuangan/export') }}?filter_tanggal={{ request('filter_tanggal') }}&filter_jenis={{ request('filter_jenis') }}&filter_pengguna={{ request('filter_pengguna') }}"
                             class="btn btn-outline-success btn-sm">
                             Export Excel
                         </a>
-                        <a href="{{ url('karyawan/keuangan/pengeluaran/create') }}" class="btn btn-danger btn-sm">
+                        <a href="{{ url('keuangan/pengeluaran/create') }}" class="btn btn-danger btn-sm">
                             + Pengeluaran Kas
                         </a>
-                        <a href="{{ url('karyawan/keuangan/kasbon/create') }}" class="btn btn-warning btn-sm">
+                        <a href="{{ url('keuangan/kasbon/create') }}" class="btn btn-warning btn-sm">
                             + Kasbon
                         </a>
-                        <a href="{{ url('karyawan/keuangan/uang-masuk/create') }}" class="btn btn-success btn-sm">
+                        <a href="{{ url('keuangan/uang-masuk/create') }}" class="btn btn-success btn-sm">
                             + Uang Masuk
                         </a>
                     </div>
@@ -93,7 +93,7 @@
                 <div class="container">
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <form action="{{ url('karyawan/keuangan') }}" method="GET" class="row g-2 align-items-end">
+                            <form action="{{ url('keuangan') }}" method="GET" class="row g-2 align-items-end">
                                 <div class="col-md-3">
                                     <label for="filter_tanggal" class="form-label">Tanggal</label>
                                     <input type="month" name="filter_tanggal" id="filter_tanggal" class="form-control"
@@ -199,7 +199,7 @@
                                         {{-- LOGIKA EDIT & HAPUS: Hanya bisa jika statusnya 'pending' --}}
                                         @if ($laporan->status_persetujuan != 'disetujui' && $laporan->status_persetujuan != 'ditolak' && $isRecent)
                                             {{-- TOMBOL EDIT --}}
-                                            {{-- <a href="{{ url('karyawan/keuangan/' . $laporan->id . '/edit') }}"
+                                            {{-- <a href="{{ url('keuangan/' . $laporan->id . '/edit') }}"
                                                 class="btn btn-sm btn-outline-warning">
                                                 <i class="ri ri-edit-line"></i>
                                             </a> --}}
@@ -372,7 +372,7 @@
                     document.getElementById('delete-keperluan').textContent = keperluan;
 
                     // Set action form ke route DELETE yang benar
-                    deleteForm.action = `/karyawan/keuangan/${id}`; // Sesuaikan dengan URL Controller Anda
+                    deleteForm.action = `/keuangan/${id}`; // Sesuaikan dengan URL Controller Anda
                 });
             });
         </script>

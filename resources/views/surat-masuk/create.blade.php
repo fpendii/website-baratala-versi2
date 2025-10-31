@@ -10,7 +10,7 @@
         </div>
         <div class="card-body">
             {{-- Pastikan enctype="multipart/form-data" ada untuk upload file --}}
-            <form method="POST" action="{{ route('karyawan.surat-masuk.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('surat-masuk.store') }}" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-3">

@@ -10,7 +10,7 @@
             <h5 class="mb-0">Update Rencana Kerja: {{ $rencana->judul_rencana }}</h5>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ route('karyawan.rencana.update', $rencana->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('rencana.update', $rencana->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 

@@ -38,7 +38,7 @@
                         </div>
                     @endif
 
-                    <form id="kasbonForm" action="{{ url('karyawan/keuangan/kasbon/store') }}" method="POST"
+                    <form id="kasbonForm" action="{{ url('keuangan/kasbon/store') }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
 
@@ -115,7 +115,7 @@
                             value="{{ old('status_persetujuan') }}">
 
                         <div class="d-flex justify-content-between">
-                            <a href="{{ url('karyawan/keuangan') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ url('keuangan') }}" class="btn btn-secondary">Kembali</a>
                             <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                 data-bs-target="#konfirmasiModal">
                                 Simpan

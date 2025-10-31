@@ -39,7 +39,7 @@
                     <h5 class="mb-0">Tambah Uang Masuk</h5>
                 </div>
                 <div class="card-body">
-                    <form id="pengeluaranForm" action="{{ url('karyawan/keuangan/uang-masuk/store') }}"
+                    <form id="pengeluaranForm" action="{{ url('keuangan/uang-masuk/store') }}"
                         enctype="multipart/form-data" method="POST">
                         @csrf
 
@@ -113,7 +113,7 @@
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <a href="{{ url('karyawan/keuangan') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ url('keuangan') }}" class="btn btn-secondary">Kembali</a>
                             <button type="submit" class="btn btn-danger">
                                 Simpan
                             </button>

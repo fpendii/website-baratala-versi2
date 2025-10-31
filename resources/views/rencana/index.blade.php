@@ -8,7 +8,7 @@
         <h4 class="fw-bold py-3 mb-0">
             <i class="bx bx-calendar-check me-2 text-primary"></i> Rencana Kerja Saya
         </h4>
-        <a href="{{ route('karyawan.rencana.create') }}" class="btn btn-primary shadow-sm">
+        <a href="{{ route('rencana.create') }}" class="btn btn-primary shadow-sm">
             <i class="icon-base ri ri-add-line icon-18px me-1"></i> Tambah
         </a>
     </div>
@@ -49,7 +49,7 @@
                             <td><span class="fw-bold">{{ $index + 1 }}</span></td>
                             <td>
                                 <strong class="text-dark">
-                                    <a href="{{ route('karyawan.rencana.show', $item->id) }}"
+                                    <a href="{{ route('rencana.show', $item->id) }}"
                                         class="text-decoration-none text-primary"
                                         title="Lihat Detail: {{ $item->judul_rencana }}">
                                         {{ $item->judul_rencana }}
@@ -211,7 +211,7 @@
                                 <i class="bx bx-calendar-plus bx-lg d-block mb-3 text-muted"></i>
                                 <h6 class="mb-1 text-dark">Belum ada Rencana Kerja yang Anda buat.</h6>
                                 <p class="text-muted">Ayo mulai catat rencana kerja Anda untuk minggu/bulan ini!</p>
-                                <a href="{{ route('karyawan.rencana.create') }}" class="btn btn-sm btn-primary mt-2">
+                                <a href="{{ route('rencana.create') }}" class="btn btn-sm btn-primary mt-2">
                                     <i class="bx bx-plus me-1"></i> Buat Rencana
                                 </a>
                             </td>

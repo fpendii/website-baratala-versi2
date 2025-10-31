@@ -6,7 +6,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h5 class="mb-0">Laporan Jobdesk Saya</h5>
-        <a href="/karyawan/jobdesk/create" class="btn btn-primary btn-sm">Tambah Laporan</a>
+        <a href="jobdesk/create" class="btn btn-primary btn-sm">Tambah Laporan</a>
     </div>
 
     @if (session('success'))

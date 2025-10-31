@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold py-3 mb-0">Surat Masuk</h4>
         {{-- Tombol Tambah Surat Masuk --}}
-        <a href="{{ route('karyawan.surat-masuk.create') }}" class="btn btn-primary">
+        <a href="{{ route('surat-masuk.create') }}" class="btn btn-primary">
             <i class="icon-base ri ri-add-line icon-18px me-1"></i> Tambah
         </a>
     </div>
@@ -135,7 +135,7 @@
                             <td colspan="6" class="text-center py-4">
                                 <i class="bx bx-mail-send bx-lg d-block mb-2 text-muted"></i>
                                 <p class="mb-1">Kotak Surat Masuk Anda masih kosong.</p>
-                                <a href="{{ route('karyawan.surat-masuk.create') }}"
+                                <a href="{{ route('surat-masuk.create') }}"
                                     class="btn btn-sm btn-outline-primary mt-2">Input Surat Masuk Pertama</a>
                             </td>
                         </tr>

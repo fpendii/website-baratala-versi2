@@ -39,7 +39,7 @@
                     <h5 class="mb-0">Tambah Pengeluaran Kas</h5>
                 </div>
                 <div class="card-body">
-                    <form id="pengeluaranForm" action="{{ url('karyawan/keuangan/pengeluaran/store') }}"
+                    <form id="pengeluaranForm" action="{{ url('keuangan/pengeluaran/store') }}"
                         enctype="multipart/form-data" method="POST">
                         @csrf
 
@@ -117,7 +117,7 @@
                         <input type="hidden" name="persetujuan_direktur" id="persetujuan_direktur">
 
                         <div class="d-flex justify-content-between">
-                            <a href="{{ url('karyawan/keuangan') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ url('keuangan') }}" class="btn btn-secondary">Kembali</a>
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                 data-bs-target="#konfirmasiModal">
                                 Simpan

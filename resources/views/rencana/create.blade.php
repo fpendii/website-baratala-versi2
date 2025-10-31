@@ -29,7 +29,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('karyawan.rencana.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('rencana.store') }}" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-3">
@@ -127,7 +127,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan Rencana</button>
-                <a href="{{ route('karyawan.rencana.index') }}" class="btn btn-outline-secondary">Batal</a>
+                <a href="{{ route('rencana.index') }}" class="btn btn-outline-secondary">Batal</a>
             </form>
         </div>
     </div>
