@@ -36,15 +36,15 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\direktur\RencanaControllerDirektur;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\karyawan\KeuanganControllerKaryawan;
+use App\Http\Controllers\KeuanganController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RencanaController;
+use App\Http\Controllers\SuratMasukController;
+use App\Http\Controllers\JobdeskController;
+use App\Http\Controllers\ProfilController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
-// // Route Auth
-// Route::get('/',[AuthController::class, 'login']);
-// Route::get('/login',[AuthController::class, 'login'])->name('login');
-// Route::post('/login',[AuthController::class, 'submitLogin'])->name('login.submit');
+
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -59,6 +59,61 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+
+
+// Route Dashboard
+Route::get('dashboard', [DashboardController::class, 'index']);
+
+// Keuangan
+Route::get('keuangan', [KeuanganController::class, 'index'])->name('keuangan.index');
+Route::get('keuangan/pengeluaran/create', [KeuanganController::class, 'createPengeluaran']);
+Route::post('keuangan/pengeluaran/store', [KeuanganController::class, 'storePengeluaran']);
+Route::get('keuangan/kasbon/create', [KeuanganController::class, 'createKasbon']);
+Route::post('keuangan/kasbon/store', [KeuanganController::class, 'storeKasbon']);
+Route::get('keuangan/uang-masuk/create', [KeuanganController::class, 'createUangMasuk']);
+Route::post('keuangan/uang-masuk/store', [KeuanganController::class, 'storeUangMasuk']);
+Route::delete('keuangan/{id}', [KeuanganController::class, 'destroy'])->name('keuangan.destroy');
+Route::get('keuangan/{id}/edit', [KeuanganController::class, 'edit'])->name('keuangan.edit');
+
+// Route baru untuk menghasilkan PDF
+Route::get('/laporan-keuangan/{id}/generate-pdf', [KeuanganControllerKaryawan::class, 'generatePDF'])->name('karyawan   .keuangan-laporan.generate-pdf');
+Route::get('keuangan/export', [KeuanganControllerKaryawan::class, 'exportExcel'])->name('keuangan.export');
+
+// Route Rencana Kerja
+Route::get('rencana', [RencanaController::class, 'index'])->name('rencana.index');
+Route::get('rencana/create', [RencanaController::class, 'create'])->name('rencana.create');
+Route::post('rencana/store', [RencanaController::class, 'store'])->name('rencana.store');
+Route::get('rencana/{id}', [RencanaController::class, 'show'])->name('rencana.show');
+Route::get('rencana/{id}/edit', [RencanaController::class, 'edit'])->name('rencana.edit');
+Route::put('rencana/{id}', [RencanaController::class, 'update'])->name('rencana.update');
+Route::get('rencana', [RencanaController::class, 'index'])->name('rencana.index');
+Route::delete('rencana/delete/{id}', [RencanaController::class, 'destroy'])->name('rencana.destroy');
+Route::patch('rencana/{id}/update-status', [RencanaController::class, 'updateStatus'])->name('rencana.updateStatus');
+
+Route::post('rencana/komentar/{id}', [RencanaController::class, 'komentar'])->name('rencana.komentar');
+
+
+//Surat Masuk
+Route::get('surat-masuk', [SuratMasukController::class, 'index'])->name('surat-masuk.index');
+Route::get('surat-masuk/create', [SuratMasukController::class, 'create'])->name('surat-masuk.create');
+Route::post('surat-masuk/store', [SuratMasukController::class, 'store'])->name('surat-masuk.store');
+Route::get('surat-masuk/{id}', [SuratMasukController::class, 'show'])->name('surat-masuk.show');
+Route::get('surat-masuk/edit/{id}', [SuratMasukController::class, 'edit'])->name('surat-masuk.edit');
+Route::put('surat-masuk/update/{id}', [SuratMasukController::class, 'update'])->name('surat-masuk.update');
+Route::delete('surat-masuk/delete/{id}', [SuratMasukController::class, 'destroy'])->name('surat-masuk.destroy');
+Route::get('surat-masuk/download/{id}', [SuratMasukController::class, 'downloadLampiran'])->name('surat-masuk.download');
+
+// Route Jobdesk
+Route::get('jobdesk', [JobdeskController::class, 'index'])->name('jobdesk.index');
+Route::get('jobdesk/create', [JobdeskController::class, 'create'])->name('jobdesk.create');
+Route::post('jobdesk/store', [JobdeskController::class, 'store'])->name('jobdesk.store');
+Route::get('jobdesk/{id}', [JobdeskController::class, 'show'])->name('jobdesk.show');
+Route::get('jobdesk/{id}/edit', [JobdeskController::class, 'edit'])->name('jobdesk.edit');
+Route::put('jobdesk/{id}', [JobdeskController::class, 'update'])->name('jobdesk.update');
+
+// Profil
+Route::resource('profil', ProfilController::class)->only(['index', 'edit', 'update']);
+
 
 // Route Direktur
 Route::prefix('direktur')->name('direktur.')->group(function () {
@@ -110,41 +165,6 @@ Route::prefix('direktur')->name('direktur.')->group(function () {
     Route::resource('profil', ProfilControllerDirektur::class)->only(['index', 'edit', 'update']);
 });
 
-// Route Kepala Teknik
-// Route::prefix('karyawan')->group(function () {
-
-//     Route::get('dashboard', [DashboardControllerKepalaTeknik::class, 'index']);
-
-//     Route::get('rencana', [RencanaControllerKepalaTeknik::class, 'index']);
-
-//     Route::get('jobdesk', [JobdeskControllerKepalaTeknik::class, 'index']);
-
-//     Route::get('profil', [ProfilControllerKepalaTeknik::class, 'index']);
-// });
-
-// // Route Enginer
-// Route::prefix('enginer')->group(function () {
-
-//     Route::get('dashboard', [DashboardControllerEnginer::class, 'index']);
-
-//     Route::get('rencana', [RencanaControllerEnginer::class, 'index']);
-
-//     Route::get('jobdesk', [JobdeskControllerEnginer::class, 'index']);
-
-//     Route::get('profil', [ProfilControllerEnginer::class, 'index']);
-// });
-
-// // Route Produksi
-// Route::prefix('produksi')->group(function () {
-
-//     Route::get('dashboard', [DashboardControllerProduksi::class, 'index']);
-
-//     Route::get('rencana', [RencanaControllerProduksi::class, 'index']);
-
-//     Route::get('jobdesk', [JobdeskControllerProduksi::class, 'index']);
-
-//     Route::get('profil', [ProfilControllerProduksi::class, 'index']);
-// });
 
 // Route Administrasi
 Route::prefix('administrasi')->group(function () {
