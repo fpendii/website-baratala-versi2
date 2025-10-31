@@ -80,7 +80,7 @@
                         <select id="status" name="status"
                                 class="form-select @error('status') is-invalid @enderror" required>
                             <option value="belum dikerjakan" {{ old('status') == 'belum dikerjakan' ? 'selected' : '' }}>Belum Dikerjakan</option>
-                            <option value="on progress" {{ old('status') == 'on-progress' ? 'selected' : '' }}>On Progress</option>
+                            <option value="on progress" {{ old('status') == 'on progress' ? 'selected' : '' }}>On Progress</option>
                             <option value="tidak dikerjakan" {{ old('status') == 'tidak dikerjakan' ? 'selected' : '' }}>Tidak Dikerjakan</option>
                             <option value="selesai" {{ old('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                         </select>

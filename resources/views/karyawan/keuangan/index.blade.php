@@ -144,7 +144,7 @@
                                 <th>Jenis</th>
                                 <th>Nominal</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
+                                <th class="text-center">Aksi</th> {{-- DIBUAT CENTER --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -171,10 +171,11 @@
                                         Rp{{ number_format($laporan->nominal, 0, ',', '.') }}
                                     </td>
                                     <td>{{ ucfirst($laporan->status_persetujuan) }}</td>
-                                    <td>
+                                    <td class="d-flex gap-1 justify-content-center"> {{-- KONTEN AKSI --}}
+                                        {{-- TOMBOL DETAIL --}}
                                         <button class="btn btn-sm btn-outline-primary btn-detail-laporan"
                                             data-bs-toggle="modal" data-bs-target="#detailModal"
-                                            data-id="{{ $laporan->id }}" {{-- <- TAMBAHKAN ID INI --}}
+                                            data-id="{{ $laporan->id }}"
                                             data-tanggal="{{ \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') }}"
                                             data-pengguna="{{ $laporan->penerima ?? '-' }}"
                                             data-keperluan="{{ $laporan->keperluan }}"
@@ -182,12 +183,35 @@
                                             data-jenis="{{ $laporan->jenis }}"
                                             data-metode="{{ ucfirst($laporan->jenis_uang ?? '-') }}"
                                             data-bukti="{{ $laporan->bukti_transaksi ? asset('storage/' . $laporan->bukti_transaksi) : '' }}"
-                                            data-status="{{ $laporan->status_persetujuan }}" {{-- <- TAMBAHKAN STATUS MENTAH INI --}}
+                                            data-status="{{ $laporan->status_persetujuan }}"
                                             data-status-teks="{{ ucfirst($laporan->status_persetujuan) }}"
                                             data-catatan="{{ $laporan->catatan ?? 'Tidak ada catatan.' }}">
-                                            <i class="ri ri-eye-line me-1"></i>
-                                            Detail
+                                            <i class="ri ri-eye-line"></i>
                                         </button>
+
+                                        @php
+                                            // Cek apakah data diinput dalam 24 jam terakhir (atau 1 hari kalender penuh)
+                                            $tanggalTransaksi = \Carbon\Carbon::parse($laporan->created_at);
+                                            // Kita cek apakah tanggal transaksi adalah HARI INI atau KEMARIN (jika waktu memungkinkan)
+                                            $isRecent = $tanggalTransaksi->gte(\Carbon\Carbon::now()->subDay());
+                                        @endphp
+
+                                        {{-- LOGIKA EDIT & HAPUS: Hanya bisa jika statusnya 'pending' --}}
+                                        @if ($laporan->status_persetujuan != 'disetujui' && $laporan->status_persetujuan != 'ditolak' && $isRecent)
+                                            {{-- TOMBOL EDIT --}}
+                                            {{-- <a href="{{ url('karyawan/keuangan/' . $laporan->id . '/edit') }}"
+                                                class="btn btn-sm btn-outline-warning">
+                                                <i class="ri ri-edit-line"></i>
+                                            </a> --}}
+
+                                            {{-- TOMBOL HAPUS (Membuka Modal Hapus) --}}
+                                            <button class="btn btn-sm btn-outline-danger btn-hapus-laporan"
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                data-id="{{ $laporan->id }}"
+                                                data-keperluan="{{ $laporan->keperluan }}">
+                                                <i class="ri ri-delete-bin-line"></i>
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                                 @empty
@@ -208,7 +232,7 @@
             </div>
         </div>
 
-        {{-- MODAL DETAIL --}}
+        {{-- MODAL DETAIL (Tidak diubah, hanya memastikan ID sudah ada) --}}
         <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -251,7 +275,6 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        {{-- Tombol Generate PDF akan diatur visibilitas dan href-nya oleh JS --}}
                         <a href="#" id="btn-generate-pdf" class="btn btn-primary d-none">
                             <i class="ri ri-file-pdf-line me-1"></i> Generate PDF
                         </a>
@@ -259,13 +282,41 @@
                 </div>
             </div>
         </div>
+
+        {{-- MODAL HAPUS BARU --}}
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form id="deleteForm" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
+                        <div class="modal-header">
+                            <h5 class="modal-title text-danger">Konfirmasi Hapus</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Apakah Anda yakin ingin menghapus data transaksi: "<strong id="delete-keperluan"></strong>"?
+                            <p class="text-danger small mt-2">Tindakan ini tidak bisa dibatalkan.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     @endsection
+
 
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const detailModal = document.getElementById('detailModal');
+                const deleteModal = document.getElementById('deleteModal');
+                const deleteForm = document.getElementById('deleteForm');
 
+                // Logic untuk Modal Detail (yang sudah ada)
                 detailModal.addEventListener('show.bs.modal', function(event) {
                     const button = event.relatedTarget;
                     const data = {
@@ -287,7 +338,7 @@
                     document.getElementById('detail-metode').textContent = data.metode;
                     document.getElementById('detail-catatan').textContent = data.catatan;
 
-                    // Jenis badge
+                    // Logic untuk Jenis Badge
                     const jenisBadge = document.createElement('span');
                     jenisBadge.className = 'badge bg-' + (data.jenis === 'uang_masuk' ? 'success' :
                         data.jenis === 'pengeluaran' ? 'danger' : 'warning text-dark');
@@ -295,18 +346,33 @@
                     document.getElementById('detail-jenis').innerHTML = '';
                     document.getElementById('detail-jenis').appendChild(jenisBadge);
 
-                    // Status badge
+                    // Logic untuk Status Badge
                     const statusBadge = document.createElement('span');
-                    statusBadge.className = 'badge bg-secondary';
+                    statusBadge.className = 'badge bg-' + (data.statusTeks === 'Pending' ? 'secondary' : data
+                        .statusTeks === 'Disetujui' ? 'success' : 'danger');
                     statusBadge.textContent = data.statusTeks;
                     document.getElementById('detail-status').innerHTML = '';
                     document.getElementById('detail-status').appendChild(statusBadge);
 
-                    // Bukti transaksi
+
+                    // Logic untuk Bukti transaksi
                     const buktiContainer = document.getElementById('detail-bukti-container');
                     buktiContainer.innerHTML = data.bukti ?
                         `<a href="${data.bukti}" target="_blank" class="btn btn-outline-primary btn-sm">Lihat Bukti</a>` :
                         '<span class="text-muted">Tidak ada bukti</span>';
+                });
+
+                // Logic BARU untuk Modal Hapus
+                deleteModal.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget;
+                    const id = button.getAttribute('data-id');
+                    const keperluan = button.getAttribute('data-keperluan');
+
+                    // Set teks keperluan di modal
+                    document.getElementById('delete-keperluan').textContent = keperluan;
+
+                    // Set action form ke route DELETE yang benar
+                    deleteForm.action = `/karyawan/keuangan/${id}`; // Sesuaikan dengan URL Controller Anda
                 });
             });
         </script>

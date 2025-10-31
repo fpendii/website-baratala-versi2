@@ -60,7 +60,7 @@ class RencanaControllerKaryawan extends Controller
         // Simpan user yang membuat tugas (sebagai pembuat)
         $validated['id_pengguna'] = Auth::id();
 
-      
+
 
         if ($request->hasFile('lampiran')) {
             $filePath = $request->file('lampiran')->store('rencana_kerja_lampiran', 'public');
@@ -249,7 +249,7 @@ class RencanaControllerKaryawan extends Controller
         $oldStatus = ucfirst($tugas->status);
 
         $validated = $request->validate([
-            'status' => 'required|string|in:belum dikerjakan,sedang dikerjakan,selesai',
+            'status' => 'required|string|in:belum dikerjakan,on progress,selesai',
         ]);
 
         $tugas->update($validated);

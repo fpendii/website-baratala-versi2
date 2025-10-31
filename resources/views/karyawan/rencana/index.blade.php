@@ -116,11 +116,11 @@
                             {{--------------------------------------------------}}
                             <td>
                                 @php
-                                    $statusList = ['belum dikerjakan', 'sedang dikerjakan', 'selesai'];
+                                    $statusList = ['belum dikerjakan', 'on progress', 'selesai'];
                                     $currentStatus = strtolower($item->status);
                                     $statusClass = [
                                         'selesai' => 'success',
-                                        'sedang dikerjakan' => 'primary',
+                                        'on progress' => 'primary',
                                         'belum dikerjakan' => 'warning',
                                     ];
                                     // Handle status lain yang mungkin terkirim dari database (misal: 'direview', 'ditunda')
@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Mapping status yang disederhanakan
         const statusClassMap = {
             'selesai': 'success',
-            'sedang dikerjakan': 'primary',
+            'on progress': 'primary',
             'belum dikerjakan': 'warning',
             // Menambahkan mapping untuk status yang mungkin ada dari data lama
             'direview': 'info',

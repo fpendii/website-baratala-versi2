@@ -29,15 +29,11 @@
         </div>
     @endif
 <div class="card">
-
-
-
     <div class="row">
         <div class="col">
             <h5 class="card-header">Jobdesk</h5>
         </div>
         <div class="col">
-
             <div class="card-header text-end">
                 <a href="{{ url('/administrasi/jobdesk/create') }}" class="btn btn-primary">
                     <i class="icon-base ri ri-add-line icon-18px me-1"></i> Tambah
@@ -60,7 +56,8 @@
                 @forelse($jobdesks as $index => $jobdesk)
                 <tr>
                     <td>{{ $index+1 }}</td>
-                    <td>{{ $jobdesk->judul_jobdesk }}</td>
+                    {{-- PERUBAHAN: Membatasi tampilan teks Judul Jobdesk menjadi 50 karakter --}}
+                    <td>{{ Str::limit($jobdesk->judul_jobdesk, 50, '...') }}</td>
                     <td>{{ $jobdesk->divisi }}</td>
                     <td>
                         <div class="dropdown">
@@ -143,6 +140,7 @@
                 <hr class="mb-4">
 
                 {{-- DESKRIPSI (Gaya Card yang Lebih Rapi) --}}
+                {{-- Deskripsi ini dihapus dari input Anda, tetapi saya pertahankan tampilan modalnya agar tidak error --}}
                 <div class="mb-4">
                     <label class="form-label fw-bold text-primary mb-2">
                         <i class="icon-base ri ri-file-text-line me-1"></i> Deskripsi Jobdesk
@@ -177,6 +175,7 @@
                 const divisi = button.getAttribute('data-divisi') ?? '-';
 
                 // Update konten modal
+                // CATATAN: Di modal, teks TIDAK DIBATASI agar user bisa melihat judul lengkap.
                 document.getElementById('modal-judul-jobdesk').textContent = judul;
                 document.getElementById('modal-divisi').textContent = divisi;
                 document.getElementById('modal-deskripsi').textContent = deskripsi;

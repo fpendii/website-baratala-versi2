@@ -46,24 +46,7 @@
                 </div>
             </div>
 
-            {{-- FIELD: DESKRIPSI --}}
-            <div class="row mb-4">
-                <label class="col-sm-2 col-form-label">Deskripsi</label>
-                <div class="col-sm-10">
-                    <div class="input-group input-group-merge">
-                        <span class="input-group-text"><i class="icon-base ri ri-file-text-line"></i></span>
-                        <textarea
-                            class="form-control @error('deskripsi') is-invalid @enderror"
-                            name="deskripsi"
-                            required>{{ old('deskripsi', $jobdesk->deskripsi) }}</textarea>
-                        @error('deskripsi')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
+
 
             {{-- FIELD: DIVISI --}}
             <div class="row mb-4">

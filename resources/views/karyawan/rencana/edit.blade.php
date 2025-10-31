@@ -43,11 +43,16 @@
                     {{-- Status (EDITABLE) --}}
                     <div class="col-md-6 mb-3">
                         <label for="status" class="form-label">Status</label>
-                        <select id="status" name="status" class="form-select" required>
-                            <option value="belum dikerjakan" {{ $rencana->status == 'belum dikerjakan' ? 'selected' : '' }}>Belum Dikerjakan</option>
-                            <option value="sedang dikerjakan" {{ $rencana->status == 'sedang dikerjakan' ? 'selected' : '' }}>Sedang Dikerjakan</option>
-                            <option value="selesai" {{ $rencana->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                        <select id="status" name="status"
+                                class="form-select @error('status') is-invalid @enderror" required>
+                            <option value="belum dikerjakan" {{ old('status') == 'belum dikerjakan' ? 'selected' : '' }}>Belum Dikerjakan</option>
+                            <option value="on progress" {{ old('status') == 'on progress' ? 'selected' : '' }}>On Progress</option>
+                            <option value="tidak dikerjakan" {{ old('status') == 'tidak dikerjakan' ? 'selected' : '' }}>Tidak Dikerjakan</option>
+                            <option value="selesai" {{ old('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                         </select>
+                        @error('status')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     {{-- Prioritas (DISABLED) --}}
                     <div class="col-md-6 mb-3">
@@ -82,7 +87,7 @@
                     <label for="lampiran" class="form-label">Lampiran (Opsional)</label>
                     @if ($rencana->lampiran)
                         <div class="alert alert-info d-flex justify-content-between align-items-center p-2 mb-2">
-                            <span>File saat ini: <a href="{{ asset('storage/public/' . $rencana->lampiran) }}" target="_blank" class="fw-bold">{{ basename($rencana->lampiran) }}</a></span>
+                            <span>File saat ini: <a href="{{ asset('storage/' . $rencana->lampiran) }}" target="_blank" class="fw-bold">{{ basename($rencana->lampiran) }}</a></span>
                         </div>
                     @endif
                     <input type="file" id="lampiran" name="lampiran" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png">

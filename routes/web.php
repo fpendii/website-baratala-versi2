@@ -228,9 +228,13 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
     Route::post('keuangan/kasbon/store', [KeuanganControllerKaryawan::class, 'storeKasbon']);
     Route::get('keuangan/uang-masuk/create', [KeuanganControllerKaryawan::class, 'createUangMasuk']);
     Route::post('keuangan/uang-masuk/store', [KeuanganControllerKaryawan::class, 'storeUangMasuk']);
+    Route::delete('keuangan/{id}', [KeuanganControllerKaryawan::class, 'destroy'])->name('keuangan.destroy');
+    Route::get('keuangan/{id}/edit', [KeuanganControllerKaryawan::class, 'edit'])->name('keuangan.edit');
+
     // Route baru untuk menghasilkan PDF
     Route::get('/laporan-keuangan/{id}/generate-pdf', [KeuanganControllerKaryawan::class, 'generatePDF'])->name('karyawan   .keuangan-laporan.generate-pdf');
     Route::get('keuangan/export', [KeuanganControllerKaryawan::class, 'exportExcel'])->name('keuangan.export');
+
 
     //Surat Masuk
     Route::get('surat-masuk', [SuratMasukControllerKaryawan::class, 'index'])->name('surat-masuk.index');

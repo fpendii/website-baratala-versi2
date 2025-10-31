@@ -280,6 +280,7 @@ class KeuanganControllerKaryawan extends Controller
             $uangMasuk->penerima = $request->penerima;
             $uangMasuk->jenis = 'uang_masuk';
             $uangMasuk->jenis_uang = $request->jenis_uang;
+            $uangMasuk->status_persetujuan = 'tanpa persetujuan';
             $uangMasuk->persetujuan_direktur = 0; // uang masuk tidak perlu persetujuan direktur
 
             // --- Logika Penambahan Saldo berdasarkan jenis_uang ---
@@ -345,5 +346,104 @@ class KeuanganControllerKaryawan extends Controller
 
         // Lakukan export menggunakan kelas yang sudah dibuat
         return Excel::download(new LaporanKeuanganExport($filters), $namaFile);
+    }
+
+    /**
+     * Hapus (Destroy) Laporan Keuangan.
+     * Tidak mengizinkan penghapusan untuk status 'disetujui' dan 'ditolak'.
+     * Logika pengembalian saldo diterapkan untuk status 'tanpa persetujuan'.
+     */
+    public function destroy($id)
+    {
+        // 1. Cari Laporan Keuangan
+        $laporan = LaporanKeuangan::find($id);
+
+        if (!$laporan) {
+            return redirect()->to('/karyawan/keuangan')->with('error', 'Data laporan tidak ditemukan.');
+        }
+
+        // 2. CEK STATUS KEAMANAN
+        // Blokir penghapusan untuk status yang tidak boleh dihapus: 'disetujui' dan 'ditolak'.
+        if ($laporan->status_persetujuan === 'disetujui' || $laporan->status_persetujuan === 'ditolak') {
+             return redirect()->to('/karyawan/keuangan')->with('error', 'Transaksi dengan status **' . ucfirst($laporan->status_persetujuan) . '** tidak dapat dihapus.');
+        }
+
+        // Cek Batas Waktu 24 Jam untuk status yang tersisa ('menunggu' dan 'tanpa persetujuan')
+        $tanggalDibuat = Carbon::parse($laporan->created_at);
+        $batasWaktuTerlampaui = $tanggalDibuat->lte(Carbon::now()->subDay());
+
+        if ($batasWaktuTerlampaui) {
+            // Blokir semua penghapusan jika sudah lewat 24 jam, kecuali ada kebijakan khusus.
+            // Kita pertahankan batas 24 jam untuk 'menunggu' dan 'tanpa persetujuan' demi keamanan.
+            return redirect()->to('/karyawan/keuangan')->with('error', 'Transaksi hanya dapat dihapus dalam waktu 1x24 jam sejak dibuat.');
+        }
+
+
+        DB::beginTransaction();
+        try {
+            $keuangan = Keuangan::first();
+
+            if (!$keuangan) {
+                DB::rollBack();
+                return redirect()->to('/karyawan/keuangan')->with('error', 'Data Keuangan utama (Kas/Bank) tidak ditemukan.');
+            }
+
+            // 3. LOGIKA PENGEMBALIAN SALDO
+            // Saldo HANYA perlu disesuaikan jika transaksi sebelumnya SUDAH mengurangi/menambah saldo.
+            // Dalam Controller Anda: hanya status 'tanpa persetujuan' dan 'disetujui' (melalui direktur) yang memengaruhi saldo.
+            // Karena 'disetujui' diblokir, kita fokus pada 'tanpa persetujuan'.
+
+            if ($laporan->status_persetujuan === 'tanpa persetujuan') {
+                $nominal = $laporan->nominal;
+                $jenis_uang = $laporan->jenis_uang;
+                $jenis_transaksi = $laporan->jenis; // uang_masuk, pengeluaran, kasbon
+
+                if ($jenis_transaksi == 'pengeluaran' || $jenis_transaksi == 'kasbon') {
+                    // Pengeluaran/Kasbon (keluar) perlu DITAMBAHKAN kembali
+                    if ($jenis_uang == 'kas') {
+                        $keuangan->uang_kas += $nominal;
+                    } elseif ($jenis_uang == 'bank') {
+                        $keuangan->uang_rekening += $nominal;
+                    }
+                    $keuangan->nominal += $nominal;
+
+                } elseif ($jenis_transaksi == 'uang_masuk') {
+                    // Uang Masuk (masuk) perlu DIKURANGI kembali
+                    if ($jenis_uang == 'kas') {
+                        $keuangan->uang_kas -= $nominal;
+                    } elseif ($jenis_uang == 'bank') {
+                        $keuangan->uang_rekening -= $nominal;
+                    }
+                    $keuangan->nominal -= $nominal;
+                }
+
+                // Simpan perubahan pada tabel Keuangan
+                $keuangan->save();
+            }
+            // Catatan: Untuk status 'menunggu', saldo tidak berubah, jadi tidak ada yang perlu dikembalikan.
+
+
+            // 4. Hapus Lampiran (jika ada)
+            if ($laporan->lampiran) {
+                // Pastikan Anda menggunakan Storage::delete() jika file di-upload via Storage facade,
+                // atau unlink() jika via public_path/move(). Saya asumsikan unlink sesuai storePengeluaran.
+                $path = public_path('uploads/lampiran/' . $laporan->lampiran);
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+            }
+
+            // 5. Hapus Laporan Keuangan dari database
+            $laporan->delete();
+
+            DB::commit();
+
+            return redirect()->to('/karyawan/keuangan')->with('success', 'Transaksi keuangan berhasil dihapus.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Gagal menghapus transaksi: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menghapus transaksi. Terjadi kesalahan sistem.');
+        }
     }
 }
