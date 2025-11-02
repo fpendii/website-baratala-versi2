@@ -112,7 +112,8 @@ Route::get('jobdesk/{id}/edit', [JobdeskController::class, 'edit'])->name('jobde
 Route::put('jobdesk/{id}', [JobdeskController::class, 'update'])->name('jobdesk.update');
 
 // Profil
-Route::resource('profil', ProfilController::class)->only(['index', 'edit', 'update']);
+Route::get('profil', [ProfilController::class, 'index']);
+Route::post('profil/update/{id}', [ProfilController::class, 'update'])->name('profil.update');
 
 
 // Route Direktur
