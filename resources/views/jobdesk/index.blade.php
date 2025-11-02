@@ -6,12 +6,60 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h5 class="mb-0">Laporan Jobdesk Saya</h5>
-        <a href="jobdesk/create" class="btn btn-primary btn-sm">Tambah Laporan</a>
+        <a href="{{ url('jobdesk/create') }}" class="btn btn-primary btn-sm">Tambah Laporan</a>
     </div>
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+
+    {{--------------------------------------------------}}
+    {{-- START: FORM FILTER --}}
+    {{--------------------------------------------------}}
+    <div class="card mb-4 p-3 shadow-sm border-0">
+        {{-- Form menggunakan GET method, action ke halaman saat ini --}}
+        <form method="GET" action="{{ url()->current() }}" class="row g-3 align-items-end">
+
+            {{-- Filter Status --}}
+            <div class="col-lg-3 col-md-4 col-12">
+                <label for="filter_status" class="form-label fw-medium">Filter Status</label>
+                <select name="status" id="filter_status" class="form-select form-select-sm">
+                    <option value="semua">-- Semua Status --</option>
+                    @php
+                        // Daftar status yang mungkin
+                        $statuses = ['belum-dikerjakan', 'on-progress', 'selesai', 'tidak-dikerjakan', 'selesai'];
+                        // Ambil status yang aktif dari request, default 'semua'
+                        $currentStatus = request('status', 'semua');
+                    @endphp
+                    @foreach ($statuses as $status)
+                        <option value="{{ $status }}" {{ $currentStatus == $status ? 'selected' : '' }}>
+                            {{ ucfirst($status) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Filter Pencarian Teks --}}
+            <div class="col-lg-5 col-md-8 col-12">
+                <label for="filter_cari" class="form-label fw-medium">Cari Laporan</label>
+                <input type="text" name="cari" id="filter_cari" class="form-control form-control-sm"
+                       placeholder="Judul Tugas atau Deskripsi..."
+                       value="{{ request('cari') }}"> {{-- Pertahankan nilai pencarian --}}
+            </div>
+
+            {{-- Tombol Aksi --}}
+            <div class="col-lg-4 col-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-info btn-sm me-2 w-50">
+                    <i class="bx bx-filter-alt me-1"></i> Filter
+                </button>
+                {{-- Tombol Reset, mengarahkan ke URL tanpa query string --}}
+                <a href="{{ url()->current() }}" class="btn btn-outline-secondary btn-sm w-50">
+                    <i class="bx bx-reset me-1"></i> Reset
+                </a>
+            </div>
+        </form>
+    </div>
+    {{-- END: FORM FILTER --}}
 
     <div class="card overflow-hidden">
         <div class="table-responsive">
@@ -36,10 +84,10 @@
                                 @php
                                     $statusClass =
                                         [
-                                            'diterima' => 'success',
-                                            'ditolak' => 'danger',
-                                            'menunggu' => 'warning',
-                                            'direvisi' => 'info', // Tambahkan status lain jika ada
+                                            'selesai' => 'success',
+                                            'tidak-dikerjakan' => 'danger',
+                                            'on-progress' => 'warning',
+                                            'belum-dikerjakan' => 'info', // Tambahkan status lain jika ada
                                         ][$item->status] ?? 'secondary';
                                 @endphp
                                 <span class="badge bg-label-{{ $statusClass }}">{{ ucfirst($item->status) }}</span>

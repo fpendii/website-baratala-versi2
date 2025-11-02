@@ -16,17 +16,41 @@ class JobdeskController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         // Get the ID of the logged-in user
         $userId = Auth::id();
 
-        // Retrieve all jobdesk reports for the current user,
-        // with eager loading for the 'jobdesk' relationship
-        $laporanJobdesks = LaporanJobdesk::where('id_pengguna', $userId)
-            ->with('jobdesk')
+        // Mulai query dengan kondisi dasar
+        $query = LaporanJobdesk::where('id_pengguna', $userId)
+            ->with('jobdesk');
+
+        // --- FILTER LOGIC ---
+
+        // 1. Filter berdasarkan Status
+        if ($request->filled('status') && $request->status !== 'semua') {
+            $query->where('status', $request->status);
+        }
+
+        // 2. Filter berdasarkan Pencarian (Judul Jobdesk atau Deskripsi Laporan)
+        if ($request->filled('cari')) {
+            $search = $request->cari;
+            $query->where(function ($q) use ($search) {
+                // Cari di kolom 'deskripsi' LaporanJobdesk
+                $q->where('deskripsi', 'like', '%' . $search . '%')
+                  // ATAU Cari di kolom 'judul_jobdesk' pada relasi 'jobdesk'
+                  ->orWhereHas('jobdesk', function ($r) use ($search) {
+                      $r->where('judul_jobdesk', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+
+        // ----------------------
+
+        // Eksekusi Query
+        $laporanJobdesks = $query
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get(); // Gunakan paginate() jika ingin pagination
 
         return view('jobdesk.index', compact('laporanJobdesks'));
     }
