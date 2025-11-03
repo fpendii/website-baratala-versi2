@@ -9,15 +9,38 @@ use Illuminate\Support\Facades\DB;
 
 class DataJobdeskController extends Controller
 {
-    public function index()
+    public function index(Request $request) // Terima objek Request
     {
-        $jobdesks = Jobdesk::all();
-        return view('administrasi.jobdesk.index', compact('jobdesks'));
+        $query = Jobdesk::query(); // Mulai query
+
+        // 1. Terapkan Filter Divisi
+        if ($request->filled('divisi') && $request->divisi !== 'semua') {
+            $query->where('divisi', $request->divisi);
+        }
+
+        // 2. Terapkan Pencarian Judul Jobdesk
+        if ($request->filled('cari')) {
+            $search = $request->cari;
+            $query->where('judul_jobdesk', 'like', '%' . $search . '%');
+        }
+
+        // Ambil daftar unik divisi untuk dropdown filter
+        // Ini memastikan dropdown hanya menampilkan divisi yang sudah ada di database.
+        $availableDivisions = Jobdesk::select('divisi')->distinct()->pluck('divisi');
+
+        // Eksekusi query (Gunakan pagination disarankan untuk data administrasi)
+        $jobdesks = $query->paginate(10)->appends($request->query());
+
+        // CATATAN: Jika Anda TIDAK menggunakan pagination, ganti baris di atas dengan:
+        // $jobdesks = $query->get();
+
+        // Kirim $availableDivisions ke view
+        return view('data-jobdesk.index', compact('jobdesks', 'availableDivisions'));
     }
 
     public function create()
     {
-        return view('administrasi.jobdesk.create');
+        return view('data-jobdesk.create');
     }
 
     public function store(Request $request)
@@ -73,7 +96,7 @@ class DataJobdeskController extends Controller
     public function edit($id)
     {
         $jobdesk = Jobdesk::findOrFail($id);
-        return view('administrasi.jobdesk.edit', compact('jobdesk'));
+        return view('data-jobdesk.edit', compact('jobdesk'));
     }
 
     // Update data

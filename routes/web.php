@@ -43,7 +43,7 @@ use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\JobdeskController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\DataJobdeskController;
-
+use App\Http\Controllers\PenggunaController;
 
 
 
@@ -120,6 +120,15 @@ Route::post('jobdesk/store', [JobdeskController::class, 'store'])->name('jobdesk
 Route::get('jobdesk/{id}', [JobdeskController::class, 'show'])->name('jobdesk.show');
 Route::get('jobdesk/{id}/edit', [JobdeskController::class, 'edit'])->name('jobdesk.edit');
 Route::put('jobdesk/{id}', [JobdeskController::class, 'update'])->name('jobdesk.update');
+
+// Route Pengguna
+Route::get('pengguna', [PenggunaController::class, 'index'])->name('pengguna.index');
+Route::get('pengguna/create', [PenggunaController::class, 'create'])->name('pengguna.create');
+Route::post('pengguna/store', [PenggunaController::class, 'store'])->name('pengguna.store');
+Route::get('pengguna/{id}', [PenggunaController::class, 'show'])->name('pengguna.show');
+Route::get('pengguna/edit/{id}', [PenggunaController::class, 'edit'])->name('pengguna.edit');
+Route::put('pengguna/update/{id}', [PenggunaController::class, 'update'])->name('pengguna.update');
+Route::delete('pengguna/delete/{id}', [PenggunaController::class, 'destroy'])->name('pengguna.destroy');
 
 // Profil
 Route::get('profil', [ProfilController::class, 'index']);

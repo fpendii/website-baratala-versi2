@@ -79,13 +79,13 @@
                         </a>
                     </li>
 
-                    @if ( auth()->user()->role == 'admin' )
-                         <li class="menu-item {{ request()->is('data-jobdesk*') ? 'active' : '' }}">
-                        <a href="/data-jobdesk" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-task-line"></i>
-                            <div data-i18n="Basic">Jobdesk</div>
-                        </a>
-                    </li>
+                    @if (auth()->user()->role == 'admin')
+                        <li class="menu-item {{ request()->is('data-jobdesk*') ? 'active' : '' }}">
+                            <a href="/data-jobdesk" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-task-line"></i>
+                                <div data-i18n="Basic">Jobdesk</div>
+                            </a>
+                        </li>
                     @endif
 
 
@@ -105,11 +105,11 @@
 
                     @if (auth()->user()->role == 'keuangan' || auth()->user()->role == 'direktur')
                         <li class="menu-item {{ request()->is('keuangan*') ? 'active' : '' }}">
-                        <a href="/keuangan" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-wallet-3-line"></i>
-                            <div data-i18n="Basic">Keuangan</div>
-                        </a>
-                    </li>
+                            <a href="/keuangan" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-wallet-3-line"></i>
+                                <div data-i18n="Basic">Keuangan</div>
+                            </a>
+                        </li>
                     @endif
 
 
@@ -120,12 +120,22 @@
                         </a>
                     </li>
 
+                    @if (auth()->user()->role == 'admin')
+                    <li class="menu-item {{ request()->is('/pengguna*') ? 'active' : '' }}">
+                        <a href="/pengguna" class="menu-link">
+                            <i class="menu-icon icon-base ri ri-team-line"></i>
+                            <div data-i18n="Basic">Pengguna</div>
+                        </a>
+                    </li>
+                    @endif
+
                     <li class="menu-item {{ request()->is('profil*') ? 'active' : '' }}">
                         <a href="/profil" class="menu-link">
                             <i class="menu-icon icon-base ri ri-user-line"></i>
                             <div data-i18n="Basic">Profil</div>
                         </a>
                     </li>
+
 
                     <li class="menu-item">
                         <a href="/logout" class="menu-link">
@@ -156,8 +166,8 @@
                         <div class="navbar-nav align-items-center">
                             <div class="nav-item d-flex align-items-center">
                                 <i class="icon-base ri ri-search-line icon-lg lh-0"></i>
-                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
-                                    aria-label="Search..." />
+                                <input type="text" class="form-control border-0 shadow-none"
+                                    placeholder="Search..." aria-label="Search..." />
                             </div>
                         </div>
                         <!-- /Search -->

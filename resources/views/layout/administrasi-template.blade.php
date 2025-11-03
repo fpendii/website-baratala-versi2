@@ -100,7 +100,7 @@
                         </a>
                     </li>
 
-                     <li class="menu-item {{ request()->is('administrasi/karyawan*') ? 'active' : '' }}">
+                    <li class="menu-item {{ request()->is('administrasi/karyawan*') ? 'active' : '' }}">
                         <a href="/administrasi/karyawan" class="menu-link">
                             <i class="menu-icon icon-base ri ri-team-line"></i>
                             <div data-i18n="Basic">Karyawan</div>
@@ -133,17 +133,21 @@
 
                             <!-- Notification Dropdown START -->
                             <li class="nav-item dropdown me-3 mr-3">
-                                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);"
+                                    data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                     <i class="icon-base ri ri-notification-3-line icon-md"></i>
                                     {{-- Badge notifikasi jika ada pesan baru. Ganti angka '4' di dropdown header dengan counter dinamis. --}}
-                                    <span class="badge badge-dot bg-danger position-absolute top-0 start-100 translate-middle"></span>
+                                    <span
+                                        class="badge badge-dot bg-danger position-absolute top-0 start-100 translate-middle"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end shadow-lg" style="width: 300px;">
                                     <li class="dropdown-header d-flex justify-content-between">
                                         <h6 class="mb-0 fw-bold">Notifikasi</h6>
                                         <span class="badge bg-danger rounded-pill">4 Baru</span>
                                     </li>
-                                    <li><div class="dropdown-divider"></div></li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
                                     <li>
                                         <a class="dropdown-item d-flex align-items-center" href="javascript:void(0)">
                                             <div class="flex-shrink-0 me-3">
@@ -181,7 +185,8 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li class="dropdown-footer text-center">
-                                        <a href="javascript:void(0)" class="text-primary small">Lihat Semua Notifikasi</a>
+                                        <a href="javascript:void(0)" class="text-primary small">Lihat Semua
+                                            Notifikasi</a>
                                     </li>
                                 </ul>
                             </li>
