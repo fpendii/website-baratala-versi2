@@ -103,7 +103,12 @@ class KeuanganController extends Controller
             // jika memerlukan persetujuan direktur
             if ($request->persetujuan_direktur == 1) {
                 // Jika perlu persetujuan direktur, set status menunggu
+
+
                 $pengeluaran->status_persetujuan = 'menunggu';
+
+                // Kirim WA notif ke direktur
+                $this->sendWhatsAppToDirektur($pengeluaran);
             } else {
                 // Jika tidak perlu persetujuan, langsung set disetujui
                 $pengeluaran->status_persetujuan = 'tanpa persetujuan';
@@ -115,14 +120,14 @@ class KeuanganController extends Controller
                     // Kurangi sisa uang kas
                     if ($keuangan->uang_kas < $nominalNumeric) {
                         DB::rollBack();
-                        return redirect()->to('/karyawan/keuangan/pengeluaran/create')->with('error', 'Saldo **Kas** tidak mencukupi!')->withInput();
+                        return redirect()->to('keuangan/pengeluaran/create')->with('error', 'Saldo **Kas** tidak mencukupi!')->withInput();
                     }
                     $keuangan->uang_kas -= $nominalNumeric;
                 } elseif ($jenisUang == 'bank') {
                     // Kurangi sisa uang rekening
                     if ($keuangan->uang_rekening < $nominalNumeric) {
                         DB::rollBack();
-                        return redirect()->to('/karyawan/keuangan/pengeluaran/create')->with('error', 'Saldo **Bank** tidak mencukupi!')->withInput();
+                        return redirect()->to('keuangan/pengeluaran/create')->with('error', 'Saldo **Bank** tidak mencukupi!')->withInput();
                     }
                     $keuangan->uang_rekening -= $nominalNumeric;
                 }
@@ -148,7 +153,7 @@ class KeuanganController extends Controller
             $pengeluaran->save();
             DB::commit();
 
-            return redirect()->to('/karyawan/keuangan')->with('success', 'Pengeluaran kas berhasil disimpan.');
+            return redirect()->to('keuangan')->with('success', 'Pengeluaran kas berhasil disimpan.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Gagal menyimpan pengeluaran: ' . $e->getMessage());
@@ -156,6 +161,41 @@ class KeuanganController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
     }
+
+    private function sendWhatsAppToDirektur($pengeluaran)
+    {
+        // Tentukan salam otomatis berdasarkan waktu
+        $hour = now()->format('H');
+        if ($hour >= 5 && $hour < 12) {
+            $salam = 'Selamat Pagi';
+        } elseif ($hour >= 12 && $hour < 17) {
+            $salam = 'Selamat Siang';
+        } elseif ($hour >= 17 && $hour < 20) {
+            $salam = 'Selamat Sore';
+        } else {
+            $salam = 'Selamat Malam';
+        }
+
+        // Ambil direktur
+        $direktur = \App\Models\Pengguna::where('role', 'direktur')->first();
+
+        if (!$direktur || !$direktur->no_hp) {
+            Log::error("Tidak ada nomor WA direktur terdaftar!");
+            return;
+        }
+
+        $message = "👋 *{$salam}, {$direktur->nama}!* \n\n"
+            . "Terdapat pengajuan *pengeluaran* yang memerlukan persetujuan.\n\n"
+            . "📝 *Keperluan:* {$pengeluaran->keperluan}\n"
+            . "💰 *Nominal:* Rp " . number_format($pengeluaran->nominal, 0, ',', '.') . "\n"
+            . "📅 *Tanggal:* {$pengeluaran->tanggal}\n"
+            . "👤 *Diajukan oleh:* " . Auth::user()->nama . "\n\n"
+            . "Silakan buka aplikasi untuk melakukan *persetujuan*.\n\n"
+            . "_Notifikasi otomatis dari Sistem Baratala_";
+
+        \App\Helpers\WhatsAppHelper::send($direktur->no_hp, $message);
+    }
+
 
     public function createKasbon()
     {
@@ -171,7 +211,9 @@ class KeuanganController extends Controller
             'keperluan' => 'required|string',
             'nominal' => 'required|string',
             'jenis_uang' => 'required|in:kas,bank',
-            'status_persetujuan' => 'required|in:menunggu,disetujui,tanpa persetujuan', // Sesuaikan opsi status
+            // Tambahkan persetujuan_direktur seperti di storePengeluaran
+            'status_persetujuan' => 'required',
+            // 'status_persetujuan' dihilangkan karena akan ditentukan oleh logika di bawah
         ]);
 
         // Bersihkan nominal -> hapus titik/koma pemisah ribuan
@@ -195,27 +237,36 @@ class KeuanganController extends Controller
             $kasbon->keperluan = $request->keperluan;
             $kasbon->nominal = $nominalNumeric;
             $kasbon->penerima = $request->penerima;
-            $kasbon->jenis = 'kasbon';
+            $kasbon->jenis = 'kasbon'; // Jenis tetap 'kasbon'
             $kasbon->jenis_uang = $request->jenis_uang;
-            $kasbon->status_persetujuan = $request->status_persetujuan;
-            $kasbon->persetujuan_direktur = $request->status_persetujuan == 'menunggu' ? 1 : 0; // Sesuaikan jika perlu kolom ini
+            $kasbon->persetujuan_direktur = $request->status_persetujuan; // Ambil dari request
 
-            // Logika Pengurangan Saldo hanya jika status_persetujuan BUKAN 'menunggu'
-            if ($request->status_persetujuan != 'menunggu') {
+            // LOGIKA PERSYARATAN PERSETUJUAN (SAMA DENGAN storePengeluaran)
+            if ($request->status_persetujuan == 1) {
+                // Jika perlu persetujuan direktur, set status menunggu
+                $kasbon->status_persetujuan = 'menunggu';
+
+                // Kirim WA notif ke direktur (gunakan fungsi yang sudah ada)
+                $this->sendWhatsAppToDirektur($kasbon);
+            } else {
+                // Jika tidak perlu persetujuan, langsung set disetujui (tanpa persetujuan)
+                $kasbon->status_persetujuan = 'tanpa persetujuan';
+
+                // --- Logika Pengurangan Saldo berdasarkan jenis_uang ---
                 $jenisUang = $request->jenis_uang;
 
                 if ($jenisUang == 'kas') {
                     // Kurangi sisa uang kas
                     if ($keuangan->uang_kas < $nominalNumeric) {
                         DB::rollBack();
-                        return redirect()->to('/karyawan/keuangan/kasbon/create')->with('error', 'Saldo **Kas** tidak mencukupi!')->withInput();
+                        return redirect()->to('keuangan/kasbon/create')->with('error', 'Saldo **Kas** tidak mencukupi!')->withInput();
                     }
                     $keuangan->uang_kas -= $nominalNumeric;
                 } elseif ($jenisUang == 'bank') {
                     // Kurangi sisa uang rekening
                     if ($keuangan->uang_rekening < $nominalNumeric) {
                         DB::rollBack();
-                        return redirect()->to('/karyawan/keuangan/kasbon/create')->with('error', 'Saldo **Bank** tidak mencukupi!')->withInput();
+                        return redirect()->to('keuangan/kasbon/create')->with('error', 'Saldo **Bank** tidak mencukupi!')->withInput();
                     }
                     $keuangan->uang_rekening -= $nominalNumeric;
                 }
@@ -226,13 +277,17 @@ class KeuanganController extends Controller
                 // Simpan perubahan pada tabel Keuangan
                 $keuangan->save();
             }
+            // END LOGIKA PERSYARATAN PERSETUJUAN
+
+            // Catatan: Tidak ada upload 'lampiran' di validasi/storeKasbon. Jika harusnya ada, tambahkan.
+            // Asumsi kasbon tidak memerlukan lampiran saat pengajuan.
 
             // Simpan data kasbon (laporan keuangan)
             $kasbon->save();
 
             DB::commit();
 
-            return redirect()->to('/karyawan/keuangan')->with('success', 'Kasbon berhasil disimpan dengan status ' . $request->status_persetujuan . '.');
+            return redirect()->to('keuangan')->with('success', 'Kasbon berhasil disimpan dengan status ' . $kasbon->status_persetujuan . '.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Gagal menyimpan kasbon: ' . $e->getMessage());
@@ -305,7 +360,7 @@ class KeuanganController extends Controller
 
             DB::commit();
 
-            return redirect()->to('/karyawan/keuangan')->with('success', 'Pemasukan kas berhasil disimpan.');
+            return redirect()->to('keuangan')->with('success', 'Pemasukan kas berhasil disimpan.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Gagal menyimpan pemasukan kas: ' . $e->getMessage());
@@ -359,13 +414,13 @@ class KeuanganController extends Controller
         $laporan = LaporanKeuangan::find($id);
 
         if (!$laporan) {
-            return redirect()->to('/karyawan/keuangan')->with('error', 'Data laporan tidak ditemukan.');
+            return redirect()->to('keuangan')->with('error', 'Data laporan tidak ditemukan.');
         }
 
         // 2. CEK STATUS KEAMANAN
         // Blokir penghapusan untuk status yang tidak boleh dihapus: 'disetujui' dan 'ditolak'.
         if ($laporan->status_persetujuan === 'disetujui' || $laporan->status_persetujuan === 'ditolak') {
-             return redirect()->to('/karyawan/keuangan')->with('error', 'Transaksi dengan status **' . ucfirst($laporan->status_persetujuan) . '** tidak dapat dihapus.');
+            return redirect()->to('keuangan')->with('error', 'Transaksi dengan status **' . ucfirst($laporan->status_persetujuan) . '** tidak dapat dihapus.');
         }
 
         // Cek Batas Waktu 24 Jam untuk status yang tersisa ('menunggu' dan 'tanpa persetujuan')
@@ -375,7 +430,7 @@ class KeuanganController extends Controller
         if ($batasWaktuTerlampaui) {
             // Blokir semua penghapusan jika sudah lewat 24 jam, kecuali ada kebijakan khusus.
             // Kita pertahankan batas 24 jam untuk 'menunggu' dan 'tanpa persetujuan' demi keamanan.
-            return redirect()->to('/karyawan/keuangan')->with('error', 'Transaksi hanya dapat dihapus dalam waktu 1x24 jam sejak dibuat.');
+            return redirect()->to('keuangan')->with('error', 'Transaksi hanya dapat dihapus dalam waktu 1x24 jam sejak dibuat.');
         }
 
 
@@ -385,7 +440,7 @@ class KeuanganController extends Controller
 
             if (!$keuangan) {
                 DB::rollBack();
-                return redirect()->to('/karyawan/keuangan')->with('error', 'Data Keuangan utama (Kas/Bank) tidak ditemukan.');
+                return redirect()->to('keuangan')->with('error', 'Data Keuangan utama (Kas/Bank) tidak ditemukan.');
             }
 
             // 3. LOGIKA PENGEMBALIAN SALDO
@@ -406,7 +461,6 @@ class KeuanganController extends Controller
                         $keuangan->uang_rekening += $nominal;
                     }
                     $keuangan->nominal += $nominal;
-
                 } elseif ($jenis_transaksi == 'uang_masuk') {
                     // Uang Masuk (masuk) perlu DIKURANGI kembali
                     if ($jenis_uang == 'kas') {
@@ -438,8 +492,7 @@ class KeuanganController extends Controller
 
             DB::commit();
 
-            return redirect()->to('/karyawan/keuangan')->with('success', 'Transaksi keuangan berhasil dihapus.');
-
+            return redirect()->to('keuangan')->with('success', 'Transaksi keuangan berhasil dihapus.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Gagal menghapus transaksi: ' . $e->getMessage());

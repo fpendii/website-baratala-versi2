@@ -90,20 +90,20 @@
                         </li>
 
                         <!-- Rencana Kerja -->
-                        <li class="menu-item {{ request()->is('direktur/rencana*') ? 'active' : '' }}">
+                        {{-- <li class="menu-item {{ request()->is('direktur/rencana*') ? 'active' : '' }}">
                             <a href="{{ route('direktur.rencana.index') }}" class="menu-link">
                                 <i class="menu-icon icon-base ri ri-calendar-check-line"></i>
                                 <div data-i18n="Basic">Rencana Kerja</div>
                             </a>
-                        </li>
+                        </li> --}}
 
-                        <!-- Surat Masuk -->
+                        {{-- <!-- Surat Masuk -->
                         <li class="menu-item {{ request()->is('direktur/surat-masuk*') ? 'active' : '' }}">
                             <a href="{{ route('direktur.surat-masuk.index') }}" class="menu-link">
                                 <i class="menu-icon icon-base ri ri-mail-open-line"></i>
                                 <div data-i18n="Basic">Surat Masuk</div>
                             </a>
-                        </li>
+                        </li> --}}
 
                         <!-- Laporan Keuangan -->
                         <li class="menu-item {{ request()->is('direktur/keuangan-laporan*') ? 'active' : '' }}">

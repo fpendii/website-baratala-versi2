@@ -77,7 +77,8 @@
                             class="btn btn-outline-success btn-sm">
                             Export Excel
                         </a>
-                        <a href="{{ url('keuangan/pengeluaran/create') }}" class="btn btn-danger btn-sm">
+                      @if (Auth::user()->role != 'direktur')
+                             <a href="{{ url('keuangan/pengeluaran/create') }}" class="btn btn-danger btn-sm">
                             + Pengeluaran Kas
                         </a>
                         <a href="{{ url('keuangan/kasbon/create') }}" class="btn btn-warning btn-sm">
@@ -86,6 +87,8 @@
                         <a href="{{ url('keuangan/uang-masuk/create') }}" class="btn btn-success btn-sm">
                             + Uang Masuk
                         </a>
+                        @endif
+
                     </div>
                 </div>
 
