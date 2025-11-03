@@ -1,4 +1,4 @@
-@extends('layout.karyawan-template')
+@extends('layout.app')
 
 @section('title', 'Tambah Rencana Kerja')
 
@@ -9,7 +9,7 @@
             <h5 class="mb-0">Tambah Rencana Kerja</h5>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ route('karyawan.rencana.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('rencana.store') }}" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-3">

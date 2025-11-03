@@ -99,6 +99,9 @@ Route::put('rencana/{id}', [RencanaController::class, 'update'])->name('rencana.
 Route::get('rencana', [RencanaController::class, 'index'])->name('rencana.index');
 Route::delete('rencana/delete/{id}', [RencanaController::class, 'destroy'])->name('rencana.destroy');
 Route::patch('rencana/{id}/update-status', [RencanaController::class, 'updateStatus'])->name('rencana.updateStatus');
+Route::post('rencana/updatePengguna/{id}', [RencanaController::class, 'updatePengguna'])->name('rencana.updatePengguna');
+Route::post('rencana/komentar/{id}', [RencanaController::class, 'komentar'])->name('rencana.komentar');
+Route::post('rencana/komentar/{id}/status', [RencanaController::class, 'updateKomentarStatus'])->name('rencana.komentar.status');
 
 Route::post('rencana/komentar/{id}', [RencanaController::class, 'komentar'])->name('rencana.komentar');
 
@@ -137,15 +140,15 @@ Route::post('profil/update/{id}', [ProfilController::class, 'update'])->name('pr
 
 // Route Direktur
 Route::prefix('direktur')->name('direktur.')->group(function () {
-    // Dashboard
-    Route::get('dashboard', [DashboardControllerDirektur::class, 'index'])->name('dashboard');
+    // // Dashboard
+    // Route::get('dashboard', [DashboardControllerDirektur::class, 'index'])->name('dashboard');
 
-    // Rencana kerja
-    Route::resource('rencana', RencanaControllerDirektur::class);
-    Route::post('rencana/updatePengguna/{id}', [RencanaControllerDirektur::class, 'updatePengguna'])->name('rencana.updatePengguna');
-    Route::post('rencana/komentar/{id}', [RencanaControllerDirektur::class, 'komentar'])->name('rencana.komentar');
-    // Ubah status komentar
-    Route::post('rencana/komentar/{id}/status', [RencanaControllerDirektur::class, 'updateKomentarStatus'])->name('rencana.komentar.status');
+    // // Rencana kerja
+    // Route::resource('rencana', RencanaControllerDirektur::class);
+    // Route::post('rencana/updatePengguna/{id}', [RencanaControllerDirektur::class, 'updatePengguna'])->name('rencana.updatePengguna');
+    // Route::post('rencana/komentar/{id}', [RencanaControllerDirektur::class, 'komentar'])->name('rencana.komentar');
+    // // Ubah status komentar
+    // Route::post('rencana/komentar/{id}/status', [RencanaControllerDirektur::class, 'updateKomentarStatus'])->name('rencana.komentar.status');
 
     //Surat Masuk
     Route::get('surat-masuk', [SuratMasukControllerDirektur::class, 'index'])->name('surat-masuk.index');

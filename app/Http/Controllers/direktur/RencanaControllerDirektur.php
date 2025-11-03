@@ -128,6 +128,7 @@ class RencanaControllerDirektur extends Controller
 
     public function updatePengguna(Request $request, $id)
     {
+        dd($request->all());
         $tugas = Tugas::findOrFail($id);
 
         // validasi input pengguna (array id user)

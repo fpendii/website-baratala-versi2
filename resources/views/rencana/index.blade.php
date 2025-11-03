@@ -6,7 +6,9 @@
     {{-- Header dengan Judul dan Tombol Aksi --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold py-3 mb-0">
-            <i class="bx bx-calendar-check me-2 text-primary"></i> Rencana Kerja Saya
+            <i class="bx bx-calendar-check me-2 text-primary"></i> Rencana Kerja @if (Auth::user()->role != 'direktur')
+                Saya
+            @endif
         </h4>
         <a href="{{ route('rencana.create') }}" class="btn btn-primary shadow-sm">
             <i class="icon-base ri ri-add-line icon-18px me-1"></i> Tambah
@@ -111,9 +113,9 @@
                                 </span>
                             </td>
 
-                            {{--------------------------------------------------}}
+                            {{-- ---------------------------------------------- --}}
                             {{-- FITUR UPDATE STATUS DENGAN DROPDOWN (3 STATUS) --}}
-                            {{--------------------------------------------------}}
+                            {{-- ---------------------------------------------- --}}
                             <td>
                                 @php
                                     $statusList = ['belum dikerjakan', 'on progress', 'selesai'];
@@ -127,42 +129,50 @@
                                     // dan petakan ke badge yang sesuai, atau default ke secondary.
                                     $badgeClass = $statusClass[$currentStatus] ?? 'secondary';
                                     if ($currentStatus == 'direview' || $currentStatus == 'ditunda') {
-                                        $badgeClass = ($currentStatus == 'direview') ? 'info' : 'secondary';
+                                        $badgeClass = $currentStatus == 'direview' ? 'info' : 'secondary';
                                     }
                                 @endphp
-                                <div class="dropdown">
-                                    <button type="button"
-                                        class="btn btn-sm badge bg-label-{{ $badgeClass }} dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                        style="cursor: pointer;">
+                                @if (Auth::user()->role == 'direktur')
+                                    {{-- Direktur hanya melihat status, tanpa bisa mengubah --}}
+                                    <span class="badge bg-label-{{ $badgeClass }}">
                                         {{ ucfirst($currentStatus) }}
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        {{-- Loop hanya untuk 3 status yang diinginkan --}}
-                                        @foreach ($statusList as $status)
-                                            <form action="{{ url('karyawan/rencana/'.$item->id.'/update-status') }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="status" value="{{ $status }}">
-                                                <button type="submit"
-                                                        class="dropdown-item"
+                                    </span>
+                                @else
+                                    {{-- Karyawan bisa mengubah status --}}
+                                    <div class="dropdown">
+                                        <button type="button"
+                                            class="btn btn-sm badge bg-label-{{ $badgeClass }} dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+                                            {{ ucfirst($currentStatus) }}
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            @foreach ($statusList as $status)
+                                                <form
+                                                    action="{{ url('karyawan/rencana/' . $item->id . '/update-status') }}"
+                                                    method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="status" value="{{ $status }}">
+                                                    <button type="submit" class="dropdown-item"
                                                         {{ $currentStatus === $status ? 'disabled' : '' }}>
-                                                    <span class="badge bg-label-{{ $statusClass[$status] ?? 'secondary' }} me-1"></span>
-                                                    {{ ucfirst($status) }}
-                                                    @if ($currentStatus === $status)
-                                                        <i class="ri ri-check-line text-success ms-1"></i>
-                                                    @endif
-                                                </button>
-                                            </form>
-                                        @endforeach
+                                                        <span
+                                                            class="badge bg-label-{{ $statusClass[$status] ?? 'secondary' }} me-1"></span>
+                                                        {{ ucfirst($status) }}
+                                                        @if ($currentStatus === $status)
+                                                            <i class="ri ri-check-line text-success ms-1"></i>
+                                                        @endif
+                                                    </button>
+                                                </form>
+                                            @endforeach
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
+
                             </td>
 
-                            {{--------------------------------------------------}}
+                            {{-- ---------------------------------------------- --}}
                             {{-- KOLOM AKSI (MODAL DETAIL DI SINI) --}}
-                            {{--------------------------------------------------}}
+                            {{-- ---------------------------------------------- --}}
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none"
@@ -170,36 +180,29 @@
                                         <i class="icon-base ri ri-more-2-line icon-18px"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        {{-- TOMBOL UNTUK DETAIL --}}
-                                        <a class="dropdown-item btn-detail-rencana" href="javascript:void(0);"
-                                            data-bs-toggle="modal" data-bs-target="#detailRencanaModal"
-                                            data-judul="{{ $item->judul_rencana }}"
-                                            data-jenis="{{ ucfirst($item->jenis) }}"
-                                            data-deskripsi="{{ $item->deskripsi ?? 'Tidak ada deskripsi.' }}"
-                                            data-mulai="{{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') }}"
-                                            data-selesai="{{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y') }}"
-                                            data-prioritas="{{ strtolower($item->prioritas) }}"
-                                            data-status="{{ strtolower($item->status) }}"
-                                            data-lampiran="{{ $item->lampiran ? asset('storage/' . $item->lampiran) : '' }}">
-                                            <i class="icon-base ri ri-eye-line icon-18px me-1"></i> Detail
+                                        <a class="dropdown-item" href="{{ route('rencana.show', $item->id) }}">
+                                            <i class="icon-base ri ri-eye-line icon-18px me-1"></i>
+                                            Detail
                                         </a>
 
-                                        {{-- Tombol Edit yang sudah ada --}}
-                                        <a class="dropdown-item"
-                                            href="{{ url('karyawan/rencana/'.$item->id.'/edit') }}">
-                                            <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
-                                            Edit
-                                        </a>
-                                        {{-- Form Delete yang sudah ada --}}
-                                        <form action="{{ url('/karyawan/rencana/delete/' . $item->id) }}" method="POST"
-                                            onsubmit="return confirm('Yakin hapus data ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="dropdown-item text-danger" type="submit">
-                                                <i class="icon-base ri ri-delete-bin-6-line icon-18px me-1"></i>
-                                                Delete
-                                            </button>
-                                        </form>
+                                        @if (Auth::user()->role != 'direktur')
+                                            {{-- Tombol Edit yang sudah ada --}}
+                                            <a class="dropdown-item"
+                                                href="{{ url('karyawan/rencana/' . $item->id . '/edit') }}">
+                                                <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
+                                                Edit
+                                            </a>
+                                            {{-- Form Delete yang sudah ada --}}
+                                            <form action="{{ url('/karyawan/rencana/delete/' . $item->id) }}"
+                                                method="POST" onsubmit="return confirm('Yakin hapus data ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="dropdown-item text-danger" type="submit">
+                                                    <i class="icon-base ri ri-delete-bin-6-line icon-18px me-1"></i>
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        @endif
                                     </div>
                                 </div>
                             </td>
@@ -209,7 +212,10 @@
                         <tr>
                             <td colspan="6" class="text-center py-5">
                                 <i class="bx bx-calendar-plus bx-lg d-block mb-3 text-muted"></i>
-                                <h6 class="mb-1 text-dark">Belum ada Rencana Kerja yang Anda buat.</h6>
+                                <h6 class="mb-1 text-dark">Belum ada Rencana Kerja @if (Auth::user()->role != 'direktur')
+                                        yang Anda buat.
+                                    @endif
+                                </h6>
                                 <p class="text-muted">Ayo mulai catat rencana kerja Anda untuk minggu/bulan ini!</p>
                                 <a href="{{ route('rencana.create') }}" class="btn btn-sm btn-primary mt-2">
                                     <i class="bx bx-plus me-1"></i> Buat Rencana
@@ -223,9 +229,9 @@
     </div>
 @endsection
 
-{{--------------------------------------------------}}
+{{-- ---------------------------------------------- --}}
 {{-- MODAL DETAIL RENCANA KERJA --}}
-{{--------------------------------------------------}}
+{{-- ---------------------------------------------- --}}
 <div class="modal fade" id="detailRencanaModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -290,75 +296,76 @@
 </div>
 
 @push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const detailRencanaModal = document.getElementById('detailRencanaModal');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const detailRencanaModal = document.getElementById('detailRencanaModal');
 
-    detailRencanaModal.addEventListener('show.bs.modal', function(event) {
-        const button = event.relatedTarget;
-        const data = {
-            judul: button.getAttribute('data-judul'),
-            jenis: button.getAttribute('data-jenis'),
-            deskripsi: button.getAttribute('data-deskripsi'),
-            mulai: button.getAttribute('data-mulai'),
-            selesai: button.getAttribute('data-selesai'),
-            prioritas: button.getAttribute('data-prioritas'),
-            status: button.getAttribute('data-status'),
-            lampiran: button.getAttribute('data-lampiran')
-        };
+            detailRencanaModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const data = {
+                    judul: button.getAttribute('data-judul'),
+                    jenis: button.getAttribute('data-jenis'),
+                    deskripsi: button.getAttribute('data-deskripsi'),
+                    mulai: button.getAttribute('data-mulai'),
+                    selesai: button.getAttribute('data-selesai'),
+                    prioritas: button.getAttribute('data-prioritas'),
+                    status: button.getAttribute('data-status'),
+                    lampiran: button.getAttribute('data-lampiran')
+                };
 
-        // Mapping class untuk status dan prioritas
-        const prioritasClassMap = {
-            'tinggi': 'danger',
-            'sedang': 'warning',
-            'rendah': 'secondary',
-        };
-        // Mapping status yang disederhanakan
-        const statusClassMap = {
-            'selesai': 'success',
-            'on progress': 'primary',
-            'belum dikerjakan': 'warning',
-            // Menambahkan mapping untuk status yang mungkin ada dari data lama
-            'direview': 'info',
-            'ditunda': 'secondary',
-        };
+                // Mapping class untuk status dan prioritas
+                const prioritasClassMap = {
+                    'tinggi': 'danger',
+                    'sedang': 'warning',
+                    'rendah': 'secondary',
+                };
+                // Mapping status yang disederhanakan
+                const statusClassMap = {
+                    'selesai': 'success',
+                    'on progress': 'primary',
+                    'belum dikerjakan': 'warning',
+                    // Menambahkan mapping untuk status yang mungkin ada dari data lama
+                    'direview': 'info',
+                    'ditunda': 'secondary',
+                };
 
-        // Mengisi data teks
-        document.getElementById('detail-judul').textContent = data.judul;
-        document.getElementById('detail-deskripsi').textContent = data.deskripsi;
-        document.getElementById('detail-mulai').textContent = data.mulai;
-        document.getElementById('detail-selesai').textContent = data.selesai;
+                // Mengisi data teks
+                document.getElementById('detail-judul').textContent = data.judul;
+                document.getElementById('detail-deskripsi').textContent = data.deskripsi;
+                document.getElementById('detail-mulai').textContent = data.mulai;
+                document.getElementById('detail-selesai').textContent = data.selesai;
 
-        // Badge Prioritas
-        const currentPrioritasClass = prioritasClassMap[data.prioritas] || 'light';
-        const prioritasBadge = document.createElement('span');
-        prioritasBadge.className = 'badge bg-' + currentPrioritasClass;
-        prioritasBadge.textContent = data.prioritas.charAt(0).toUpperCase() + data.prioritas.slice(1);
-        document.getElementById('detail-prioritas').innerHTML = '';
-        document.getElementById('detail-prioritas').appendChild(prioritasBadge);
+                // Badge Prioritas
+                const currentPrioritasClass = prioritasClassMap[data.prioritas] || 'light';
+                const prioritasBadge = document.createElement('span');
+                prioritasBadge.className = 'badge bg-' + currentPrioritasClass;
+                prioritasBadge.textContent = data.prioritas.charAt(0).toUpperCase() + data.prioritas.slice(
+                    1);
+                document.getElementById('detail-prioritas').innerHTML = '';
+                document.getElementById('detail-prioritas').appendChild(prioritasBadge);
 
-        // Badge Status
-        const currentStatusClass = statusClassMap[data.status] || 'secondary';
-        const statusBadge = document.createElement('span');
-        statusBadge.className = 'badge bg-label-' + currentStatusClass;
-        statusBadge.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
-        document.getElementById('detail-status').innerHTML = '';
-        document.getElementById('detail-status').appendChild(statusBadge);
+                // Badge Status
+                const currentStatusClass = statusClassMap[data.status] || 'secondary';
+                const statusBadge = document.createElement('span');
+                statusBadge.className = 'badge bg-label-' + currentStatusClass;
+                statusBadge.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+                document.getElementById('detail-status').innerHTML = '';
+                document.getElementById('detail-status').appendChild(statusBadge);
 
-        // Badge Jenis
-        const jenisBadge = document.createElement('span');
-        jenisBadge.className = 'badge bg-label-info';
-        jenisBadge.textContent = data.jenis;
-        document.getElementById('detail-jenis').innerHTML = '';
-        document.getElementById('detail-jenis').appendChild(jenisBadge);
+                // Badge Jenis
+                const jenisBadge = document.createElement('span');
+                jenisBadge.className = 'badge bg-label-info';
+                jenisBadge.textContent = data.jenis;
+                document.getElementById('detail-jenis').innerHTML = '';
+                document.getElementById('detail-jenis').appendChild(jenisBadge);
 
 
-        // Lampiran
-        const lampiranContainer = document.getElementById('detail-lampiran-container');
-        lampiranContainer.innerHTML = data.lampiran
-            ? `<a href="${data.lampiran}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="bx bx-paperclip me-1"></i> Lihat Lampiran</a>`
-            : '<span class="text-muted">Tidak ada lampiran</span>';
-    });
-});
-</script>
+                // Lampiran
+                const lampiranContainer = document.getElementById('detail-lampiran-container');
+                lampiranContainer.innerHTML = data.lampiran ?
+                    `<a href="${data.lampiran}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="bx bx-paperclip me-1"></i> Lihat Lampiran</a>` :
+                    '<span class="text-muted">Tidak ada lampiran</span>';
+            });
+        });
+    </script>
 @endpush

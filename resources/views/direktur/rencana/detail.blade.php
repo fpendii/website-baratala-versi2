@@ -20,7 +20,7 @@
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Informasi Rencana Kerja</h5>
-                    <a href="{{ route('direktur.rencana.edit', $tugas->id) }}" class="btn btn-sm btn-warning">
+                    <a href="{{ route('rencana.edit', $tugas->id) }}" class="btn btn-sm btn-warning">
                         <i class="bx bx-edit-alt me-1"></i> Edit Detail
                     </a>
                 </div>
@@ -32,12 +32,12 @@
                         <dt class="col-sm-4 text-nowrap">Deskripsi</dt>
                         <dd class="col-sm-8 text-break">{{ $tugas->deskripsi }}</dd>
 
-                        <dt class="col-sm-4 text-nowrap">Status</dt>
+                        {{-- <dt class="col-sm-4 text-nowrap">Status</dt>
                         <dd class="col-sm-8">
                             <span class="badge bg-label-{{ $tugas->status == 'selesai' ? 'success' : ($tugas->status == 'sedang dikerjakan' ? 'warning' : 'secondary') }}">
                                 {{ ucfirst($tugas->status) }}
                             </span>
-                        </dd>
+                        </dd> --}}
 
                         <dt class="col-sm-4 text-nowrap">Prioritas</dt>
                         <dd class="col-sm-8">{{ $tugas->prioritas ?? '-' }}</dd>
@@ -104,14 +104,14 @@
 
                                     {{-- Action buttons for Direktur --}}
                                     @if ($komentar->status != 'setuju')
-                                        <form action="{{ route('direktur.rencana.komentar.status', $komentar->id) }}" method="POST" class="d-inline me-2">
+                                        <form action="{{ route('rencana.komentar.status', $komentar->id) }}" method="POST" class="d-inline me-2">
                                             @csrf
                                             <input type="hidden" name="status" value="setuju">
                                             <button type="submit" class="btn btn-success btn-xs py-0 px-2" title="Setujui Komentar"><i class="bx bx-check"></i> Setujui</button>
                                         </form>
                                     @endif
                                     @if ($komentar->status != 'tolak')
-                                        <form action="{{ route('direktur.rencana.komentar.status', $komentar->id) }}" method="POST" class="d-inline me-2">
+                                        <form action="{{ route('rencana.komentar.status', $komentar->id) }}" method="POST" class="d-inline me-2">
                                             @csrf
                                             <input type="hidden" name="status" value="tolak">
                                             <button type="submit" class="btn btn-danger btn-xs py-0 px-2" title="Tolak Komentar"><i class="bx bx-x"></i> Tolak</button>
@@ -129,7 +129,7 @@
                 </div>
             </div>
 
-            <a href="{{ route('direktur.rencana.index') }}" class="btn btn-secondary mt-3">
+            <a href="{{ route('rencana.index') }}" class="btn btn-secondary mt-3">
                 <i class="bx bx-arrow-back me-1"></i> Kembali ke Daftar Rencana
             </a>
         </div>
@@ -143,7 +143,7 @@
                     <small class="text-muted">Tambahkan atau hapus pengguna yang bertanggung jawab.</small>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('direktur.rencana.updatePengguna', $tugas->id) }}" method="POST">
+                    <form action="{{ route('rencana.updatePengguna', $tugas->id) }}" method="POST">
                         @csrf
                         @method('POST')
 
@@ -194,7 +194,7 @@
 <div class="modal fade" id="tambahKomentarModal" tabindex="-1" aria-labelledby="tambahKomentarModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="{{ route('direktur.rencana.komentar', $tugas->id) }}" method="POST">
+            <form action="{{ route('rencana.komentar', $tugas->id) }}" method="POST">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="tambahKomentarModalLabel">Tulis Komentar & Masukan</h5>
@@ -204,7 +204,7 @@
                     <div class="mb-3">
                         <label for="komentar_direktur" class="form-label">Komentar Direktur</label>
                         <textarea class="form-control" id="komentar_direktur" name="komentar_direktur" rows="5" placeholder="Berikan masukan, persetujuan, atau arahan..." required></textarea>
-                        <small class="text-muted">Komentar Anda akan dicatat atas nama Anda sebagai Direktur.</small>
+                        <small class="text-muted">Komentar Anda akan dicatat atas nama Anda sebagai </small>
                     </div>
                 </div>
                 <div class="modal-footer">

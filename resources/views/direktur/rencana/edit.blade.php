@@ -1,4 +1,4 @@
-@extends('layout.direktur-template')
+@extends('layout.app')
 
 @section('title', 'Edit Rencana Kerja')
 
@@ -10,7 +10,7 @@
             <h5 class="mb-0">Edit Rencana Kerja: {{ $rencana->judul_rencana }}</h5>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ route('direktur.rencana.update', $rencana->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('rencana.update', $rencana->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -83,7 +83,7 @@
                     @if ($rencana->lampiran)
                         <div class="alert alert-info d-flex justify-content-between align-items-center p-2 mb-2">
                             <span>File saat ini: <a href="{{ asset('storage/public/' . $rencana->lampiran) }}" target="_blank" class="fw-bold">{{ basename($rencana->lampiran) }}</a></span>
-                            
+
                         </div>
                     @endif
                     <input type="file" id="lampiran" name="lampiran" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png">
@@ -97,7 +97,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                <a href="{{ route('direktur.rencana.index') }}" class="btn btn-outline-secondary">Batal</a>
+                <a href="{{ route('rencana.index') }}" class="btn btn-outline-secondary">Batal</a>
             </form>
         </div>
     </div>

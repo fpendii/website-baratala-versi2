@@ -98,11 +98,6 @@
                                             <i class="icon-base ri ri-eye-line icon-18px me-1"></i>
                                             Lihat Detail
                                         </a>
-                                        {{-- Tombol Edit menggunakan route yang sudah ada --}}
-                                        <a class="dropdown-item" href="{{ url('administrasi/jobdesk/edit', $item->id) }}">
-                                            <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
-                                            Edit
-                                        </a>
                                         {{-- Tombol Hapus dengan konfirmasi --}}
                                         <form action="{{ route('direktur.rencana.destroy', $item->id) }}" method="POST"
                                             onsubmit="return confirm('Yakin hapus rencana kerja: {{ $item->judul_rencana }}?')">

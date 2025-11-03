@@ -1,4 +1,4 @@
-@extends('layout.administrasi-template')
+@extends('layout.app')
 
 @section('title', 'Daftar Pengguna')
 

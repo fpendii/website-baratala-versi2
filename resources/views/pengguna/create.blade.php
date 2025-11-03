@@ -1,15 +1,15 @@
-@extends('layout.administrasi-template')
+@extends('layout.app')
 
-@section('title', 'Tambah Karyawan')
+@section('title', 'Tambah pengguna')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0">Tambah Karyawan Baru</h5>
+    <h5 class="mb-0">Tambah pengguna Baru</h5>
 </div>
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('administrasi.karyawan.store') }}" method="POST">
+        <form action="{{ route('pengguna.store') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="nama" class="form-label">Nama</label>
@@ -52,7 +52,7 @@
                     <option value="enginer" {{ old('role') == 'enginer' ? 'selected' : '' }}>Enginer</option>
                     <option value="produksi" {{ old('role') == 'produksi' ? 'selected' : '' }}>Produksi</option>
                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="karyawan" {{ old('') == 'karyawan' ? 'selected' : '' }}>Karyawan</option>
+                    <option value="karyawan" {{ old('') == 'karyawan' ? 'selected' : '' }}>Paryawan</option>
 
 
                 </select>
@@ -61,7 +61,7 @@
                 @enderror
             </div>
             <button type="submit" class="btn btn-primary">Simpan</button>
-            <a href="{{ route('administrasi.karyawan.index') }}" class="btn btn-secondary">Batal</a>
+            <a href="{{ route('pengguna.index') }}" class="btn btn-secondary">Batal</a>
         </form>
     </div>
 </div>

@@ -16,14 +16,25 @@ class RencanaController extends Controller
 {
     public function index()
     {
-        // Ambil semua tugas, urutkan terbaru dulu
-        $tugas = Tugas::orderBy('created_at', 'desc')->where('id_pengguna', Auth::id())
-            ->orWhereHas('pengguna', function ($query) {
-                $query->where('pengguna.id', Auth::id());
-            })->get();
-        // dd($tugas);
+        // Jika login sebagai Direktur → tampilkan semua tugas
+        if (Auth::user()->role === 'direktur') {
+            $tugas = Tugas::with('komentar')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            // Jika bukan Direktur → tampilkan tugas miliknya saja
+            $tugas = Tugas::with('komentar')
+                ->where('id_pengguna', Auth::id())
+                ->orWhereHas('pengguna', function ($query) {
+                    $query->where('pengguna.id', Auth::id());
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+
         return view('rencana.index', compact('tugas'));
     }
+
 
     public function create()
     {
@@ -34,6 +45,7 @@ class RencanaController extends Controller
 
     public function store(Request $request)
     {
+        // 1. VALIDASI DATA 🎯
         $validated = $request->validate([
             'judul_rencana'    => 'required|string|max:255',
             'deskripsi'        => 'nullable|string',
@@ -43,38 +55,54 @@ class RencanaController extends Controller
             'jenis'            => 'required|string',
             'prioritas'        => 'nullable|string',
             'lampiran'         => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'catatan'          => 'nullable|string',
-            'pengguna'         => 'nullable|string', // Hidden input, koma dipisahkan
+            // Input pengguna: berisi ID pengguna yang ditugaskan, dipisahkan koma
+            'pengguna_ditugaskan' => 'nullable|string',
         ]);
 
-        // Simpan user yang membuat tugas (sebagai pembuat)
-        $validated['id_pengguna'] = Auth::id();
+        // 2. PREPARASI DATA UNTUK TABEL 'tugas' 📋
+        // Kolom 'id_pengguna' di tabel 'tugas' diisi dengan ID pembuat tugas (yang sedang login).
+        $validated['id_pengguna'] = Auth::id(); // Ini adalah Foreign Key ke user pembuat (creator)
 
+        // Penanganan Lampiran
         if ($request->hasFile('lampiran')) {
             $filePath = $request->file('lampiran')->store('rencana_kerja_lampiran', 'public');
             $validated['lampiran'] = $filePath;
         }
 
-        // Simpan tugas
+        // Hapus key 'pengguna_ditugaskan' dari array validated agar tidak masuk ke Tugas::create
+        $penggunaInput = $request->pengguna_ditugaskan;
+        unset($validated['pengguna_ditugaskan']);
+
+        // 3. SIMPAN KE TABEL 'tugas'
         $tugas = Tugas::create($validated);
 
+        // Panggil notifikasi (sesuaikan jika logic ini berada di model atau event)
         $this->sendWhatsAppNotificationToAdminAndDirector($tugas);
 
-        // Ambil id pengguna dari input (pecah string jadi array)
+        // 4. LOGIKA PIVOT KE TABEL 'tugas_pengguna' (Many-to-Many) 🤝
+
+        // Ambil ID pengguna dari input (pecah string jadi array)
         $penggunaIds = [];
-        if (!empty($request->pengguna)) {
-            $penggunaIds = array_filter(explode(',', $request->pengguna));
+        if (!empty($penggunaInput)) {
+            // Explode string input menjadi array ID
+            $penggunaIds = array_filter(explode(',', $penggunaInput));
         }
 
-        // Tambahkan user yang sedang login (pembuat) ke daftar pengguna yang ditugaskan
-        $penggunaIds[] = Auth::id();
+        // Tambahkan user yang sedang login (pembuat tugas) ke daftar pengguna yang ditugaskan (jika belum ada)
+        // Ini penting jika pembuat tugas juga harus menjadi penanggung jawab tugas.
+        if (!in_array(Auth::id(), $penggunaIds)) {
+            $penggunaIds[] = Auth::id();
+        }
 
-        // Hilangkan duplikasi & validasi hanya id yang valid di tabel pengguna
+        // Hilangkan duplikasi & validasi hanya ID yang benar-benar valid di tabel pengguna
+        // Ini mencegah error jika ada ID yang tidak valid dikirim melalui form.
         $penggunaIds = Pengguna::whereIn('id', array_unique($penggunaIds))->pluck('id')->toArray();
 
-        // Simpan ke pivot
+        // Simpan relasi ke tabel pivot 'tugas_pengguna'
+        // Asumsi: Anda telah mendefinisikan relasi many-to-many bernama 'pengguna' di model Tugas.
         $tugas->pengguna()->sync($penggunaIds);
 
+        // 5. REDIRECT
         return redirect()->route('rencana.index')->with('success', 'Rencana berhasil ditambahkan.');
     }
 
@@ -200,21 +228,21 @@ class RencanaController extends Controller
     {
         // Validasi input
         $request->validate([
-            'isi_komentar' => 'required|string|max:1000', // Mengubah nama field agar lebih generik
+            'komentar_direktur' => 'required|string|max:1000',
         ]);
 
         // Pastikan tugas ada
         $tugas = Tugas::findOrFail($id);
-
-        // Simpan komentar dengan status 'menunggu' untuk diverifikasi Direktur
+        // dd($tugas, $request->all());
+        // Simpan komentar
         Komentar::create([
             'tugas_id'    => $tugas->id,
-            'pengguna_id' => Auth::id(),  // Ambil user yang login (karyawan)
-            'isi'         => $request->isi_komentar,
-            'status'      => 'menunggu', // Status default dari karyawan: menunggu persetujuan/verifikasi direktur
+            'pengguna_id' => Auth::id(),  // ambil user yang login
+            'isi'         => $request->komentar_direktur,
+            'status'      => 'menunggu', // default
         ]);
 
-        return redirect()->back()->with('success', 'Progres/Komentar berhasil ditambahkan dan menunggu persetujuan.');
+        return redirect()->back()->with('success', 'Komentar berhasil ditambahkan.');
     }
 
     /**
@@ -228,7 +256,7 @@ class RencanaController extends Controller
         return redirect()->route('rencana.index')->with('success', 'Rencana berhasil dihapus.');
     }
 
-     public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, $id)
     {
         $tugas = Tugas::findOrFail($id);
 
@@ -317,6 +345,70 @@ class RencanaController extends Controller
         // Opsional: Tambahkan logging atau notifikasi jika tidak ada pengguna yang ditemukan/terkirim
         if ($sentCount === 0) {
             Log::warning('WA Status Update: Tidak ada Admin/Direktur dengan no_hp yang valid ditemukan.');
+        }
+    }
+
+    public function updatePengguna(Request $request, $id)
+    {
+        $tugas = Tugas::findOrFail($id);
+
+        // validasi input pengguna (array id user)
+        $validated = $request->validate([
+            'pengguna'   => 'nullable|array',
+            'pengguna.*' => 'exists:pengguna,id', // pastikan semua id user valid
+        ]);
+
+        $penggunaIdsBaru = $validated['pengguna'] ?? [];
+
+        // Ambil user sebelumnya
+        $penggunaIdsLama = $tugas->pengguna()->pluck('pengguna.id')->toArray();
+
+
+        // Sync pivot (hapus & tambah)
+        $tugas->pengguna()->sync($penggunaIdsBaru);
+
+        // Cari user yang baru ditambahkan
+        $penggunaTambahan = array_diff($penggunaIdsBaru, $penggunaIdsLama);
+
+        if (!empty($penggunaTambahan)) {
+            $this->sendWhatsAppToAssignedUsers($tugas, $penggunaTambahan);
+        }
+
+        return redirect()
+            ->route('rencana.show', $tugas->id)
+            ->with('success', 'Pengguna berhasil diperbarui & notifikasi terkirim.');
+    }
+
+    private function sendWhatsAppToAssignedUsers($tugas, $userIds)
+    {
+        // Tentukan salam otomatis berdasarkan waktu
+        $hour = now()->format('H');
+        if ($hour >= 5 && $hour < 12) {
+            $salam = 'Selamat Pagi';
+        } elseif ($hour >= 12 && $hour < 17) {
+            $salam = 'Selamat Siang';
+        } elseif ($hour >= 17 && $hour < 20) {
+            $salam = 'Selamat Sore';
+        } else {
+            $salam = 'Selamat Malam';
+        }
+
+        // Ambil pengguna yg baru ditambahkan
+        $users = \App\Models\Pengguna::whereIn('id', $userIds)->get();
+
+        foreach ($users as $user) {
+            if (!$user->no_hp) continue;
+
+            $message = "👋 *{$salam}, {$user->nama}!*\n\n"
+                . "Anda baru saja ditugaskan untuk rencana kerja:\n\n"
+                . "📌 *{$tugas->judul_rencana}*\n"
+                . "📅 *Mulai:* " . $tugas->tanggal_mulai . "\n"
+                . "📅 *Selesai:* " . $tugas->tanggal_selesai . "\n"
+                . "⚡ *Status:* {$tugas->status}\n\n"
+                . "Silakan cek aplikasi untuk detail tugas.\n\n"
+                . "_Notifikasi otomatis dari Sistem Baratala_";
+
+            \App\Helpers\WhatsAppHelper::send($user->no_hp, $message);
         }
     }
 }

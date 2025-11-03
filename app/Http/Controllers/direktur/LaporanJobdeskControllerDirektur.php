@@ -30,7 +30,7 @@ class LaporanJobdeskControllerDirektur extends Controller
         $karyawans = Pengguna::whereHas('laporanJobdesks')
             ->withCount('laporanJobdesks') // kalau mau tahu jumlah laporannya juga
             ->get();
-// dd($karyawans);
+        // dd($karyawans);
         return view('direktur.laporan_jobdesk.jobdesk_karyawan', compact('karyawans'));
     }
 

@@ -121,12 +121,12 @@
                     </li>
 
                     @if (auth()->user()->role == 'admin')
-                    <li class="menu-item {{ request()->is('/pengguna*') ? 'active' : '' }}">
-                        <a href="/pengguna" class="menu-link">
-                            <i class="menu-icon icon-base ri ri-team-line"></i>
-                            <div data-i18n="Basic">Pengguna</div>
-                        </a>
-                    </li>
+                        <li class="menu-item {{ request()->is('pengguna*') ? 'active' : '' }}">
+                            <a href="/pengguna" class="menu-link">
+                                <i class="menu-icon icon-base ri ri-team-line"></i>
+                                <div data-i18n="Basic">Pengguna</div>
+                            </a>
+                        </li>
                     @endif
 
                     <li class="menu-item {{ request()->is('profil*') ? 'active' : '' }}">
@@ -175,11 +175,10 @@
                         <ul class="navbar-nav flex-row align-items-center ms-md-auto">
                             <!-- Place this tag where you want the button to render. -->
                             <li class="nav-item lh-1 me-4">
-                                <a class="github-button"
-                                    href="https://github.com/themeselection/materio-bootstrap-html-admin-template-free"
-                                    data-icon="octicon-star" data-size="large" data-show-count="true"
-                                    aria-label="Star themeselection/materio-html-admin-template-free on GitHub">Star</a>
+                                <small>{{ ucfirst(Auth::user()->nama ?? 'Karyawan') }} (
+                                    {{ ucfirst(Auth::user()->role ?? 'Karyawan') }} )</small>
                             </li>
+
 
                             <!-- User -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
