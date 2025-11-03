@@ -44,12 +44,17 @@ use App\Http\Controllers\JobdeskController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\DataJobdeskController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\LandingPageController;
 
 
 
 Route::middleware('guest')->group(function () {
+
+    Route::get('/', [LandingPageController::class, 'index'])->name('landingpage');
+
+
     Route::get('/login', [AuthController::class, 'login'])->name('login');
-    Route::get('/', [AuthController::class, 'login']);
+
     Route::post('/login', [AuthController::class, 'attempt'])->name('login.attempt');
 
     Route::get('/lupa-password', [AuthController::class, 'showLinkRequestForm'])->name('password.request');
