@@ -79,6 +79,16 @@
                         </a>
                     </li>
 
+                    @if ( auth()->user()->role == 'admin' )
+                         <li class="menu-item {{ request()->is('data-jobdesk*') ? 'active' : '' }}">
+                        <a href="/data-jobdesk" class="menu-link">
+                            <i class="menu-icon icon-base ri ri-task-line"></i>
+                            <div data-i18n="Basic">Jobdesk</div>
+                        </a>
+                    </li>
+                    @endif
+
+
                     <li class="menu-item {{ request()->is('rencana*') ? 'active' : '' }}">
                         <a href="/rencana" class="menu-link">
                             <i class="menu-icon icon-base ri ri-calendar-check-line"></i>

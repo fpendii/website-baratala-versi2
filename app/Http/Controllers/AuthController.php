@@ -58,13 +58,9 @@ class AuthController extends Controller
                 'id'       => $user->id,
             ]);
 
-            if ($user->role == 'admin') {
-                return redirect()->intended('/administrasi/dashboard');
-            } elseif ($user->role == 'direktur') {
-                return redirect()->intended('/direktur/dashboard');
-            } elseif (in_array($user->role, ['karyawan', 'kepala teknik', 'enginer', 'produksi', 'keuangan'])) {
-                return redirect()->intended('/karyawan/dashboard');
-            }
+
+            return redirect()->intended('dashboard');
+
 
             // redirect sesuai role
             $role = strtolower($user->role); // biar aman huruf kecil semua

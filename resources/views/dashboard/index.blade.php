@@ -4,98 +4,169 @@
 
 @section('content')
 
-
-    {{-- BAGIAN 1: UCAPAN SELAMAT DATANG (Elemen yang Anda minta agar tidak dihapus) --}}
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="card bg-primary text-white shadow-lg border-0">
-                <div class="card-body p-4 p-md-5 text-center">
-                    <h1 class="h3 mb-2">
-                        Selamat Datang Kembali,
-                        <span class="font-weight-bold">{{ Auth::user()->nama ?? 'Karyawan' }}!</span>
-                        👋
-                    </h1>
-                    <p class="lead mb-0">
-                        Ayo mulai hari Anda dengan penuh semangat.
-                    </p>
-                    <small class="text-white-50 mt-2 d-block">
-                        Hari ini: {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}
-                    </small>
+    <!-- Greeting Card / Welcome Banner -->
+    <div class="row">
+        <div class="col-lg-12 mb-4">
+            <div class="card bg-primary text-white shadow-lg">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h4 class="card-title text-white mb-2">Selamat Datang, {{ Auth::user()->nama ?? 'Karyawan' }}
+                            </h4>
+                            <p class="mb-0">
+                                Ringkasan hari ini menunjukkan metrik utama perusahaan.
+                            </p>
+                            <small class="text-white-50 mt-2 d-block">
+                                Hari ini: {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}
+                            </small>
+                        </div>
+                        {{-- Icon Besar di Pojok (Ganti dengan ikon yang sesuai jika perlu) --}}
+                        <i class="ri ri-briefcase-line ri-4x ms-3 opacity-75"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- BAGIAN 2: AKSES CEPAT KE FITUR UTAMA --}}
+    <!-- Key Metric Cards (Ringkasan Data Cepat) -->
     <div class="row">
-        <div class="col-12 mb-3">
-            <h4 class="h5 mb-3 text-gray-800">Menu Utama</h4>
-        </div>
-
-        {{-- Tombol 1: Rencana Kerja --}}
-        <div class="col-lg-4 col-md-6 mb-4">
-            <a href="/rencana" class="card shadow-sm border-top-0 border-bottom-primary h-100 py-3 text-decoration-none card-hover-scale">
-                <div class="card-body text-center">
-                    <i class="ri ri-calendar-check-line ri-3x text-primary mb-3"></i>
-                    <h5 class="card-title text-primary font-weight-bold mb-0">Rencana Kerja</h5>
-                    <p class="text-muted small mt-1">Kelola dan laporkan pekerjaan harian Anda.</p>
+        {{-- Card 1: Total Karyawan --}}
+        <div class="col-lg-3 col-md-6 col-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="card-title mb-0">
+                            <h5 class="fw-semibold d-block mb-1">Total Karyawan</h5>
+                            <small class="text-muted">Aktif & Non-aktif</small>
+                        </div>
+                        <span class="badge bg-label-primary p-2 rounded-circle">
+                            <i class="ri ri-group-line ri-2x"></i>
+                        </span>
+                    </div>
+                    {{-- Data Statistik (Ganti dengan data dari Controller Anda) --}}
+                    <h3 class="mt-3 mb-0">{{ number_format(145, 0, ',', '.') }}</h3>
                 </div>
-            </a>
+            </div>
         </div>
 
-        {{-- Tombol 2: Surat Masuk --}}
-        <div class="col-lg-4 col-md-6 mb-4">
-            <a href="/surat-masuk" class="card shadow-sm border-top-0 border-bottom-success h-100 py-3 text-decoration-none card-hover-scale">
-                <div class="card-body text-center">
-                    <i class="ri ri-mail-line ri-3x text-success mb-3"></i>
-                    <h5 class="card-title text-success font-weight-bold mb-0">Surat Masuk</h5>
-                    <p class="text-muted small mt-1">Cek pengumuman dan surat resmi terbaru.</p>
+        {{-- Card 2: Surat Masuk --}}
+        <div class="col-lg-3 col-md-6 col-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="card-title mb-0">
+                            <h5 class="fw-semibold d-block mb-1">Surat Masuk</h5>
+                            <small class="text-muted">Menunggu Review</small>
+                        </div>
+                        <span class="badge bg-label-warning p-2 rounded-circle">
+                            <i class="ri ri-mail-send-line ri-2x"></i>
+                        </span>
+                    </div>
+                    {{-- Data Statistik (Ganti dengan data dari Controller Anda) --}}
+                    <h3 class="mt-3 mb-0">{{ number_format(8, 0, ',', '.') }}</h3>
                 </div>
-            </a>
+            </div>
         </div>
 
-        {{-- Tombol 3: Keuangan (Hanya untuk Role 'keuangan') --}}
-        @if (auth()->user()->role == 'keuangan')
-        <div class="col-lg-4 col-md-6 mb-4">
-            <a href="/keuangan" class="card shadow-sm border-top-0 border-bottom-info h-100 py-3 text-decoration-none card-hover-scale">
-                <div class="card-body text-center">
-                    <i class="ri ri-wallet-3-line ri-3x text-info mb-3"></i>
-                    <h5 class="card-title text-info font-weight-bold mb-0">Keuangan</h5>
-                    <p class="text-muted small mt-1">Akses menu khusus untuk laporan keuangan.</p>
+        {{-- Card 3: Jobdesk Aktif --}}
+        <div class="col-lg-3 col-md-6 col-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="card-title mb-0">
+                            <h5 class="fw-semibold d-block mb-1">Jobdesk Aktif</h5>
+                            <small class="text-muted">Bulan Ini</small>
+                        </div>
+                        <span class="badge bg-label-info p-2 rounded-circle">
+                            <i class="ri ri-list-check-2 ri-2x"></i>
+                        </span>
+                    </div>
+                    {{-- Data Statistik (Ganti dengan data dari Controller Anda) --}}
+                    <h3 class="mt-3 mb-0">{{ number_format(24, 0, ',', '.') }}</h3>
                 </div>
-            </a>
+            </div>
         </div>
-        @endif
 
-        {{-- Tombol 4: Laporan Jobdesk --}}
-        <div class="col-lg-4 col-md-6 mb-4">
-            <a href="/jobdesk" class="card shadow-sm border-top-0 border-bottom-warning h-100 py-3 text-decoration-none card-hover-scale">
-                <div class="card-body text-center">
-                    <i class="ri ri-file-list-3-line ri-3x text-warning mb-3"></i>
-                    <h5 class="card-title text-warning font-weight-bold mb-0">Laporan Jobdesk</h5>
-                    <p class="text-muted small mt-1">Lihat riwayat dan status laporan pekerjaan Anda.</p>
+        {{-- Card 4: Jabatan Terdaftar --}}
+        <div class="col-lg-3 col-md-6 col-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="card-title mb-0">
+                            <h5 class="fw-semibold d-block mb-1">Jabatan</h5>
+                            <small class="text-muted">Total Unik Role</small>
+                        </div>
+                        <span class="badge bg-label-success p-2 rounded-circle">
+                            <i class="ri ri-bookmark-line ri-2x"></i>
+                        </span>
+                    </div>
+                    {{-- Data Statistik (Ganti dengan data dari Controller Anda) --}}
+                    <h3 class="mt-3 mb-0">{{ number_format(12, 0, ',', '.') }}</h3>
                 </div>
-            </a>
+            </div>
         </div>
+    </div>
+    <!-- End Key Metric Cards -->
 
-        {{-- Tombol 5: Profil --}}
-        <div class="col-lg-4 col-md-6 mb-4">
-            <a href="/profil" class="card shadow-sm border-top-0 border-bottom-secondary h-100 py-3 text-decoration-none card-hover-scale">
-                <div class="card-body text-center">
-                    <i class="ri ri-user-line ri-3x text-secondary mb-3"></i>
-                    <h5 class="card-title text-secondary font-weight-bold mb-0">Profil</h5>
-                    <p class="text-muted small mt-1">Perbarui data pribadi dan informasi akun.</p>
-                </div>
-            </a>
+    <!-- Recent Activity / Quick Summary Table -->
+    <div class="card">
+        <h5 class="card-header"><i class="ri ri-user-add-line me-1"></i> 5 Karyawan Terbaru</h5>
+        <div class="table-responsive text-nowrap">
+            {{-- Tabel ini menggunakan placeholder data, ganti dengan @foreach dari Controller --}}
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Tanggal Daftar</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    <tr>
+                        <td><strong class="text-dark">Budi Santoso</strong></td>
+                        <td>budi@corp.com</td>
+                        <td><span class="badge bg-label-info">Staff IT</span></td>
+                        <td>2024-10-01</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="text-dark">Citra Kirana</strong></td>
+                        <td>citra@corp.com</td>
+                        <td><span class="badge bg-label-primary">Administrasi</span></td>
+                        <td>2024-09-28</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="text-dark">Andi Permana</strong></td>
+                        <td>andi@corp.com</td>
+                        <td><span class="badge bg-label-success">Direktur</span></td>
+                        <td>2024-09-25</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="text-dark">Dewi Sartika</strong></td>
+                        <td>dewi@corp.com</td>
+                        <td><span class="badge bg-label-secondary">Supervisor</span></td>
+                        <td>2024-09-20</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="text-dark">Faisal Malik</strong></td>
+                        <td>faisal@corp.com</td>
+                        <td><span class="badge bg-label-info">Staff IT</span></td>
+                        <td>2024-09-15</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-
+        <div class="card-footer text-end">
+            <a href="#" class="text-primary small">Lihat Semua Karyawan</a>
+        </div>
     </div>
 
-{{-- Untuk efek hover, jika menggunakan custom CSS --}}
-<style>
-.card-hover-scale:hover {
-    transform: scale(1.02);
-    transition: transform 0.2s ease-in-out;
-}
-</style>
+
+    {{-- Untuk efek hover, jika menggunakan custom CSS --}}
+    <style>
+        .card-hover-scale:hover {
+            transform: scale(1.02);
+            transition: transform 0.2s ease-in-out;
+        }
+    </style>
 @endsection

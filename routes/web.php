@@ -42,6 +42,7 @@ use App\Http\Controllers\RencanaController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\JobdeskController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\DataJobdeskController;
 
 
 
@@ -63,6 +64,15 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth')->na
 
 // Route Dashboard
 Route::get('dashboard', [DashboardController::class, 'index']);
+
+// Route Joddesk
+Route::get('data-jobdesk', [DataJobdeskController::class, 'index']);
+Route::get('data-jobdesk/create', [DataJobdeskController::class, 'create']);
+Route::post('data-jobdesk/store', [DataJobdeskController::class, 'store']);
+Route::get('data-jobdesk/{id}', [DataJobdeskController::class, 'show']);
+Route::get('data-jobdesk/edit/{id}', [DataJobdeskController::class, 'edit']);
+Route::put('data-jobdesk/update/{id}', [DataJobdeskController::class, 'update']);
+Route::delete('data-jobdesk/delete/{id}', [DataJobdeskController::class, 'destroy']);
 
 // Keuangan
 Route::get('keuangan', [KeuanganController::class, 'index'])->name('keuangan.index');
