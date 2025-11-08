@@ -3,337 +3,421 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mitra Pertambangan Premium - [Nama Perusahaan]</title>
+    <title>Profil Perusahaan | BARATALA TUNTUNG PANDANG</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
-        /* Palet Warna: Hitam (#212529), Abu Gelap (#343a40), Emas Aksen (#FFC107) */
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
+        /* Gaya ELEGAN BARU */
+        :root {
+            --primary-color: #0d1a26; /* Hitam Angkatan Laut */
+            --secondary-color: #343a40; /* Abu-abu Gelap */
+            --accent-color: #ffc107; /* Kuning/Emas Aksen */
+            --light-bg: #f5f5f5;
         }
 
+        body { font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--light-bg); }
+
+        /* Top Bar */
+        .top-bar { background-color: var(--primary-color); color: #dee2e6; font-size: 0.85rem; padding: 5px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+
+        /* Navbar Utama */
+        .navbar-custom { background-color: rgba(13, 26, 38, 0.95); /* Sedikit transparan untuk elegan */
+            border-bottom: 3px solid var(--accent-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .navbar-brand { color: white !important; }
+
+        /* Button CTA */
         .cta-button {
-            background-color: #ffc107; /* Emas Aksen */
-            color: #212529; /* Hitam */
-            font-weight: 700;
-            padding: 15px 50px;
-            border-radius: 50px; /* Bentuk Pill */
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+            background-color: var(--accent-color); color: var(--primary-color); font-weight: 700; padding: 15px 50px; border-radius: 50px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
         }
-        .cta-button:hover {
-            background-color: #e0a800;
-            color: #212529;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.6);
-        }
+        .cta-button:hover { background-color: #e0a800; color: var(--primary-color); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 193, 7, 0.6); }
 
-        .feature-icon {
-            font-size: 2.5rem;
-            color: #ffc107; /* Emas Aksen */
-            margin-bottom: 1rem;
-        }
+        /* Lain-lain */
+        .feature-icon, .text-warning { color: var(--accent-color) !important; }
+        .vision-section { background-color: var(--primary-color); color: white; }
+        .footer-custom { background-color: var(--primary-color); }
+        .stat-box { background-color: white; border: none; }
+        .service-card:hover { border-left: 4px solid var(--accent-color); }
 
-        .service-card {
-            border-left: 4px solid transparent;
-            transition: border-color 0.3s, transform 0.3s;
-            background-color: white;
-            min-height: 220px; /* Menjaga tinggi agar konsisten */
-        }
-        .service-card:hover {
-            border-left: 4px solid #ffc107;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-        }
+        /* Judul Section yang Lebih Dramatis */
+        .section-title { font-weight: 800; text-transform: uppercase; border-left: 5px solid var(--accent-color); padding-left: 15px; margin-bottom: 3rem; }
 
-        .footer-custom {
-            background-color: #212529; /* Hitam Khas Industri */
-        }
+        /* Gambar Tim yang lebih elegan */
+        .team-member img { filter: grayscale(50%); transition: filter 0.3s; }
+        .team-member:hover img { filter: grayscale(0%); }
 
-        /* Style untuk Carousel */
-        .carousel-caption {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 15%; /* Memberi ruang di samping */
-            text-align: center;
-        }
-        .text-shadow {
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        .hero-title { font-size: 4rem; text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9); }
+
+        /* Peningkatan Carousel */
+        .carousel-item div.d-block {
+            background-blend-mode: multiply; /* Memperkuat warna background */
+            background-color: rgb(114, 114, 114); /* Warna dasar gelap */
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark position-absolute top-0 start-0 w-100 p-3" style="z-index: 1050;">
+    <div class="top-bar d-none d-md-block">
         <div class="container">
-            <a class="navbar-brand fw-bold text-uppercase" href="#"> <img src="{{asset('image/logo.png')}}" style="width: 50px" alt="Baratala Logo"> BARATALA TUNTUNG PANDANG</a>
-            <a href="#kontak" class="btn btn-warning btn fw-bold">Masuk</a>
+            <div class="row">
+                <div class="col-md-6 text-start">
+                    <i class="bi bi-clock me-2"></i> Jam Operasional Kantor: Senin - Jumat, 08:00 - 17:00 WITA
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="mailto:info@baratala.co.id" class="text-white-50 text-decoration-none mx-2"><i class="bi bi-envelope-fill me-1"></i> info@baratala.co.id</a>
+                    <a href="tel:+628123456789" class="text-white-50 text-decoration-none mx-2"><i class="bi bi-phone-fill me-1"></i> +62 812 XXXX XXXX</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top navbar-custom p-3" style="z-index: 1050;">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-uppercase" href="#">
+                <img src="{{ asset('image/logo.png') }}" style="width: 40px" alt="Baratala Logo"> BARATALA TUNTUNG PANDANG
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="#tentang">Tentang</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#operasi">Operasi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#bisnis-prospek">Bisnis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#investor">Investor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tim">Manajemen</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#berita">Berita</a></li>
+                </ul>
+                <a href="{{ route('login') }}" class="btn btn-sm btn-outline-warning fw-bold ms-lg-3">Masuk</a>
+            </div>
         </div>
     </nav>
 
     <section id="hero-slider" class="carousel slide carousel-fade" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#hero-slider" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#hero-slider" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#hero-slider" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-
         <div class="carousel-inner" style="height: 90vh;">
-
             <div class="carousel-item active" data-bs-interval="5000">
-                <div class="d-block w-100" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('{{ asset('image/mining-slide-1.jpg') }}'); background-size: cover; background-position: center; height: 90vh;">
-                </div>
+                <div class="d-block w-100" style="background-image: url('{{ asset('image/mining-slide-1.jpg') }}'); background-size: cover; background-position: center; height: 90vh;"></div>
                 <div class="carousel-caption">
                     <div class="col-lg-12">
-                        <h1 class="display-1 fw-bolder mb-3 text-shadow">
-                            EKSELENSI PERTAMBANGAN <span class="text-warning">BERKELANJUTAN</span>
+                        <h1 class="hero-title fw-bolder mb-3 text-shadow">
+                            BARATALA <span class="text-warning">TUNTUNG PANDANG</span>
                         </h1>
-                        <p class="lead mb-5 fs-4">
-                            Mitra strategis Anda dalam memastikan eksplorasi, produksi, dan kepatuhan standar K3/ESG global.
-                        </p>
-                        <a href="#kontak" class="cta-button text-decoration-none">
-                            Dapatkan Konsultasi Strategis
-                        </a>
+                        <p class="lead mb-5 fs-4 text-white-75">Perusahaan tambang terkemuka yang berbasis di Indonesia, berkomitmen pada kualitas dan pertumbuhan berkelanjutan.</p>
+                        <a href="#tentang" class="cta-button text-decoration-none">Kenali Kami Lebih Dekat</a>
                     </div>
                 </div>
             </div>
-
             <div class="carousel-item" data-bs-interval="5000">
-                <div class="d-block w-100" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('{{ asset('image/mining-slide-2.jpg') }}'); background-size: cover; background-position: center; height: 90vh;">
-                </div>
-                 <div class="carousel-caption">
+                <div class="d-block w-100" style="background-image: url('{{ asset('image/mining-slide-2.jpg') }}'); background-size: cover; background-position: center; height: 90vh;"></div>
+               <div class="carousel-caption">
                     <div class="col-lg-12">
-                        <h1 class="display-1 fw-bolder mb-3 text-shadow">
-                            OPTIMALKAN <span class="text-warning">HASIL</span> PRODUKSI
-                        </h1>
-                        <p class="lead mb-5 fs-4">
-                            Pengelolaan operasional dengan teknologi mutakhir untuk efisiensi waktu dan volume.
-                        </p>
-                        <a href="#layanan" class="cta-button text-decoration-none">
-                            Jelajahi Solusi Kami
-                        </a>
+                        <h1 class="hero-title fw-bolder mb-3 text-shadow">FOKUS PADA <span class="text-warning">INOVASI</span> DAN KUALITAS</h1>
+                        <p class="lead mb-5 fs-4 text-white-75">Menciptakan nilai tambah optimal melalui teknologi pertambangan modern dan operasi yang efisien.</p>
+                        <a href="#operasi" class="cta-button text-decoration-none">Detail Operasi Kami</a>
                     </div>
                 </div>
             </div>
-
             <div class="carousel-item" data-bs-interval="5000">
-                <div class="d-block w-100" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('{{ asset('image/mining-slide-3.jpg') }}'); background-size: cover; background-position: center; height: 90vh;">
-                </div>
+                <div class="d-block w-100" style="background-image: url('{{ asset('image/mining-slide-3.jpg') }}'); background-size: cover; background-position: center; height: 90vh;"></div>
                 <div class="carousel-caption">
                     <div class="col-lg-12">
-                        <h1 class="display-1 fw-bolder mb-3 text-shadow">
-                            PRIORITAS <span class="text-warning">K3</span> DAN LINGKUNGAN
-                        </h1>
-                        <p class="lead mb-5 fs-4">
-                            Kepatuhan tanpa kompromi terhadap standar HSE dan ESG global.
-                        </p>
-                        <a href="#keunggulan" class="cta-button text-decoration-none">
-                            Lihat Komitmen Kami
-                        </a>
+                        <h1 class="hero-title fw-bolder mb-3 text-shadow">PRIORITAS <span class="text-warning">K3L</span> DAN SDM</h1>
+                        <p class="lead mb-5 fs-4 text-white-75">Kepatuhan tanpa kompromi terhadap standar HSE dan pengembangan sumber daya manusia.</p>
+                        <a href="#k3l" class="cta-button text-decoration-none">Lihat Komitmen Kami</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#hero-slider" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#hero-slider" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+        <button class="carousel-control-prev" type="button" data-bs-target="#hero-slider" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button>
+        <button class="carousel-control-next" type="button" data-bs-target="#hero-slider" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button>
     </section>
 
-    <section class="py-4 bg-dark text-white border-bottom border-warning border-3">
+    <section id="tentang" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title text-dark">Profil & Sejarah Perusahaan</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h3 class="text-secondary mb-4">Membangun Masa Depan Pertambangan Indonesia.</h3>
+                    <p class="text-secondary">
+                        BARATALA TUNTUNG PANDANG didirikan pada tahun **[Tahun Didirikan]** sebagai respon atas kebutuhan industri akan mitra pertambangan yang fokus pada praktik **ESG** (Environmental, Social, Governance) yang bertanggung jawab. Kami mengelola aset di **[Lokasi Utama, cth: Kalimantan Timur]** dengan izin operasional yang lengkap.
+                    </p>
+                    <p class="text-secondary">
+                        Kami mengintegrasikan teknologi pintar, kepatuhan ketat, dan pemberdayaan komunitas lokal untuk mencapai keberhasilan jangka panjang.
+                    </p>
+                    <a href="#investor" class="btn btn-outline-dark mt-3">Lihat Tata Kelola Perusahaan</a>
+                </div>
+                <div class="col-lg-6">
+                    <h4 class="fw-bold text-dark mb-3"><i class="bi bi-map-fill text-warning me-2"></i> Peta Wilayah Operasi Utama</h4>
+                    <img src="{{ asset('image/map-placeholder.jpg') }}" class="img-fluid rounded shadow-lg" alt="Peta Lokasi Tambang Utama">
+                    <p class="small text-muted mt-2">Area Konsesi kami berlokasi strategis di [Sebutkan Detail Area Industri].</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="statistik" class="py-5" style="background-color: var(--secondary-color);">
         <div class="container text-center">
-            <p class="text-secondary mb-3 small text-uppercase fw-bold">Bersertifikasi dan Diakui</p>
-            <div class="d-flex justify-content-center align-items-center flex-wrap gap-4">
-                <span class="badge bg-secondary text-light p-2 fw-normal">ISO 9001:2015</span>
-                <span class="badge bg-success text-dark p-2 fw-normal">Proper Hijau</span>
-                <img src="{{ asset('image/logo-client-1.svg') }}" alt="Client 1" style="height: 35px; opacity: 0.7; filter: invert(1);">
-            </div>
-        </div>
-    </section>
-
-    <section id="keunggulan" class="py-5 bg-white">
-        <div class="container">
-            <h2 class="text-center mb-5 fw-bold text-dark">Mengapa Kami Lebih Unggul?</h2>
-            <div class="row text-center g-4">
-                <div class="col-md-3">
-                    <i class="bi bi-gear-wide-connected feature-icon"></i>
-                    <h3 class="h5 fw-bold mb-2 text-dark">Inovasi Teknologi</h3>
-                    <p class="text-secondary small">Adopsi AI dan *remote sensing* untuk akurasi cadangan mineral.</p>
-                </div>
-                <div class="col-md-3">
-                    <i class="bi bi-shield-lock feature-icon"></i>
-                    <h3 class="h5 fw-bold mb-2 text-dark">Standar K3 Internasional</h3>
-                    <p class="text-secondary small">Zero accident rate dan kepatuhan HSE yang tanpa kompromi.</p>
-                </div>
-                <div class="col-md-3">
-                    <i class="bi bi-tree feature-icon"></i>
-                    <h3 class="h5 fw-bold mb-2 text-dark">Komitmen ESG</h3>
-                    <p class="text-secondary small">Reklamasi lahan yang terukur dan program pengembangan masyarakat (CSR).</p>
-                </div>
-                <div class="col-md-3">
-                    <i class="bi bi-currency-dollar feature-icon"></i>
-                    <h3 class="h5 fw-bold mb-2 text-dark">Jaminan Hasil</h3>
-                    <p class="text-secondary small">Efisiensi operasi yang memastikan *return on investment* (ROI) maksimal bagi mitra.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="layanan" class="py-5 bg-light border-top border-bottom">
-        <div class="container">
-            <h2 class="text-center mb-5 fw-bold text-dark">Portofolio Layanan Inti</h2>
+            <h2 class="section-title text-white">Statistik Kunci Kami</h2>
             <div class="row g-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="card service-card p-3 h-100 shadow-sm">
-                        <div class="card-body">
-                            <i class="bi bi-geo-alt-fill text-warning mb-3 d-block fs-4"></i>
-                            <h4 class="card-title h5 fw-bold">Eksplorasi Geologi</h4>
-                            <p class="card-text text-secondary small">Pengambilan data dan pemodelan 3D deposit mineral yang presisi.</p>
-                        </div>
+                <div class="col-md-3">
+                    <div class="stat-box">
+                        <h3 class="mb-1">20 Juta+</h3>
+                        <p class="text-dark fw-bold small mb-0">Ton Material Diekstraksi</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card service-card p-3 h-100 shadow-sm">
-                        <div class="card-body">
-                            <i class="bi bi-truck-flatbed text-warning mb-3 d-block fs-4"></i>
-                            <h4 class="card-title h5 fw-bold">Operasi Penambangan</h4>
-                            <p class="card-text text-secondary small">Manajemen rantai pasok dan produksi material curah secara efisien.</p>
-                        </div>
+                <div class="col-md-3">
+                    <div class="stat-box">
+                        <h3 class="mb-1">99.8%</h3>
+                        <p class="text-dark fw-bold small mb-0">Tingkat Kepatuhan K3L</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card service-card p-3 h-100 shadow-sm">
-                        <div class="card-body">
-                            <i class="bi bi-ship-fill text-warning mb-3 d-block fs-4"></i>
-                            <h4 class="card-title h5 fw-bold">Logistik & Distribusi</h4>
-                            <p class="card-text text-secondary small">Jaminan pengiriman tepat waktu dari tambang ke pelabuhan dan konsumen akhir.</p>
-                        </div>
+                <div class="col-md-3">
+                    <div class="stat-box">
+                        <h3 class="mb-1">400+</h3>
+                        <p class="text-dark fw-bold small mb-0">Hektar Lahan Direklamasi</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card service-card p-3 h-100 shadow-sm">
-                        <div class="card-body">
-                            <i class="bi bi-journal-check text-warning mb-3 d-block fs-4"></i>
-                            <h4 class="card-title h5 fw-bold">Audit & Kepatuhan</h4>
-                            <p class="card-text text-secondary small">Dukungan penuh dalam perizinan dan pemenuhan standar regulasi terbaru.</p>
-                        </div>
+                <div class="col-md-3">
+                    <div class="stat-box">
+                        <h3 class="mb-1">100%</h3>
+                        <p class="text-dark fw-bold small mb-0">Kepemilikan Alat Berat Terbaru</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-5 bg-white">
+    <section class="py-5 vision-section">
         <div class="container">
-            <h2 class="text-center mb-5 fw-bold text-dark">Suara Klien Kami</h2>
+            <h2 class="section-title text-white">Visi & Misi Perusahaan</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <h3 class="text-warning fw-bold mb-3"><i class="bi bi-eye-fill me-2"></i> Visi</h3>
+                    <p class="lead">Menjadi perusahaan pertambangan *multinasional* terpercaya dan terdepan di Asia Tenggara, diakui atas **keunggulan operasional** dan **praktik berkelanjutan**.</p>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="text-warning fw-bold mb-3"><i class="bi bi-flag-fill me-2"></i> Misi</h3>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-check-circle-fill text-warning me-2"></i> Menciptakan nilai optimal bagi *stakeholder* melalui eksplorasi yang bertanggung jawab.</li>
+                        <li><i class="bi bi-check-circle-fill text-warning me-2"></i> Menjaga standar K3L (Kesehatan, Keselamatan Kerja, dan Lingkungan) kelas dunia.</li>
+                        <li><i class="bi bi-check-circle-fill text-warning me-2"></i> Mengembangkan sumber daya manusia yang kompeten dan berintegritas.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner mx-auto" style="max-width: 700px;">
-                    <div class="carousel-item active text-center">
-                        <blockquote class="blockquote fst-italic p-4 bg-light rounded shadow-sm">
-                            <i class="bi bi-quote fs-2 text-warning"></i>
-                            <p class="mb-0 fs-5">"Profesionalisme dan komitmen keselamatan tim [Nama Perusahaan] adalah yang terbaik. Proyek selesai tepat waktu, di bawah budget, dan tanpa insiden."</p>
-                        </blockquote>
-                        <figcaption class="blockquote-footer mt-3">
-                            Bapak Antonius <cite title="Source Title">CEO, PT Maju Bersama Logistik</cite>
-                        </figcaption>
-                    </div>
-                    <div class="carousel-item text-center">
-                         <blockquote class="blockquote fst-italic p-4 bg-light rounded shadow-sm">
-                            <i class="bi bi-quote fs-2 text-warning"></i>
-                            <p class="mb-0 fs-5">"Pendekatan mereka terhadap reklamasi sangat inovatif. Kami bangga bermitra dengan perusahaan yang memprioritaskan lingkungan."</p>
-                        </blockquote>
-                        <figcaption class="blockquote-footer mt-3">
-                            Ibu Rina <cite title="Source Title">Kepala Divisi Lingkungan, Sumber Daya Alam Tbk.</cite>
-                        </figcaption>
+    <section id="operasi" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="section-title text-dark">Tahapan Operasi Inti Kami (Kerja Lapangan)</h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="card service-card p-3 h-100 shadow-sm">
+                        <div class="card-body"><i class="bi bi-geo-alt-fill text-warning mb-3 d-block fs-4"></i><h4 class="card-title h5 fw-bold">1. Mulut Tambang (Pit)</h4><p class="card-text text-secondary small">Ekskavasi dan penanganan material awal dengan desain tambang yang aman dan efisien.</p></div>
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                <div class="col-md-3">
+                    <div class="card service-card p-3 h-100 shadow-sm">
+                        <div class="card-body"><i class="bi bi-truck-flatbed text-warning mb-3 d-block fs-4"></i><h4 class="card-title h5 fw-bold">2. Hauling & Transportasi</h4><p class="card-text text-secondary small">Pengangkutan material ke tempat penimbunan (stockpile) dengan armada terawat.</p></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card service-card p-3 h-100 shadow-sm">
+                        <div class="card-body"><i class="bi bi-gear-fill text-warning mb-3 d-block fs-4"></i><h4 class="card-title h5 fw-bold">3. Processing Plant</h4><p class="card-text text-secondary small">Pencucian, penghancuran, dan penyesuaian ukuran bijih (benefisiasi).</p></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card service-card p-3 h-100 shadow-sm">
+                        <div class="card-body"><i class="bi bi-ship-fill text-warning mb-3 d-block fs-4"></i><h4 class="card-title h5 fw-bold">4. Pemuatan (Loading)</h4><p class="card-text text-secondary small">Pemuatan cepat dan akurat ke kapal di pelabuhan khusus kami (pit-to-ship).</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="bisnis-prospek" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-dark">Bisnis Inti, Produk & Prospek Usaha</h2>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-warning border-3 ps-3">Produk dan Distribusi</h3>
+                    <p class="text-secondary">**BARATALA** fokus pada produksi **Bijih Besi (Iron Ore)** dengan kadar [Sebutkan Kadar Utama, cth: Fe 62%] dan spesifikasi yang diminati pasar Asia. Kapasitas produksi kami mencapai **[Sebutkan Kapasitas, cth: 5 Juta Ton]** per tahun.</p>
+                    <p class="text-secondary small">Kami memiliki jaringan distribusi yang kuat dan terintegrasi dari tambang hingga ke tujuan ekspor di [Sebutkan Target Pasar, cth: Cina, India, Korea Selatan].</p>
+                    <a href="#kontak" class="btn btn-sm btn-outline-warning mt-2">Minta Spesifikasi Produk Lengkap</a>
+                </div>
+                <div class="col-lg-6">
+                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-warning border-3 ps-3">Prospek Usaha & Kemitraan Modal</h3>
+                    <p class="text-secondary">Dengan cadangan terbukti hingga [Sebutkan Angka, cth: 500 Juta Ton], kami menjamin **pertumbuhan berkelanjutan** selama dua dekade ke depan. Kami terbuka untuk **kemitraan modal** strategis yang sejalan dengan visi ekspansi pasar global.</p>
+                    <p class="text-secondary small">Prioritas investasi kami adalah teknologi ramah lingkungan untuk efisiensi jangka panjang.</p>
+                    <a href="#kontak" class="btn btn-sm btn-outline-warning mt-2">Hubungi Tim Investor Relations</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="investor" class="py-5" style="background-color: var(--secondary-color);">
+        <div class="container">
+            <h2 class="section-title text-white">Tata Kelola Perusahaan & Transparansi Laporan</h2>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card p-4 h-100 shadow-lg border-0">
+                        <h3 class="h4 fw-bold text-dark mb-3"><i class="bi bi-shield-check text-warning me-2"></i> Tata Kelola Perusahaan (GCG)</h3>
+                        <p class="text-secondary">Kami berkomitmen pada praktik Tata Kelola yang Baik (GCG) dengan transparansi, akuntabilitas, tanggung jawab, independensi, dan kewajaran.</p>
+                        <a href="/dokumen/gcg" class="btn btn-sm btn-dark mt-2">Baca Dokumen GCG</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card p-4 h-100 shadow-lg border-0">
+                        <h3 class="h4 fw-bold text-dark mb-3"><i class="bi bi-file-earmark-bar-graph text-warning me-2"></i> Dokumen & Laporan</h3>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2"><i class="bi bi-file-earmark-pdf text-danger me-2"></i> <a href="/laporan/tahunan-2024.pdf" class="text-dark fw-bold">Laporan Tahunan 2024</a></li>
+                            <li><i class="bi bi-cash text-success me-2"></i> <a href="/laporan/keuangan-q3-2025.pdf" class="text-dark fw-bold">Laporan Keuangan Kuartal III 2025</a></li>
+                        </ul>
+                        <a href="/laporan" class="btn btn-sm btn-dark mt-3">Arsip Semua Laporan</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tim" class="py-5 bg-white">
+        <div class="container text-center">
+            <h2 class="section-title text-dark">Dewan Direksi & Tim Kepemimpinan</h2>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-3 col-sm-6">
+                    <div class="team-member">
+                        <img src="{{ asset('image/team-ceo.jpg') }}" class="img-fluid rounded-circle mb-3 shadow" style="width: 150px; height: 150px; object-fit: cover;" alt="CEO">
+                        <h4 class="h6 fw-bold mb-0 text-dark">Bpk. Bima Sakti</h4>
+                        <p class="small text-warning mb-2">Chief Executive Officer</p>
+                        <p class="small text-secondary fst-italic">"Integritas adalah fondasi dari setiap Ton yang kami produksi."</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="team-member">
+                        <img src="{{ asset('image/team-coo.jpg') }}" class="img-fluid rounded-circle mb-3 shadow" style="width: 150px; height: 150px; object-fit: cover;" alt="COO">
+                        <h4 class="h6 fw-bold mb-0 text-dark">Ibu Ratih Purnama</h4>
+                        <p class="small text-warning mb-2">Chief Operating Officer</p>
+                        <p class="small text-secondary fst-italic">"Efisiensi operasi adalah kunci daya saing global kami."</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="team-member">
+                        <img src="{{ asset('image/team-hse.jpg') }}" class="img-fluid rounded-circle mb-3 shadow" style="width: 150px; height: 150px; object-fit: cover;" alt="Direktur K3L">
+                        <h4 class="h6 fw-bold mb-0 text-dark">Dr. Satrio Wibowo</h4>
+                        <p class="small text-warning mb-2">Direktur K3 & Lingkungan</p>
+                        <p class="small text-secondary fst-italic">"Keselamatan bukan prioritas, tapi nilai yang tertanam."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="berita" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-dark">Berita dan Kegiatan Terbaru</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 news-card shadow-sm border-0">
+                        <img src="{{ asset('image/gallery-5.jpg') }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="CSR">
+                        <div class="card-body">
+                            <span class="badge bg-warning text-dark mb-2 fw-bold">CSR</span>
+                            <h5 class="card-title fw-bold">Program Pemberdayaan Petani Lokal.</h5>
+                            <p class="card-text small text-secondary">Baratala meluncurkan pelatihan intensif untuk meningkatkan hasil panen masyarakat sekitar tambang.</p>
+                            <a href="#" class="text-warning small text-decoration-none fw-bold">Baca Selengkapnya <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 news-card shadow-sm border-0">
+                        <img src="{{ asset('image/gallery-2.jpg') }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Operasional">
+                        <div class="card-body">
+                            <span class="badge bg-warning text-dark mb-2 fw-bold">Operasional</span>
+                            <h5 class="card-title fw-bold">Pencapaian Rekor Produksi Kuartal Ini.</h5>
+                            <p class="card-text small text-secondary">Divisi Operasi berhasil melampaui target bulanan sebesar 15% berkat optimasi Hauling.</p>
+                            <a href="#" class="text-warning small text-decoration-none fw-bold">Baca Selengkapnya <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 news-card shadow-sm border-0">
+                        <img src="{{ asset('image/gallery-1.jpg') }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Teknologi">
+                        <div class="card-body">
+                            <span class="badge bg-warning text-dark mb-2 fw-bold">Teknologi</span>
+                            <h5 class="card-title fw-bold">Implementasi Sistem Pemantauan Otomatis IoT.</h5>
+                            <p class="card-text small text-secondary">Peningkatan efisiensi dan keamanan dengan pemasangan sensor pintar di seluruh pit area.</p>
+                            <a href="#" class="text-warning small text-decoration-none fw-bold">Baca Selengkapnya <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="text-center mt-4">
-                <a href="/studi-kasus" class="btn btn-outline-dark">Lihat Semua Studi Kasus</a>
+                <a href="/berita-kegiatan" class="btn btn-outline-dark">Lihat Semua Berita & Kegiatan</a>
             </div>
         </div>
     </section>
 
-    <section id="kontak" class="py-5 bg-dark text-center">
-        <div class="container">
-            <h2 class="display-5 fw-bold text-warning mb-3">Tingkatkan Nilai Investasi Anda Sekarang</h2>
-            <p class="lead text-white-50 mb-4">Mulai diskusi rahasia dengan tim ahli kami untuk analisis kelayakan proyek.</p>
+    <section id="kontak" class="py-5" style="background-color: var(--primary-color);">
+        <div class="container text-center">
+            <h2 class="display-5 fw-bold text-warning mb-3">Siap Menjalin Kemitraan Jangka Panjang?</h2>
+            <p class="lead text-white-50 mb-4">Hubungi tim kami hari ini untuk berdiskusi lebih lanjut mengenai peluang investasi dan kerjasama.</p>
 
-            <a href="mailto:info@perusahaananda.com" class="cta-button bg-danger hover:bg-red-700 text-white text-decoration-none border border-light border-2 me-3">
-                Hubungi Kami via Email
+            <a href="/unduh-profil.pdf" target="_blank" class="cta-button bg-danger text-white text-decoration-none border border-light border-2 me-3">
+                <i class="bi bi-cloud-arrow-down-fill me-2"></i> Unduh Profil PDF
             </a>
 
             <button type="button" class="cta-button bg-info text-white text-decoration-none" data-bs-toggle="modal" data-bs-target="#contactModal">
-                Minta Panggilan Balik
+                Jadwalkan Pertemuan
             </button>
-
-            <p class="text-white-50 mt-3 small">Atau telepon: **+62 812 XXXX XXXX**</p>
         </div>
     </section>
 
     <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header bg-warning">
-            <h5 class="modal-title text-dark fw-bold" id="contactModalLabel">Formulir Permintaan Kemitraan</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p class="small text-secondary">Kami akan menghubungi Anda dalam 1x24 jam kerja.</p>
-            <form action="/submit-contact" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="nama" class="form-label small">Nama Lengkap</label>
-                    <input type="text" class="form-control" id="nama" name="nama" required>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title text-dark fw-bold" id="contactModalLabel">Formulir Permintaan Pertemuan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label small">Email Perusahaan</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                <div class="modal-body">
+                    <p class="small text-secondary">Isi detail Anda, kami akan segera menghubungi tim direksi.</p>
+                    <form action="/submit-contact" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="nama" class="form-label small">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label small">Email Perusahaan</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="perusahaan" class="form-label small">Nama Perusahaan</label>
+                            <input type="text" class="form-control" id="perusahaan" name="perusahaan" required>
+                        </div>
+                         <div class="mb-3">
+                            <label for="pesan" class="form-label small">Tujuan Pertemuan Singkat</label>
+                            <textarea class="form-control" id="pesan" name="pesan" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100 fw-bold">Kirim Permintaan Pertemuan</button>
+                    </form>
                 </div>
-                <div class="mb-3">
-                    <label for="perusahaan" class="form-label small">Nama Perusahaan</label>
-                    <input type="text" class="form-control" id="perusahaan" name="perusahaan" required>
-                </div>
-                 <div class="mb-3">
-                    <label for="pesan" class="form-label small">Rincian Proyek Singkat</label>
-                    <textarea class="form-control" id="pesan" name="pesan" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-warning w-100 fw-bold">Kirim Permintaan</button>
-            </form>
-          </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <footer class="footer-custom text-white-50 py-4">
         <div class="container text-center">
-            <p class="mb-1 small">&copy; {{ date('Y') }} [Nama Perusahaan Anda] - Pertambangan & Eksplorasi.</p>
+            <div class="row g-3 justify-content-center mb-3">
+                <div class="col-auto"><a href="#" class="text-white-50"><i class="bi bi-linkedin fs-4"></i></a></div>
+                <div class="col-auto"><a href="#" class="text-white-50"><i class="bi bi-facebook fs-4"></i></a></div>
+                <div class="col-auto"><a href="#" class="text-white-50"><i class="bi bi-instagram fs-4"></i></a></div>
+            </div>
+            <p class="mb-1 small">&copy; {{ date('Y') }} BARATALA TUNTUNG PANDANG. All Rights Reserved.</p>
             <div class="small">
                 <a href="/privacy" class="text-white-50 text-decoration-none mx-2">Kebijakan Privasi</a>
                 |

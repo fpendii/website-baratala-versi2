@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('PD BARATALA', 'Laravel'),
+    'name' => env('BARATALA', 'BARATALA TUNTUNG PANDANG'),
 
     /*
     |--------------------------------------------------------------------------

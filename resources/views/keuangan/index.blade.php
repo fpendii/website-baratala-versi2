@@ -21,13 +21,24 @@
     @endif
 
     <div class="row gy-6">
-        {{-- RINGKASAN --}}
+        {{-- RINGKASAN SALDO --}}
+        <div class="col-md-12 col-lg-4">
+            <div class="card">
+                <div class="card-body text-nowrap">
+                    <h5 class="card-title mb-0">Total Uang</h5>
+                    <p class="mb-2">Kantor</p>
+                    <h4 class="text-primary mb-0">Rp{{ number_format($uangKas->nominal ?? 0, 0, ',', '.') }}</h4>
+                </div>
+                <img src="/image/icon-uang.png" class="position-absolute bottom-0 end-0 me-5 mb-5" width="83"
+                    alt="kas" />
+            </div>
+        </div>
         <div class="col-md-12 col-lg-4">
             <div class="card">
                 <div class="card-body text-nowrap">
                     <h5 class="card-title mb-0">Uang Kas</h5>
                     <p class="mb-2">Kantor</p>
-                    <h4 class="text-primary mb-0">Rp{{ number_format($uangKas->uang_kas, 0, ',', '.') }}</h4>
+                    <h4 class="text-primary mb-0">Rp{{ number_format($uangKas->uang_kas ?? 0, 0, ',', '.') }}</h4>
                 </div>
                 <img src="/image/icon-uang.png" class="position-absolute bottom-0 end-0 me-5 mb-5" width="83"
                     alt="kas" />
@@ -45,14 +56,15 @@
                     alt="rekening" />
             </div>
         </div>
+    </div>
 
-
+    <div class="row gy-6 mt-3">
         <div class="col-md-12 col-lg-4">
             <div class="card">
                 <div class="card-body text-nowrap">
                     <h5 class="card-title mb-0">Uang Masuk</h5>
                     <p class="mb-2">Bulan ini</p>
-                    <h4 class="text-success mb-0">Rp{{ number_format($uangMasuk, 0, ',', '.') }}</h4>
+                    <h4 class="text-success mb-0">Rp{{ number_format($uangMasuk ?? 0, 0, ',', '.') }}</h4>
                 </div>
             </div>
         </div>
@@ -62,23 +74,25 @@
                 <div class="card-body text-nowrap">
                     <h5 class="card-title mb-0">Uang Keluar</h5>
                     <p class="mb-2">Bulan ini</p>
-                    <h4 class="text-danger mb-0">Rp{{ number_format($uangKeluar, 0, ',', '.') }}</h4>
+                    <h4 class="text-danger mb-0">Rp{{ number_format($uangKeluar ?? 0, 0, ',', '.') }}</h4>
                 </div>
             </div>
         </div>
+    </div>
 
-        {{-- FILTER DAN TABEL --}}
-        <div class="col-12 mt-4">
-            <div class="card overflow-hidden">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Daftar Transaksi</h5>
-                    <div class="d-flex gap-2">
-                        <a href="{{ url('keuangan/export') }}?filter_tanggal={{ request('filter_tanggal') }}&filter_jenis={{ request('filter_jenis') }}&filter_pengguna={{ request('filter_pengguna') }}"
-                            class="btn btn-outline-success btn-sm">
-                            Export Excel
-                        </a>
-                      @if (Auth::user()->role != 'direktur')
-                             <a href="{{ url('keuangan/pengeluaran/create') }}" class="btn btn-danger btn-sm">
+
+    {{-- FILTER DAN TABEL --}}
+    <div class="col-12 mt-4">
+        <div class="card overflow-hidden">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Daftar Transaksi</h5>
+                <div class="d-flex gap-2">
+                    <a href="{{ url('keuangan/export') }}?filter_tanggal={{ request('filter_tanggal') }}&filter_jenis={{ request('filter_jenis') }}&filter_pengguna={{ request('filter_pengguna') }}"
+                        class="btn btn-outline-success btn-sm">
+                        Export Excel
+                    </a>
+                    @if (Auth::user()->role != 'direktur')
+                        <a href="{{ url('keuangan/pengeluaran/create') }}" class="btn btn-danger btn-sm">
                             + Pengeluaran Kas
                         </a>
                         <a href="{{ url('keuangan/kasbon/create') }}" class="btn btn-warning btn-sm">
@@ -87,155 +101,193 @@
                         <a href="{{ url('keuangan/uang-masuk/create') }}" class="btn btn-success btn-sm">
                             + Uang Masuk
                         </a>
-                        @endif
+                    @endif
 
+                </div>
+            </div>
+
+            {{-- FILTER --}}
+            <div class="container">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <form action="{{ url('keuangan') }}" method="GET" class="row g-2 align-items-end">
+                            <div class="col-md-3">
+                                <label for="filter_tanggal" class="form-label">Tanggal</label>
+                                <input type="month" name="filter_tanggal" id="filter_tanggal" class="form-control"
+                                    value="{{ request('filter_tanggal') }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="filter_jenis" class="form-label">Jenis</label>
+                                <select name="filter_jenis" id="filter_jenis" class="form-select">
+                                    <option value="">-- Semua Jenis --</option>
+                                    <option value="uang_masuk"
+                                        {{ request('filter_jenis') == 'uang_masuk' ? 'selected' : '' }}>Uang Masuk
+                                    </option>
+                                    <option value="pengeluaran"
+                                        {{ request('filter_jenis') == 'pengeluaran' ? 'selected' : '' }}>Pengeluaran
+                                    </option>
+                                    <option value="kasbon" {{ request('filter_jenis') == 'kasbon' ? 'selected' : '' }}>
+                                        Kasbon</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="filter_pengguna" class="form-label">Penerima</label>
+                                <select name="filter_pengguna" id="filter_pengguna" class="form-select">
+                                    <option value="">-- Semua Karyawan --</option>
+                                    @foreach ($daftarKaryawan as $karyawan)
+                                        <option value="{{ $karyawan->id }}"
+                                            {{ request('filter_pengguna') == $karyawan->id ? 'selected' : '' }}>
+                                            {{ $karyawan->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end justify-content-end">
+                                <button type="submit" class="btn btn-primary w-100">Filter</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+            </div>
 
-                {{-- FILTER --}}
-                <div class="container">
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <form action="{{ url('keuangan') }}" method="GET" class="row g-2 align-items-end">
-                                <div class="col-md-3">
-                                    <label for="filter_tanggal" class="form-label">Tanggal</label>
-                                    <input type="month" name="filter_tanggal" id="filter_tanggal" class="form-control"
-                                        value="{{ request('filter_tanggal') }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="filter_jenis" class="form-label">Jenis</label>
-                                    <select name="filter_jenis" id="filter_jenis" class="form-select">
-                                        <option value="">-- Semua Jenis --</option>
-                                        <option value="uang_masuk"
-                                            {{ request('filter_jenis') == 'uang_masuk' ? 'selected' : '' }}>Uang Masuk
-                                        </option>
-                                        <option value="pengeluaran"
-                                            {{ request('filter_jenis') == 'pengeluaran' ? 'selected' : '' }}>Pengeluaran
-                                        </option>
-                                        <option value="kasbon" {{ request('filter_jenis') == 'kasbon' ? 'selected' : '' }}>
-                                            Kasbon</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="filter_pengguna" class="form-label">Penerima</label>
-                                    <select name="filter_pengguna" id="filter_pengguna" class="form-select">
-                                        <option value="">-- Semua Karyawan --</option>
-                                        @foreach ($daftarKaryawan as $karyawan)
-                                            <option value="{{ $karyawan->id }}"
-                                                {{ request('filter_pengguna') == $karyawan->id ? 'selected' : '' }}>
-                                                {{ $karyawan->nama }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-3 d-flex align-items-end justify-content-end">
-                                    <button type="submit" class="btn btn-primary w-100">Filter</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- TABEL --}}
-                <div class="table-responsive">
-                    <table class="table table-sm table-hover align-middle">
-                        <thead class="table-dark">
+            {{-- TABEL --}}
+            <div class="table-responsive">
+                <table class="table table-sm table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Penerima</th>
+                            <th>Keperluan</th>
+                            <th>Jenis</th>
+                            <th>Nominal</th>
+                            <th>Status</th>
+                            <th class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($laporanKeuangan as $laporan)
                             <tr>
-                                <th>Tanggal</th>
-                                <th>Penerima</th>
-                                <th>Keperluan</th>
-                                <th>Jenis</th>
-                                <th>Nominal</th>
-                                <th>Status</th>
-                                <th class="text-center">Aksi</th> {{-- DIBUAT CENTER --}}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($laporanKeuangan as $laporan)
-                                <tr>
-                                    <td>{{ \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') }}</td>
-                                    <td>{{ $laporan->penerima ?? '-' }}</td>
-                                    <td>{{ $laporan->keperluan }}</td>
-                                    <td>
-                                        @switch($laporan->jenis)
-                                            @case('uang_masuk')
-                                                <span class="badge bg-success">Uang Masuk</span>
-                                            @break
+                                <td>{{ \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') }}</td>
+                                <td>{{ $laporan->penerima ?? '-' }}</td>
+                                <td>{{ $laporan->keperluan }}</td>
+                                {{-- <td>
+                                    <a href="{{ route('keuangan.preview', $laporan->id) }}" target="_blank"
+                                        class="btn btn-warning">
+                                        <i class="ri ri-eye-line me-1"></i> Pratinjau Tampilan PDF
+                                    </a>
+                                </td> --}}
+                                <td>
+                                    @switch($laporan->jenis)
+                                        @case('uang_masuk')
+                                            <span class="badge bg-success">Uang Masuk</span>
+                                        @break
 
-                                            @case('pengeluaran')
-                                                <span class="badge bg-danger">Pengeluaran</span>
-                                            @break
+                                        @case('pengeluaran')
+                                            <span class="badge bg-danger">Pengeluaran</span>
+                                        @break
 
-                                            @default
-                                                <span class="badge bg-warning text-dark">Kasbon</span>
-                                        @endswitch
-                                    </td>
-                                    <td class="{{ $laporan->tipe == 'pendapatan' ? 'text-success' : 'text-danger' }}">
-                                        Rp{{ number_format($laporan->nominal, 0, ',', '.') }}
-                                    </td>
-                                    <td>{{ ucfirst($laporan->status_persetujuan) }}</td>
-                                    <td class="d-flex gap-1 justify-content-center"> {{-- KONTEN AKSI --}}
-                                        {{-- TOMBOL DETAIL --}}
-                                        <button class="btn btn-sm btn-outline-primary btn-detail-laporan"
-                                            data-bs-toggle="modal" data-bs-target="#detailModal"
-                                            data-id="{{ $laporan->id }}"
-                                            data-tanggal="{{ \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') }}"
-                                            data-pengguna="{{ $laporan->penerima ?? '-' }}"
-                                            data-keperluan="{{ $laporan->keperluan }}"
-                                            data-nominal="{{ number_format($laporan->nominal, 0, ',', '.') }}"
-                                            data-jenis="{{ $laporan->jenis }}"
-                                            data-metode="{{ ucfirst($laporan->jenis_uang ?? '-') }}"
-                                            data-bukti="{{ $laporan->bukti_transaksi ? asset('storage/' . $laporan->bukti_transaksi) : '' }}"
-                                            data-status="{{ $laporan->status_persetujuan }}"
-                                            data-status-teks="{{ ucfirst($laporan->status_persetujuan) }}"
-                                            data-catatan="{{ $laporan->catatan ?? 'Tidak ada catatan.' }}">
-                                            <i class="ri ri-eye-line"></i>
+                                        @default
+                                            <span class="badge bg-warning text-dark">Kasbon</span>
+                                    @endswitch
+                                </td>
+                                <td class="{{ $laporan->tipe == 'pendapatan' ? 'text-success' : 'text-danger' }}">
+                                    Rp{{ number_format($laporan->nominal, 0, ',', '.') }}
+                                </td>
+                                <td>{{ ucfirst($laporan->status_persetujuan) }}</td>
+                                <td>
+                                    {{-- KONTEN AKSI SEKARANG DALAM DROPDOWN --}}
+                                    <div class="dropdown">
+                                        {{-- Tombol Ikon Titik Tiga (Dropdown Toggle) --}}
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                            data-bs-toggle="dropdown" title="Aksi">
+                                            <i class="icon-base ri ri-more-2-line icon-18px"></i>
                                         </button>
 
-                                        @php
-                                            // Cek apakah data diinput dalam 24 jam terakhir (atau 1 hari kalender penuh)
-                                            $tanggalTransaksi = \Carbon\Carbon::parse($laporan->created_at);
-                                            // Kita cek apakah tanggal transaksi adalah HARI INI atau KEMARIN (jika waktu memungkinkan)
-                                            $isRecent = $tanggalTransaksi->gte(\Carbon\Carbon::now()->subDay());
-                                        @endphp
+                                        {{-- Dropdown Menu --}}
+                                        <div class="dropdown-menu">
 
-                                        {{-- LOGIKA EDIT & HAPUS: Hanya bisa jika statusnya 'pending' --}}
-                                        @if ($laporan->status_persetujuan != 'disetujui' && $laporan->status_persetujuan != 'ditolak' && $isRecent)
-                                            {{-- TOMBOL EDIT --}}
-                                            {{-- <a href="{{ url('keuangan/' . $laporan->id . '/edit') }}"
-                                                class="btn btn-sm btn-outline-warning">
-                                                <i class="ri ri-edit-line"></i>
-                                            </a> --}}
+                                            {{-- 1. TOMBOL DETAIL (Selalu ada) --}}
+                                            <a class="dropdown-item btn-detail-laporan" href="javascript:void(0);"
+                                                data-bs-toggle="modal" data-bs-target="#detailModal"
+                                                {{-- Memindahkan semua data-* atribut ke dropdown item ini --}} data-id="{{ $laporan->id }}"
+                                                data-tanggal="{{ \Carbon\Carbon::parse($laporan->tanggal)->format('d M Y') }}"
+                                                data-pengguna="{{ $laporan->penerima ?? '-' }}"
+                                                data-keperluan="{{ $laporan->keperluan }}"
+                                                data-nominal="{{ number_format($laporan->nominal, 0, ',', '.') }}"
+                                                data-jenis="{{ $laporan->jenis }}"
+                                                data-metode="{{ ucfirst($laporan->jenis_uang ?? '-') }}"
+                                                data-bukti="{{ $laporan->bukti_transaksi ? asset('storage/' . $laporan->bukti_transaksi) : '' }}"
+                                                data-status="{{ $laporan->status_persetujuan }}"
+                                                data-status-teks="{{ ucfirst($laporan->status_persetujuan) }}"
+                                                data-catatan="{{ $laporan->catatan ?? 'Tidak ada catatan.' }}"
+                                                {{-- DATA BARU: Path PDF --}}
+                                                data-pdf-path="{{ $laporan->bukti_persetujuan_pdf ? asset('storage/' . $laporan->bukti_persetujuan_pdf) : '' }}"
+                                                {{-- END DATA BARU --}}
+                                                data-perlu-persetujuan="{{ $laporan->persetujuan_direktur ?? 0 }}"
+                                                data-current-status="{{ $laporan->status_persetujuan }}">
+                                                <i class="ri ri-eye-line me-1"></i> Detail
+                                            </a>
 
-                                            {{-- TOMBOL HAPUS (Membuka Modal Hapus) --}}
-                                            <button class="btn btn-sm btn-outline-danger btn-hapus-laporan"
-                                                data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                data-id="{{ $laporan->id }}"
-                                                data-keperluan="{{ $laporan->keperluan }}">
-                                                <i class="ri ri-delete-bin-line"></i>
-                                            </button>
-                                        @endif
-                                    </td>
+                                            @php
+                                                // Logika Cek Waktu dan Status
+                                                $tanggalTransaksi = \Carbon\Carbon::parse($laporan->created_at);
+                                                $isRecent = $tanggalTransaksi->gte(\Carbon\Carbon::now()->subDay());
+                                                $canModify =
+                                                    $laporan->status_persetujuan != 'disetujui' &&
+                                                    $laporan->status_persetujuan != 'ditolak' &&
+                                                    $isRecent;
+                                            @endphp
+
+                                            {{-- 2. TOMBOL EDIT (Hanya jika memenuhi syarat modifikasi) --}}
+                                            @if ($canModify && Auth::user()->role == 'keuangan')
+                                                <a href="{{ url('keuangan/' . $laporan->id . '/edit') }}"
+                                                    class="dropdown-item text-warning">
+                                                    <i class="ri ri-edit-line me-1"></i> Edit
+                                                </a>
+                                            @endif
+
+                                            {{-- 3. TOMBOL HAPUS (Hanya jika memenuhi syarat modifikasi) --}}
+                                            @if ($canModify && Auth::user()->role == 'keuangan')
+                                                <a class="dropdown-item text-danger btn-hapus-laporan"
+                                                    href="javascript:void(0);" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal" data-id="{{ $laporan->id }}"
+                                                    data-keperluan="{{ $laporan->keperluan }}">
+                                                    <i class="ri ri-delete-bin-line me-1"></i> Hapus
+                                                </a>
+                                            @endif
+
+                                            {{-- 4. TOMBOL PROSES PERSETUJUAN (Hanya Direktur & Menunggu) --}}
+                                            @if (
+                                                $laporan->persetujuan_direktur == 1 &&
+                                                    Auth::user()->role == 'direktur' &&
+                                                    $laporan->status_persetujuan == 'menunggu')
+                                                <a href="{{ url('keuangan/persetujuan', $laporan->id) }}"
+                                                    class="dropdown-item text-primary">
+                                                    <i class="icon-base ri ri-check-line me-1"></i> Setujui
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center">Belum ada data keuangan</td>
                                 </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center">Belum ada data keuangan</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                            @endforelse
+                        </tbody>
+                    </table>
 
-                        <div class="container">
-                            <div class="d-flex justify-content-end mt-3">
-                                {{ $laporanKeuangan->links('pagination::bootstrap-5') }}
-                            </div>
+                    <div class="container">
+                        <div class="d-flex justify-content-end mt-3">
+                            {{ $laporanKeuangan->links('pagination::bootstrap-5') }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- MODAL DETAIL (Tidak diubah, hanya memastikan ID sudah ada) --}}
+        {{-- MODAL DETAIL --}}
         <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-md modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -277,16 +329,23 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <a href="#" id="btn-generate-pdf" class="btn btn-primary d-none">
-                            <i class="ri ri-file-pdf-line me-1"></i> Generate PDF
+                        {{-- TOMBOL PROSES PERSETUJUAN (Untuk dialihkan ke halaman persetujuan direktur) --}}
+                        <a href="#" id="btn-proses-persetujuan" class="btn btn-primary d-none">
+                            <i class="ri ri-check-line me-1"></i> Proses Persetujuan
                         </a>
+
+                        {{-- TOMBOL DOWNLOAD PDF BUKTI PERSETUJUAN --}}
+                        <a href="#" id="btn-generate-pdf" class="btn btn-success d-none">
+                            <i class="ri ri-file-pdf-line me-1"></i> Download Bukti PDF
+                        </a>
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- MODAL HAPUS BARU --}}
+        {{-- MODAL HAPUS --}}
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -314,12 +373,15 @@
 
     @push('scripts')
         <script>
+            // BARIS BARU: Definisikan variabel peran dari sisi server (Blade)
+            const isDirektur = @json(Auth::user()->role == 'direktur');
+
             document.addEventListener('DOMContentLoaded', function() {
                 const detailModal = document.getElementById('detailModal');
                 const deleteModal = document.getElementById('deleteModal');
                 const deleteForm = document.getElementById('deleteForm');
 
-                // Logic untuk Modal Detail (yang sudah ada)
+                // Logic untuk Modal Detail
                 detailModal.addEventListener('show.bs.modal', function(event) {
                     const button = event.relatedTarget;
                     const data = {
@@ -331,9 +393,15 @@
                         metode: button.getAttribute('data-metode'),
                         bukti: button.getAttribute('data-bukti'),
                         statusTeks: button.getAttribute('data-status-teks'),
-                        catatan: button.getAttribute('data-catatan')
+                        catatan: button.getAttribute('data-catatan'),
+                        id: button.getAttribute('data-id'),
+                        perluPersetujuan: button.getAttribute('data-perlu-persetujuan'),
+                        currentStatus: button.getAttribute('data-current-status'),
+                        // BARIS BARU: Ambil path PDF
+                        pdfPath: button.getAttribute('data-pdf-path')
                     };
 
+                    // Isi detail
                     document.getElementById('detail-tanggal').textContent = data.tanggal;
                     document.getElementById('detail-pengguna').textContent = data.pengguna;
                     document.getElementById('detail-keperluan').textContent = data.keperluan;
@@ -351,7 +419,7 @@
 
                     // Logic untuk Status Badge
                     const statusBadge = document.createElement('span');
-                    statusBadge.className = 'badge bg-' + (data.statusTeks === 'Pending' ? 'secondary' : data
+                    statusBadge.className = 'badge bg-' + (data.statusTeks === 'Menunggu' ? 'secondary' : data
                         .statusTeks === 'Disetujui' ? 'success' : 'danger');
                     statusBadge.textContent = data.statusTeks;
                     document.getElementById('detail-status').innerHTML = '';
@@ -363,19 +431,48 @@
                     buktiContainer.innerHTML = data.bukti ?
                         `<a href="${data.bukti}" target="_blank" class="btn btn-outline-primary btn-sm">Lihat Bukti</a>` :
                         '<span class="text-muted">Tidak ada bukti</span>';
+
+
+                    // === LOGIKA TOMBOL PROSES PERSETUJUAN ===
+                    const btnProsesPersetujuan = document.getElementById('btn-proses-persetujuan');
+
+                    const showApprovalButton =
+                        // 1. Pengguna harus direktur
+                        isDirektur &&
+                        // 2. Transaksi memerlukan persetujuan direktur (bernialai 1)
+                        data.perluPersetujuan == '1' &&
+                        // 3. Status transaksi masih pending
+                        data.currentStatus == 'menunggu';
+
+                    if (showApprovalButton) {
+                        btnProsesPersetujuan.classList.remove('d-none'); // Tampilkan tombol
+                        // Set URL (Asumsi: /keuangan/persetujuan/{id} yang akan menampilkan form persetujuan)
+                        btnProsesPersetujuan.href = `/keuangan/persetujuan/${data.id}`;
+                    } else {
+                        btnProsesPersetujuan.classList.add('d-none'); // Sembunyikan
+                    }
+
+                    // === LOGIKA BARU: TOMBOL DOWNLOAD PDF ===
+                    const btnGeneratePdf = document.getElementById('btn-generate-pdf');
+
+                    if (data.currentStatus === 'disetujui' && data.pdfPath) {
+                        btnGeneratePdf.classList.remove('d-none'); // Tampilkan tombol
+                        btnGeneratePdf.href = data.pdfPath; // Set URL ke file PDF (asset('storage/path'))
+                        btnGeneratePdf.setAttribute('target', '_blank'); // Buka di tab baru
+                    } else {
+                        btnGeneratePdf.classList.add('d-none'); // Sembunyikan tombol
+                        btnGeneratePdf.removeAttribute('target');
+                    }
                 });
 
-                // Logic BARU untuk Modal Hapus
+                // Logic untuk Modal Hapus
                 deleteModal.addEventListener('show.bs.modal', function(event) {
                     const button = event.relatedTarget;
                     const id = button.getAttribute('data-id');
                     const keperluan = button.getAttribute('data-keperluan');
 
-                    // Set teks keperluan di modal
                     document.getElementById('delete-keperluan').textContent = keperluan;
-
-                    // Set action form ke route DELETE yang benar
-                    deleteForm.action = `/keuangan/${id}`; // Sesuaikan dengan URL Controller Anda
+                    deleteForm.action = `/keuangan/${id}`;
                 });
             });
         </script>

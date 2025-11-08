@@ -47,10 +47,11 @@ use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\LandingPageController;
 
 
+Route::get('/', [LandingPageController::class, 'index'])->name('landingpage');
 
 Route::middleware('guest')->group(function () {
 
-    Route::get('/', [LandingPageController::class, 'index'])->name('landingpage');
+
 
 
     Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -89,6 +90,12 @@ Route::get('keuangan/uang-masuk/create', [KeuanganController::class, 'createUang
 Route::post('keuangan/uang-masuk/store', [KeuanganController::class, 'storeUangMasuk']);
 Route::delete('keuangan/{id}', [KeuanganController::class, 'destroy'])->name('keuangan.destroy');
 Route::get('keuangan/{id}/edit', [KeuanganController::class, 'edit'])->name('keuangan.edit');
+Route::get('keuangan/persetujuan/{id}', [KeuanganController::class, 'persetujuan'])->name('keuangan.persetujuan');
+Route::put('keuangan/persetujuan/{id}', [KeuanganController::class, 'updatePersetujuan'])->name('keuangan.updatePersetujuan');
+Route::get('keuangan/generate-pdf/{id}', [KeuanganController::class, 'generatePDF'])->name('keuangan.generate-pdf');
+
+
+Route::get('keuangan/preview/{id}', [KeuanganController::class, 'previewPdfView'])->name('keuangan.preview');
 
 // Route baru untuk menghasilkan PDF
 Route::get('/laporan-keuangan/{id}/generate-pdf', [KeuanganControllerKaryawan::class, 'generatePDF'])->name('karyawan   .keuangan-laporan.generate-pdf');

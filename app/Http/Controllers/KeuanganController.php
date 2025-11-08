@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Exports\LaporanKeuanganExport;
 use Maatwebsite\Excel\Facades\Excel; // Pastikan ini di-import
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KeuanganController extends Controller
 {
@@ -49,6 +50,27 @@ class KeuanganController extends Controller
         return view('keuangan.index', compact('laporanKeuangan', 'uangKeluar', 'uangKas', 'daftarKaryawan', 'uangMasuk'));
     }
 
+    public function previewPdfView($id)
+    {
+        // 1. Ambil data laporan
+        $laporan = LaporanKeuangan::findOrFail($id);
+
+        // nama direktur
+        $direktur = Pengguna::where('role', 'direktur')->first()->nama ?? 'Direktur';
+
+        // 2. Siapkan variabel yang dibutuhkan view (sesuai template)
+        $data = [
+            'laporan' => $laporan,
+            // $direktur adalah variabel yang mungkin digunakan di view
+            'direktur' => $direktur,
+            // $tanggal_persetujuan juga variabel yang dibutuhkan view
+            'tanggal_persetujuan' => now()->format('Y-m-d H:i:s'),
+
+        ];
+
+        // 3. Tampilkan view-nya secara langsung
+        return view('pdf.bukti_persetujuan_pdf', $data);
+    }
 
 
     public function createPengeluaran()
@@ -66,7 +88,7 @@ class KeuanganController extends Controller
             'keperluan' => 'required|string',
             'nominal' => 'required|string',
             'jenis_uang' => 'required|in:kas,bank',
-            'lampiran' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'lampiran' => 'file|mimes:jpg,jpeg,png,pdf|max:2048',
             'persetujuan_direktur' => 'required',
         ]);
 
@@ -369,27 +391,27 @@ class KeuanganController extends Controller
         }
     }
 
-    public function generatePDF($id)
-    {
-        // Pastikan laporan sudah disetujui sebelum mencoba membuat PDF
-        $laporan = LaporanKeuangan::with('pengguna', 'penerimaRelasi')->findOrFail($id);
+    // public function generatePDF($id)
+    // {
+    //     // Pastikan laporan sudah disetujui sebelum mencoba membuat PDF
+    //     $laporan = LaporanKeuangan::with('pengguna', 'penerimaRelasi')->findOrFail($id);
 
-        if ($laporan->status_persetujuan !== 'disetujui') {
-            return redirect()->route('keuangan.index')->with('error', 'Dokumen PDF hanya dapat dibuat untuk laporan yang disetujui.');
-        }
+    //     if ($laporan->status_persetujuan !== 'disetujui') {
+    //         return redirect()->route('keuangan.index')->with('error', 'Dokumen PDF hanya dapat dibuat untuk laporan yang disetujui.');
+    //     }
 
-        // Tambahkan package PDF di sini jika belum di-import di atas
-        $pdf = app('dompdf.wrapper');
+    //     // Tambahkan package PDF di sini jika belum di-import di atas
+    //     $pdf = app('dompdf.wrapper');
 
-        // Load view blade untuk PDF
-        $pdf->loadView('pdf.bukti_persetujuan_pdf', compact('laporan'));
+    //     // Load view blade untuk PDF
+    //     $pdf->loadView('pdf.bukti_persetujuan_pdf', compact('laporan'));
 
-        // Nama file PDF
-        $fileName = 'Bukti_Pengeluaran_' . $laporan->id . '_' . Carbon::now()->format('Ymd') . '.pdf';
+    //     // Nama file PDF
+    //     $fileName = 'Bukti_Pengeluaran_' . $laporan->id . '_' . Carbon::now()->format('Ymd') . '.pdf';
 
-        // Unduh PDF
-        return $pdf->download($fileName);
-    }
+    //     // Unduh PDF
+    //     return $pdf->download($fileName);
+    // }
 
     public function exportExcel(Request $request)
     {
@@ -498,5 +520,181 @@ class KeuanganController extends Controller
             Log::error('Gagal menghapus transaksi: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Gagal menghapus transaksi. Terjadi kesalahan sistem.');
         }
+    }
+
+    public function persetujuan(Request $request, $id)
+    {
+        $laporan = LaporanKeuangan::with('pengguna', 'penerimaRelasi')->findOrFail($id);
+        // Ubah status persetujuan_direktur menjadi true
+        return view('keuangan.persetujuan', compact('laporan'));
+    }
+
+    public function updatePersetujuan(Request $request, $id)
+    {
+        $laporan = LaporanKeuangan::findOrFail($id);
+
+        // Hanya proses jika persetujuan dikirim (untuk keamanan)
+        if (!in_array($request->persetujuan, ['disetujui', 'ditolak'])) {
+            return back()->with('error', 'Pilihan persetujuan tidak valid.');
+        }
+
+        $isApproved = ($request->persetujuan === 'disetujui');
+        $pdfPath = null; // Inisialisasi variabel untuk path PDF
+
+        DB::beginTransaction();
+
+        try {
+            if ($isApproved) {
+                $laporan->status_persetujuan = 'disetujui';
+
+                // Ambil data keuangan utama
+                $keuangan = Keuangan::first();
+                if (!$keuangan) {
+                    DB::rollBack();
+                    return back()->with('error', 'Data Keuangan utama tidak ditemukan.');
+                }
+
+                $nominal = (float) $laporan->nominal;
+                $jenisUang = $laporan->jenis_uang;
+                $jenisTransaksi = $laporan->jenis;
+
+                // Logika Pembaruan Saldo (Kode Anda yang sudah benar)
+                if (in_array($jenisTransaksi, ['pengeluaran', 'kasbon'])) {
+                    if ($jenisUang === 'kas') {
+                        if ($keuangan->uang_kas < $nominal) {
+                            DB::rollBack();
+                            return back()->with('error', 'Saldo Kas tidak mencukupi untuk pengeluaran ini.');
+                        }
+                        $keuangan->uang_kas -= $nominal;
+                    } elseif ($jenisUang === 'bank') {
+                        if ($keuangan->uang_rekening < $nominal) {
+                            DB::rollBack();
+                            return back()->with('error', 'Saldo Bank tidak mencukupi untuk pengeluaran ini.');
+                        }
+                        $keuangan->uang_rekening -= $nominal;
+                    }
+                    $keuangan->nominal -= $nominal;
+                } elseif ($jenisTransaksi === 'uang_masuk') {
+                    if ($jenisUang === 'kas') {
+                        $keuangan->uang_kas += $nominal;
+                    } elseif ($jenisUang === 'bank') {
+                        $keuangan->uang_rekening += $nominal;
+                    }
+                    $keuangan->nominal += $nominal;
+                }
+
+                // Simpan perubahan keuangan
+                $keuangan->save();
+
+                // PANGGIL FUNGSI GENERATE PDF DAN SIMPAN PATH
+                // Pastikan ini dipanggil SETELAH $laporan->status_persetujuan diatur
+                $pdfPath = $this->generatePDF($laporan->id);
+
+            } else {
+                $laporan->status_persetujuan = 'ditolak';
+                // Jika ditolak, pastikan path PDF dihapus/null
+                $laporan->bukti_persetujuan_pdf = null;
+            }
+
+
+            $laporan->catatan = $request->catatan;
+            // Simpan path PDF yang dikembalikan (jika ada)
+            if ($pdfPath) {
+                $laporan->bukti_persetujuan_pdf = $pdfPath;
+            }
+
+            $laporan->save(); // Simpan status persetujuan, catatan, dan path PDF
+
+            DB::commit();
+
+            $message = $isApproved ? 'Laporan berhasil disetujui dan bukti PDF telah disimpan.' : 'Persetujuan laporan keuangan berhasil diperbarui (Ditolak).';
+
+            // Hanya redirect ke index, tidak perlu ke route generate-pdf lagi
+            return redirect()->route('keuangan.index')
+                ->with('success', $message);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error updating laporan keuangan approval: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat memperbarui persetujuan laporan keuangan.');
+        }
+    }
+
+    // protected function generateAndStorePdf(LaporanKeuangan $laporan)
+    // {
+    //     if ($laporan->persetujuan_direktur != 1) {
+    //         return null;
+    //     }
+
+    //     $data = [
+    //         'laporan' => $laporan,
+    //         'direktur' => Auth::user()->nama,
+    //         'tanggal_persetujuan' => now()->format('d M Y H:i:s'),
+    //     ];
+
+    //     $pdf = Pdf::loadView('pdf.bukti_persetujuan_pdf', $data);
+
+    //     $fileName = 'persetujuan_' . $laporan->id . '_' . time() . '.pdf';
+    //     $filePath = 'bukti_persetujuan/' . $fileName;
+
+    //     // Simpan file PDF ke storage/app/public/bukti_persetujuan/
+    //     Storage::disk('public')->put($filePath, $pdf->output());
+
+    //     return $filePath; // simpan path ini ke database
+    // }
+
+
+
+    public function generatePDF($id)
+    {
+        $laporan = LaporanKeuangan::with('pengguna', 'penerimaRelasi')->findOrFail($id);
+
+        if ($laporan->status_persetujuan !== 'disetujui') {
+            return redirect()->route('keuangan.index')
+                ->with('error', 'Dokumen PDF hanya dapat dibuat untuk laporan yang disetujui.');
+        }
+
+        // --- DEFENISI BASE64 ---
+        $logoBase64 = $this->getBase64Image(public_path('image/logo.png'));
+        $ttdDirBase64 = $this->getBase64Image(public_path('image/ttd.png'));
+
+        // --- DATA UNTUK VIEW ---
+        $data = [
+            'laporan' => $laporan,
+            'direktur' => Auth::user()->nama,
+            'tanggal_persetujuan' => Carbon::now()->format('Y-m-d H:i:s'),
+            'logoBase64' => $logoBase64,
+            'ttdDirBase64' => $ttdDirBase64,
+        ];
+
+        // --- LOAD VIEW PDF (nama view harus sama dengan file Blade) ---
+        // $pdf = Pdf::loadView('pdf.bukti_persetujuan_pdf', $data);
+
+        // $fileName = 'Bukti_Pengeluaran_' . $laporan->id . '_' . Carbon::now()->format('Ymd') . '.pdf';
+
+        // return $pdf->download($fileName);
+
+        $pdf = Pdf::loadView('pdf.bukti_persetujuan_pdf', $data);
+
+        $fileName = 'persetujuan_' . $laporan->id . '_' . time() . '.pdf';
+        $filePath = 'bukti_persetujuan/' . $fileName;
+
+        // Simpan file PDF ke storage/app/public/bukti_persetujuan/
+        Storage::disk('public')->put($filePath, $pdf->output());
+
+        return $filePath; // simpan path ini ke database
+    }
+
+    /**
+     * Fungsi helper untuk konversi gambar ke Base64
+     */
+    private function getBase64Image($path)
+    {
+        if (!file_exists($path)) {
+            return ''; // Optional: bisa kasih placeholder
+        }
+
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        return 'data:image/' . $type . ';base64,' . base64_encode($data);
     }
 }

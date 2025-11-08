@@ -24,6 +24,7 @@ class LaporanKeuangan extends Model
         'catatan',
         'status_persetujuan',
         'penerima',
+        'bukti_persetujuan_pdf',
     ];
 
     public function keuangan()
