@@ -58,9 +58,8 @@ class AuthController extends Controller
                 'id'       => $user->id,
             ]);
 
-
+ 
             return redirect()->intended('dashboard');
-
 
             // redirect sesuai role
             $role = strtolower($user->role); // biar aman huruf kecil semua

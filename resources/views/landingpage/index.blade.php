@@ -9,7 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
 
     <style>
         /* Gaya ELEGAN BARU */
@@ -201,16 +202,18 @@
             font-size: 1rem;
             color: var(--secondary-color);
         }
+
         .legalitas-list-item i {
             font-size: 1.5rem;
             margin-right: 15px;
             color: var(--accent-color);
         }
+
         .legalitas-docs {
             background-color: #e9ecef;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
         }
 
         /* Media Queries untuk Responsif */
@@ -261,10 +264,7 @@
                     <li class="nav-item"><a class="nav-link" href="#tentang">Tentang</a></li>
                     <li class="nav-item"><a class="nav-link" href="#operasi">Operasi</a></li>
                     <li class="nav-item"><a class="nav-link" href="#legalitas">Legalitas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#bisnis-prospek">Bisnis</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#investor">Investor</a></li>
                     <li class="nav-item"><a class="nav-link" href="#tim">Manajemen</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#berita">Berita</a></li>
                 </ul>
                 <a href="{{ route('login') }}" class="btn btn-sm btn-outline-warning fw-bold ms-lg-3">Masuk</a>
             </div>
@@ -282,9 +282,9 @@
                         <h1 class="hero-title fw-bolder mb-3 text-white">
                             BARATALA <span class="text-warning">TUNTUNG PANDANG</span>
                         </h1>
-                        <p class="lead mb-5 fs-4 text-white-75">Perusahaan tambang terkemuka yang berbasis di Indonesia,
-                            berkomitmen pada kualitas dan pertumbuhan berkelanjutan.</p>
-                        </div>
+                        <p class="lead mb-5 fs-4 text-white-75">PERUSAHAAN DAERAH DENGAN KOMITMEN PENINGKATAN EKONOMI
+                            DAERAH,SUMBERDAYA MANUSIA DAN PENGELOLOAAN LINGKUNGAN BERKELANJUTA</p>
+                    </div>
                 </div>
             </div>
             <div class="carousel-item" data-bs-interval="5000">
@@ -295,9 +295,9 @@
                     <div class="col-lg-12">
                         <h1 class="hero-title fw-bolder mb-3 text-white">FOKUS PADA <span
                                 class="text-warning">INOVASI</span> DAN KUALITAS</h1>
-                        <p class="lead mb-5 fs-4 text-white-75">Menciptakan nilai tambah optimal melalui teknologi
-                            pertambangan modern dan operasi yang efisien.</p>
-                        </div>
+                        <p class="lead mb-5 fs-4 text-white-75">PERUSAHAAN DAERAH DENGAN KOMITMEN PENINGKATAN EKONOMI
+                            DAERAH,SUMBERDAYA MANUSIA DAN PENGELOLOAAN LINGKUNGAN BERKELANJUTA</p>
+                    </div>
                 </div>
             </div>
             <div class="carousel-item" data-bs-interval="5000">
@@ -306,11 +306,11 @@
                 </div>
                 <div class="carousel-caption">
                     <div class="col-lg-12">
-                        <h1 class="hero-title fw-bolder mb-3 text-white">PRIORITAS <span
-                                class="text-warning">K3L</span> DAN SDM</h1>
-                        <p class="lead mb-5 fs-4 text-white-75">Kepatuhan tanpa kompromi terhadap standar HSE dan
-                            pengembangan sumber daya manusia.</p>
-                        </div>
+                        <h1 class="hero-title fw-bolder mb-3 text-white">PRIORITAS <span class="text-warning">K3L</span>
+                            DAN SDM</h1>
+                        <p class="lead mb-5 fs-4 text-white-75">PERUSAHAAN DAERAH DENGAN KOMITMEN PENINGKATAN EKONOMI
+                            DAERAH,SUMBERDAYA MANUSIA DAN PENGELOLOAAN LINGKUNGAN BERKELANJUTA.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -328,49 +328,35 @@
             <h2 class="section-title text-dark">Profil & Sejarah Perusahaan</h2>
             <div class="row align-items-center">
                 <div class="mb-4 mb-lg-0">
-                    <h3 class="h4 fw-bold text-dark mb-4">Tentang Perusahaan.</h3>
+                    <h3 class="h3 fw-bold text-dark mb-4">Tentang Perusahaan.</h3>
                     <p class="text-secondary">
-                        Perusahaan Daerah (PD) Baratala Tuntung Pandang Kabupaten Tanah
-                        Laut Provinsi Kalimantan Selatan
-                        didirikan pada tanggal 25 Agustus
-                        2005 berdasarkan Peraturan Daerah
-                        Kabupaten Tanah Laut Nomor 6
-                        Tahun 2005 tentang Pembentukan
-                        Perusahaan
-                        Daerah
-                        Baratala
-                        Tuntung Pandang Kabupaten Tanah
-                        Laut. Tujuan dari Perusahaan
-                        Daerah
-                        adalah
-                        pengelolaan
-                        Berdasarkan Keputusan Kepala Dinas
-                        Penanaman Modal dan Pelayanan
-                        Terpadu Satu Pintu Provinsi Kalimantan
-                        Selatan
-                        dan
-                        Nomor 503/3-IUP.OP4/DS
-                        DPMPTSP/IV/II/2020 bahwa PD. Baratala
-                        Tuntung Pandang telah resmi sebagai
-                        pemegang Izin Usaha Pertambangan
-                        Operasi Produksi (IUP-OP), yang
-                        berlokasi di Desa Sungai Bakar dan
-                        Pemalongan,
-                        Kecamatan
-                        Kabupaten
-                        Bajuin,
-                        Tanah Laut, Provinsi
-                        Kalimantan Selatan.
-                        melaksanakan
-                        pemanfaatan
-                        potensi daerah disamping sebagai
-                        sarana pengembangan perekonomian
-                        dalam pembangunan daerah
+                        Perusahaan Daerah (PD) Baratala Tuntung Pandang Kabupaten Tanah Laut, Provinsi Kalimantan
+                        Selatan, didirikan pada tanggal 25 Agustus 2005 berdasarkan Peraturan Daerah Kabupaten Tanah
+                        Laut Nomor 6 Tahun 2005 tentang Pembentukan Perusahaan Daerah Baratala Tuntung Pandang. Tujuan
+                        didirikannya perusahaan ini adalah untuk mengelola dan memanfaatkan potensi daerah serta menjadi
+                        sarana pengembangan perekonomian dalam rangka mendukung pembangunan daerah.
                     </p>
+
                     <p class="text-secondary">
+                        Perusahaan ini memiliki IUP Operasi Produksi (IUP-OP) KW 06,
+                        Berdasarkan Keputusan Kepala Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Provinsi
+                        Kalimantan Selatan Nomor 503/3-IUP.OP4/DSDPMPTSP/IV/II/2020, PD Baratala Tuntung Pandang
+                        ditetapkan sebagai pemegang IUP Operasi Produksi (IUP-OP) KW 06, yang berlokasi di Desa Sungai
+                        Bakar dan Pemalongan, Kecamatan Bajuin, Kabupaten Tanah Laut. IUP ini diterbitkan sebagai
+                        perpanjangan atas izin yang telah ada sebelumnya.
+                    </p>
+
+                    <p class="text-secondary">
+                        Selain itu, perusahaan juga memiliki IUP Operasi Produksi (IUP-OP) KW 07, berdasarkan Surat
+                        Keputusan Nomor 503/11.5-41/DMPTSP/XII/2020, dengan wilayah izin berada di Desa Tampang dan
+                        Sumber Mulya, Kecamatan Pelaihari, Kabupaten Tanah Laut. IUP ini juga diterbitkan sebagai
+                        perpanjangan dari izin sebelumnya.
+                    </p>
+
+                    <h4 class="h4 fw-bold text-dark mb-4 text-warning">
                         Kami mengintegrasikan teknologi pintar, kepatuhan ketat, dan pemberdayaan komunitas lokal untuk
                         mencapai keberhasilan jangka panjang.
-                    </p>
+                    </h4>
                     <a href="#investor" class="btn btn-outline-dark mt-3 fw-bold">Lihat Tata Kelola Perusahaan</a>
                 </div>
                 {{-- <div class="col-lg-6">
@@ -431,13 +417,16 @@
                 <div class="col-md-6">
                     <h3 class="text-warning fw-bold mb-3"><i class="bi bi-flag-fill me-2"></i> Misi</h3>
                     <ul class="list-unstyled text-white-75">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Memberikan lapangan
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Memberikan
+                            lapangan
                             pekerjaan.
                         </li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Memberikan Pendapatan
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Memberikan
+                            Pendapatan
                             Asli Daerah
                             (PAD)</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Memberikan percepatan
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Memberikan
+                            percepatan
                             perkembangan perekonomian daerah bagi masyarakat
                             Tanah Laut umumnya dan masyarakat sekitar tambang, khususnya dengan cara
                             penambangan yang berwawasan lingkungan dan efisiensi yang optimal.
@@ -453,7 +442,8 @@
             <h2 class="section-title text-dark">Legalitas & Sertifikasi</h2>
             <div class="row">
                 <div class="col-lg-6 mb-4 mb-lg-0">
-                    <h3 class="h4 fw-bold text-dark mb-4 border-bottom border-warning border-3 pb-2">Komitmen Kepatuhan</h3>
+                    <h3 class="h4 fw-bold text-dark mb-4 border-bottom border-warning border-3 pb-2">Komitmen Kepatuhan
+                    </h3>
                     <p class="text-secondary">
                         PD. Baratala Tuntung Pandang telah resmi mendapatkan **Surat Izin Usaha Perdagangan (SIUP)**
                         dari Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu (DPM & PTSP) Kabupaten Tanah Laut.
@@ -464,21 +454,32 @@
                         dengan ruang lingkup usaha yang mencakup:
                     </p>
                     <ul class="list-unstyled mt-4">
-                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Kepatuhan & Kepemilikan Resmi</span></li>
-                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Kredibilitas & Etika Resmi Usaha</span></li>
-                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Lisensi & Pengakuan Legal</span></li>
-                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Kelengkapan Dokumen Serta Perpajakan</span></li>
-                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Lisensi dan Sertifikasi Profesional</span></li>
-                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Jaminan Legal dan Standar Operasi</span></li>
-                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Landasan Hukum & Sertifikasi Kompetensi</span></li>
-                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Otoritas Resmi & Keandalan Usaha</span></li>
-                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Kepatuhan dengan Lingkup</span></li>
-                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Komitmen Kepatuhan & Standar Hukum</span></li>
+                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Kepatuhan &
+                                Kepemilikan Resmi</span></li>
+                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Kredibilitas &
+                                Etika Resmi Usaha</span></li>
+                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Lisensi &
+                                Pengakuan Legal</span></li>
+                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Kelengkapan
+                                Dokumen Serta Perpajakan</span></li>
+                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Lisensi dan
+                                Sertifikasi Profesional</span></li>
+                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Jaminan Legal dan
+                                Standar Operasi</span></li>
+                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Landasan Hukum &
+                                Sertifikasi Kompetensi</span></li>
+                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Otoritas Resmi &
+                                Keandalan Usaha</span></li>
+                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Kepatuhan dengan
+                                Lingkup</span></li>
+                        <li class="legalitas-list-item"><i class="bi bi-check-circle-fill"></i><span>Komitmen
+                                Kepatuhan & Standar Hukum</span></li>
                     </ul>
                 </div>
 
                 <div class="col-lg-6">
-                    <h3 class="h4 fw-bold text-dark mb-4 border-bottom border-warning border-3 pb-2">Otoritas Perdagangan</h3>
+                    <h3 class="h4 fw-bold text-dark mb-4 border-bottom border-warning border-3 pb-2">Otoritas
+                        Perdagangan</h3>
                     <p class="text-secondary">
                         Dengan adanya SIUP ini, PD. Baratala Tuntung Pandang sah secara hukum untuk melaksanakan
                         kegiatan usaha perdagangan di seluruh wilayah Republik Indonesia, selama perusahaan tetap aktif
@@ -488,24 +489,38 @@
                     <div class="legalitas-docs mt-4">
                         <h5 class="fw-bold mb-3 text-dark">Tinjauan Dokumen Utama</h5>
                         <div class="row g-2 text-center">
-                            <div class="col-4">
-                                <i class="bi bi-file-earmark-text-fill fs-1 text-dark"></i>
-                                <p class="small fw-bold mt-1 mb-0">Dokumen SIUP</p>
-                                <p class="small text-muted">Nomor 503/SK/DPMPTSP/IV/II/2020</p>
-                            </div>
+
                             <div class="col-4">
                                 <i class="bi bi-file-earmark-text-fill fs-1 text-dark"></i>
                                 <p class="small fw-bold mt-1 mb-0">Akta Pendirian</p>
-                                <p class="small text-muted">Perda No. 6 Tahun 2005</p>
+                                <p class="small text-muted">
+                                    <a href="assets/docs/akta_pendirian.pdf" download>Perda No. 6 Tahun 2005</a>
+                                </p>
                             </div>
+
                             <div class="col-4">
                                 <i class="bi bi-file-earmark-text-fill fs-1 text-dark"></i>
-                                <p class="small fw-bold mt-1 mb-0">Izin Usaha Tambang</p>
-                                <p class="small text-muted">IUP-OP yang Relevan</p>
+                                <p class="small fw-bold mt-1 mb-0">IUP-OP KW 06</p>
+                                <p class="small text-muted">
+                                    <a href="assets/docs/IUP_OP_KW06.pdf" download>SK No.
+                                        503/3-IUP.OP4/DSDPMPTSP/IV/II/2020</a>
+                                </p>
                             </div>
+
+                            <div class="col-4 mt-2">
+                                <i class="bi bi-file-earmark-text-fill fs-1 text-dark"></i>
+                                <p class="small fw-bold mt-1 mb-0">IUP-OP KW 07</p>
+                                <p class="small text-muted">
+                                    <a href="assets/docs/IUP_OP_KW07.pdf" download>SK No.
+                                        503/11.5-41/DMPTSP/XII/2020</a>
+                                </p>
+                            </div>
+
                         </div>
                     </div>
-                    <p class="small fst-italic text-end text-muted mt-3">*Dokumen legalitas lengkap dapat diakses oleh pihak yang berkepentingan.</p>
+
+                    <p class="small fst-italic text-end text-muted mt-3">*Dokumen legalitas lengkap dapat diakses oleh
+                        pihak yang berkepentingan.</p>
                 </div>
             </div>
         </div>
@@ -559,7 +574,7 @@
 
                         <p class="small text-warning mb-2">Direktur Baratala</p>
 
-                        </div>
+                    </div>
 
                 </div>
 
@@ -574,7 +589,7 @@
 
                         <p class="small text-warning mb-2">Bupati Tanah Laut</p>
 
-                        </div>
+                    </div>
 
                 </div>
 
@@ -591,7 +606,7 @@
 
                         <p class="small text-warning mb-2">Badan Pengawas</p>
 
-                        </div>
+                    </div>
 
                 </div>
 
@@ -636,55 +651,64 @@
             <div class="row g-4 mb-5 align-items-center">
                 <div class="col-lg-6">
                     <h3 class="h4 fw-bold text-dark border-start border-warning border-3 ps-3 mb-3">
-                        <i class="bi bi-geo-alt-fill feature-icon me-2"></i> Lokasi Tambang & Metode
+                        <i class="bi bi-geo-alt-fill feature-icon me-2"></i> Lokasi Tambang
                     </h3>
                     <p class="text-secondary mb-3">
-                        Wilayah tambang PD. Baratala Tuntung Pandang terletak di kawasan yang kaya akan
-                        kandungan **Bijih Besi berkualitas tinggi**.
+                        Wilayah tambang PD Baratala Tuntung Pandang terletak di kawasan yang memiliki potensi bijih besi
+                        dengan kandungan yang tergolong baik. Bahan galian pada wilayah Izin Usaha Pertambangan Operasi
+                        Produksi (IUP-OP) PD Baratala termasuk kategori bijih besi ore body, yang menjadi komoditas
+                        utama dalam kegiatan operasi produksi.
                     </p>
-                    <p class="text-secondary small fst-italic">
-                        Bahan galian Bijih Besi pada Izin Usaha Pertambangan Operasi Produksi (IUP-OP) PD Baratala
-                        termasuk **Bijih Besi Ore Body**. Metode yang sesuai untuk penambangan di wilayah prospek ini
-                        adalah **Tambang Terbuka (Open Pit)**, yang dijamin berlangsung sesuai standar teknis dan
-                        lingkungan yang berlaku.
+                    <h3 class="h4 fw-bold text-dark border-start border-warning border-3 ps-3 mb-3">
+                        <i class="bi bi-tools feature-icon me-2"></i>Metode Penambangan (Open Pit)
+                    </h3>
+                    <p class="text-secondary mb-3">
+                        Metode penambangan yang diterapkan pada wilayah prospek tersebut adalah Tambang Terbuka (Open
+                        Pit). Pemilihan metode ini disesuaikan dengan karakteristik endapan bijih besi di lokasi,
+                        sehingga proses penambangan dapat dilakukan secara efektif, aman, dan memenuhi ketentuan teknis
+                        serta standar lingkungan yang berlaku.
                     </p>
                 </div>
+
                 <div class="col-lg-6">
-                   <img src="/image/map-tambang-baratala.png" alt="Map Tambang Baratala"
-                            class="img-fluid rounded-3 shadow-lg"
-                            style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="/image/map-tambang-baratala.png" alt="Map Tambang Baratala"
+                        class="img-fluid rounded-3 shadow-lg" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
+
             </div>
 
             <div class="row g-5">
                 <div class="col-md-6">
                     <h3 class="h4 fw-bold text-dark border-bottom border-warning pb-2 mb-4">
-                        <i class="bi bi-list-check feature-icon me-2"></i> Kegiatan Utama
+                        <i class="bi bi-list-check feature-icon me-2"></i> Kegiatan
                     </h3>
                     <ul class="list-unstyled">
                         <li class="d-flex align-items-start mb-3">
                             <i class="bi bi-check-circle-fill text-warning me-3 mt-1 flex-shrink-0"></i>
                             <div>
                                 <h6 class="fw-bold mb-0 text-dark">Eksplorasi & Penilaian Sumber Daya</h6>
-                                <p class="small text-secondary mb-0">Tahap awal penentuan kualitas dan kuantitas cadangan.
+                                <p class="small text-secondary mb-0">Tahap awal penentuan kualitas dan kuantitas
+                                    cadangan.
                                 </p>
                             </div>
                         </li>
                         <li class="d-flex align-items-start mb-3">
                             <i class="bi bi-check-circle-fill text-warning me-3 mt-1 flex-shrink-0"></i>
                             <div>
-                                <h6 class="fw-bold mb-0 text-dark">Eksploitasi Penambangan & Pengolahan</h6>
-                                <p class="small text-secondary mb-0">Ekstraksi material Bijih Besi dan proses pengolahan
-                                    untuk mencapai spesifikasi produk.</p>
+                                <h6 class="fw-bold mb-0 text-dark">Eksploitasi, Pengolahan dan Pemurnian</h6>
+                                <p class="small text-secondary mb-0">Penambangan garuk bebas dan merencanakan metode
+                                    blasting serta Ekstraksi material Bijih Besi dan proses pengolahan untuk mencapai
+                                    spesifikasi produk.</p>
                             </div>
                         </li>
                         <li class="d-flex align-items-start mb-3">
                             <i class="bi bi-check-circle-fill text-warning me-3 mt-1 flex-shrink-0"></i>
                             <div>
-                                <h6 class="fw-bold mb-0 text-dark">Pengangkutan & Distribusi</h6>
-                                <p class="small text-secondary mb-0">Aktivitas logistik dari area tambang menuju terminal
-                                    pengiriman.</p>
+                                <h6 class="fw-bold mb-0 text-dark">Pengangkutan & Pengapalan</h6>
+                                <p class="small text-secondary mb-0">Kegiatan pengangkutan material dari area tambang
+                                    menuju terminal pengiriman.</p>
                             </div>
+
                         </li>
                     </ul>
                 </div>
@@ -699,7 +723,7 @@
                             <span class="badge bg-warning text-dark"><i class="bi bi-arrow-right-short"></i></span>
                         </li>
                         <li class="list-group-item bg-light d-flex justify-content-between align-items-center">
-                            Stockpile Pengolahan dan Pemurnian
+                            Stockpile penumpukan, Pengolahan dan Pemurnian
                             <span class="badge bg-warning text-dark"><i class="bi bi-arrow-right-short"></i></span>
                         </li>
                         <li class="list-group-item bg-light d-flex justify-content-between align-items-center">
@@ -710,11 +734,11 @@
                 </div>
             </div>
 
-            <div class="text-center mt-5">
+            {{-- <div class="text-center mt-5">
                 <a href="#bisnis-prospek" class="btn btn-lg cta-button text-decoration-none">
                     Lihat Prospek Bisnis & Produk Kami
                 </a>
-            </div>
+            </div> --}}
         </div>
     </section>
 
@@ -724,11 +748,11 @@
             <p class="lead text-white-50 mb-4">Hubungi tim kami hari ini untuk berdiskusi lebih lanjut mengenai peluang
                 investasi dan kerjasama.</p>
 
-            <a href="/unduh-profil.pdf" target="_blank"
+            {{-- <a href="/unduh-profil.pdf" target="_blank"
                 class="cta-button bg-danger text-white text-decoration-none border border-light border-2 me-3"
                 style="background-color: #dc3545 !important;">
                 <i class="bi bi-cloud-arrow-down-fill me-2"></i> Unduh Profil PDF
-            </a>
+            </a> --}}
 
             <button type="button" class="cta-button bg-info text-white text-decoration-none" data-bs-toggle="modal"
                 data-bs-target="#contactModal" style="background-color: #17a2b8 !important;">
@@ -739,7 +763,8 @@
 
 
 
-    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-warning">
