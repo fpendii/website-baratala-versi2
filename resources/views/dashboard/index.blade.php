@@ -1,148 +1,294 @@
 @extends('layout.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Dashboard Direktur')
 
 @section('content')
+    <!-- Judul Utama Halaman -->
+    {{-- Mengganti format py-3 menjadi mb-4 agar konsisten dengan template sebelumnya --}}
+    <div class="row mb-4">
+        <div class="col-12">
+            <h4 class="fw-bold">
+                <span class="text-muted fw-light">Direktur /</span> Dashboard
+            </h4>
+        </div>
+    </div>
 
+
+    <!-- Greeting Card / Welcome Banner -->
     <div class="row">
-        <div class="col-lg-12 mb-5">
-            <div class="card bg-primary text-white shadow-lg p-3 border-0">
+        <div class="col-lg-12 mb-4">
+            <div class="card bg-primary text-white shadow-lg">
                 <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <h3 class="card-title text-white mb-2 fw-bold">
-                                Selamat Datang Kembali, {{ Auth::user()->nama ?? 'Pengguna' }}!
-                            </h3>
-                            <p class="opacity-75 mb-0">
-                                Ini adalah pusat kendali Anda. Akses cepat ke modul utama di bawah ini.
+                            <h4 class="card-title text-white mb-2">Selamat Datang di Panel Direktur! 🎉</h4>
+                            <p class="mb-0">
+                                Ringkasan harian dan metrik utama untuk pemantauan surat dan karyawan.
                             </p>
-                            <small class="text-white-50 mt-2 d-block">
-                                Tanggal Hari Ini: {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}
-                            </small>
                         </div>
-                        <i class="ri ri-briefcase-line ri-5x ms-4 text-white opacity-50"></i>
+                        {{-- Icon Besar di Pojok --}}
+                        <i class="ri ri-briefcase-line ri-4x ms-3 opacity-75"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    ---
-
-    {{-- Grup 1: Menu Tugas dan Administrasi Utama --}}
-    <div class="row mb-4">
-        <div class="col-12">
-            <h4 class="mb-3 text-muted">Akses Tugas Utama <i class="ri ri-rocket-line text-primary"></i></h4>
-        </div>
-
-        {{-- Jobdesk (Hanya Admin) --}}
-        @if (auth()->user()->role == 'admin')
-        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-            <a href="/data-jobdesk" class="card shadow h-100 p-3 btn text-start bg-info text-white card-hover-scale">
-                <i class="ri ri-task-line ri-2x mb-2 d-block"></i>
-                <h6 class="mb-0 fw-bold">Kelola Data Jobdesk</h6>
-                <small>Buat & alokasikan tugas.</small>
-            </a>
-        </div>
-        @endif
-
-        {{-- Surat Masuk --}}
-        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-            <a href="/surat-masuk" class="card shadow h-100 p-3 btn text-start bg-warning text-white card-hover-scale">
-                <i class="ri ri-mail-line ri-2x mb-2 d-block"></i>
-                <h6 class="mb-0 fw-bold">Surat Masuk</h6>
-                <small>Periksa surat yang perlu ditindaklanjuti.</small>
-            </a>
-        </div>
-
-        {{-- Rencana Kerja --}}
-        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-            <a href="/rencana" class="card shadow h-100 p-3 btn text-start bg-success text-white card-hover-scale">
-                <i class="ri ri-calendar-check-line ri-2x mb-2 d-block"></i>
-                <h6 class="mb-0 fw-bold">Rencana Kerja</h6>
-                <small>Lihat dan atur jadwal kerja.</small>
-            </a>
-        </div>
-
-        {{-- Laporan Jobdesk --}}
-        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-            <a href="/jobdesk" class="card shadow h-100 p-3 btn text-start bg-primary text-white card-hover-scale">
-                <i class="ri ri-file-list-3-line ri-2x mb-2 d-block"></i>
-                <h6 class="mb-0 fw-bold">Laporan Jobdesk</h6>
-                <small>Buat dan kirim laporan pekerjaan.</small>
-            </a>
-        </div>
-
-    </div>
-
-    ---
-
-    {{-- Grup 2: Menu Sistem dan Personal --}}
+    <!-- Key Metric Cards (Ringkasan Data Cepat) -->
     <div class="row">
-        <div class="col-12">
-            <h4 class="mb-3 text-muted">Akses Sistem & Personal <i class="ri ri-settings-3-line text-secondary"></i></h4>
+
+        <div class="col-lg-3 col-md-6 col-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="card-title mb-0">
+                            <h5 class="fw-semibold d-block mb-1">Surat Keluar</h5>
+                            <small class="text-muted">Total Bulan Ini</small>
+                        </div>
+                        <span class="badge bg-label-warning p-2 rounded-circle">
+                            <i class="ri ri-mail-send-fill ri-2x text-warning"></i>
+                        </span>
+                    </div>
+                    {{-- Data Statistik --}}
+                    <h3 class="mt-3 mb-0">32</h3>
+                </div>
+            </div>
         </div>
 
-        {{-- Keuangan (Hanya Keuangan atau Direktur) --}}
-        @if (auth()->user()->role == 'keuangan' || auth()->user()->role == 'direktur')
-        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-            <a href="/keuangan" class="card shadow h-100 p-3 btn text-start bg-danger text-white card-hover-scale">
-                <i class="ri ri-wallet-3-line ri-2x mb-2 d-block"></i>
-                <h6 class="mb-0 fw-bold">Keuangan</h6>
-                <small>Akses data finansial perusahaan.</small>
-            </a>
-        </div>
-        @endif
-
-        {{-- Pengguna (Hanya Admin) --}}
-        @if (auth()->user()->role == 'admin')
-        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-            <a href="/pengguna" class="card shadow h-100 p-3 btn text-start bg-secondary text-white card-hover-scale">
-                <i class="ri ri-team-line ri-2x mb-2 d-block"></i>
-                <h6 class="mb-0 fw-bold">Kelola Pengguna</h6>
-                <small>Atur akun dan peran pengguna.</small>
-            </a>
-        </div>
-        @endif
-
-        {{-- Profil --}}
-        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-            <a href="/profil" class="card shadow h-100 p-3 btn text-start bg-dark text-white card-hover-scale">
-                <i class="ri ri-user-line ri-2x mb-2 d-block"></i>
-                <h6 class="mb-0 fw-bold">Profil Saya</h6>
-                <small>Perbarui informasi pribadi.</small>
-            </a>
+        {{-- Card 2: Total Surat Masuk Bulan Ini --}}
+        <div class="col-lg-3 col-md-6 col-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="card-title mb-0">
+                            <h5 class="fw-semibold d-block mb-1">Surat Masuk</h5>
+                            <small class="text-muted">Total Bulan Ini</small>
+                        </div>
+                        <span class="badge bg-label-success p-2 rounded-circle">
+                            <i class="ri ri-mail-open-fill ri-2x text-success"></i>
+                        </span>
+                    </div>
+                    {{-- Data Statistik --}}
+                    <h3 class="mt-3 mb-0">45</h3>
+                </div>
+            </div>
         </div>
 
-        {{-- Logout --}}
-        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-            <form action="/logout" method="POST" class="h-100">
-                @csrf
-                <button type="submit" class="card shadow h-100 p-3 btn text-start bg-light text-danger card-hover-scale">
-                    <i class="ri ri-logout-box-r-line ri-2x mb-2 d-block"></i>
-                    <h6 class="mb-0 fw-bold">Logout</h6>
-                    <small class="text-muted">Keluar dari sistem.</small>
-                </button>
-            </form>
+
+
+        {{-- Card 3: Total Karyawan Aktif --}}
+        <div class="col-lg-3 col-md-6 col-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="card-title mb-0">
+                            <h5 class="fw-semibold d-block mb-1">Karyawan</h5>
+                            <small class="text-muted">Jumlah Aktif</small>
+                        </div>
+                        <span class="badge bg-label-info p-2 rounded-circle">
+                            <i class="ri ri-user-2-fill ri-2x text-info"></i>
+                        </span>
+                    </div>
+                    {{-- Data Statistik --}}
+                    <h3 class="mt-3 mb-0">128</h3>
+                </div>
+            </div>
         </div>
+
+        {{-- Card 4: Surat Keluar Bulan Ini --}}
 
     </div>
+    <!-- End Key Metric Cards -->
 
-    {{-- Custom Style --}}
+    <div class="row g-4">
+        {{-- Recent Activity / Quick Summary Table (Surat Masuk Terbaru) --}}
+        <div class="col-lg-8">
+            <div class="card shadow-sm h-100">
+                <h5 class="card-header"><i class="ri ri-mail-unread-line me-1"></i> 5 Surat Masuk Terbaru</h5>
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 15%;">Kode</th>
+                                <th style="width: 35%;">Perihal</th>
+                                <th style="width: 25%;">Pengirim</th>
+                                <th style="width: 15%;">Tanggal</th>
+                                <th style="width: 10%;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            <tr>
+                                <td>SM-001</td>
+                                <td><strong class="text-dark">Permohonan Kerjasama</strong></td>
+                                <td>PT Maju Jaya</td>
+                                <td>01/09/2025</td>
+                                <td><span class="badge bg-warning">Menunggu</span></td>
+                            </tr>
+                            <tr>
+                                <td>SM-002</td>
+                                <td>Laporan Keuangan Q3</td>
+                                <td>Departemen Keuangan</td>
+                                <td>30/08/2025</td>
+                                <td><span class="badge bg-success">Selesai</span></td>
+                            </tr>
+                            <tr>
+                                <td>SM-003</td>
+                                <td>Undangan Rapat Tahunan</td>
+                                <td>Kementerian XYZ</td>
+                                <td>28/08/2025</td>
+                                <td><span class="badge bg-info">Didisposisi</span></td>
+                            </tr>
+                            <tr>
+                                <td>SM-004</td>
+                                <td>Konfirmasi Kedatangan</td>
+                                <td>Kantor Pusat</td>
+                                <td>25/08/2025</td>
+                                <td><span class="badge bg-danger">Ditolak</span></td>
+                            </tr>
+                            <tr>
+                                <td>SM-005</td>
+                                <td>Pengajuan Cuti</td>
+                                <td>SDM</td>
+                                <td>20/08/2025</td>
+                                <td><span class="badge bg-success">Selesai</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="#" class="text-primary small">Lihat Semua Surat Masuk</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="row g-4 mb-4">
+                <div class="col-12">
+                    <div class="card shadow-sm h-100">
+                        <h5 class="card-header"><i class="ri ri-mail-send-line me-1"></i> 5 Surat Keluar
+                            Terbaru</h5>
+                        <div class="table-responsive text-nowrap">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 15%;">Nomor Surat</th>
+                                        <th style="width: 30%;">Tujuan</th>
+                                        <th style="width: 35%;">Perihal</th>
+                                        <th style="width: 20%;">Pembuat Surat</th>
+                                        </tr>
+                                    </thead>
+                                <tbody class="table-border-bottom-0">
+                                    <tr>
+                                        <td>SK-001/HRD/IX</td>
+                                        <td>PT Sejahtera Abadi</td>
+                                        <td><strong class="text-dark">Penawaran Kontrak
+                                                Baru</strong></td>
+                                        <td>Admin HRD</td>
+                                        </tr>
+                                    <tr>
+                                        <td>SK-002/FIN/IX</td>
+                                        <td>Bank Mega Karya</td>
+                                        <td>Konfirmasi Transfer Dana</td>
+                                        <td>Staf Keuangan</td>
+                                        </tr>
+                                    <tr>
+                                        <td>SK-003/MKT/IX</td>
+                                        <td>Dinas Komunikasi</td>
+                                        <td>Permintaan Izin Promosi</td>
+                                        </tr>
+                                    <tr>
+                                        <td>SK-004/GEN/VIII</td>
+                                        <td>Yayasan Anak Bangsa</td>
+                                        <td>Donasi dan Bantuan Sosial</td>
+                                        <td>Sekretaris Direktur</td>
+                                        </tr>
+                                    <tr>
+                                        <td>SK-005/ADM/VIII</td>
+                                        <td>Kantor Pajak Pratama</td>
+                                        <td>Laporan SPT Tahunan</td>
+                                        <td>Admin General</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="card-footer text-end">
+                            <a href="#" class="text-warning small">Lihat Semua Surat Keluar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+
+        {{-- Distribusi Karyawan (diambil dari kolom kanan sebelumnya) --}}
+        {{-- <div class="col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-light fw-bold">
+                    Distribusi Karyawan
+                </div>
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                    <div class="mb-3">
+                        <p class="mb-0 text-muted">Total 128 Karyawan</p>
+                        <h6 class="fw-bold">Berdasarkan Role Utama:</h6>
+                    </div>
+                    <ul class="list-group list-group-flush text-start">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Administrasi
+                            <span class="badge bg-primary rounded-pill">45</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Pemasaran
+                            <span class="badge bg-info rounded-pill">35</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Keuangan
+                            <span class="badge bg-success rounded-pill">25</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Teknis
+                            <span class="badge bg-warning rounded-pill">22</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div> --}}
+    </div>
+
     <style>
-        /* Efek Hover diubah untuk menaikkan kartu */
-        .card-hover-scale {
-            transition: all 0.2s ease-in-out;
+        /* Menggunakan skema warna yang mirip dengan Bootstrap 5 untuk badge-label */
+        .bg-label-primary {
+            background-color: rgba(105, 108, 255, 0.16) !important;
+            color: #696cff !important;
         }
-        .card-hover-scale:hover {
-            transform: translateY(-5px); /* Sedikit naik */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important; /* Bayangan lebih jelas */
-            text-decoration: none; /* Hilangkan garis bawah link */
+
+        .bg-label-danger {
+            background-color: rgba(255, 62, 29, 0.16) !important;
+            color: #ff3e1d !important;
         }
-        /* Style untuk tombol/card */
-        .btn.card {
-            border-radius: 0.75rem; /* Sudut lebih membulat */
-            border: none;
+
+        .bg-label-success {
+            background-color: rgba(113, 221, 55, 0.16) !important;
+            color: #71dd37 !important;
+        }
+
+        .bg-label-info {
+            background-color: rgba(0, 208, 255, 0.16) !important;
+            color: #00d0ff !important;
+        }
+
+        .bg-label-warning {
+            background-color: rgba(255, 171, 0, 0.16) !important;
+            color: #ffab00 !important;
+        }
+
+        .ri-2x {
+            font-size: 1.5rem;
+            /* Ukuran ikon di dalam badge */
+        }
+
+        .ri-4x {
+            font-size: 3rem;
+            /* Ukuran ikon di greeting card */
         }
     </style>
+    {{-- Catatan: Pastikan Anda telah menyertakan library Remix Icon (ri) di file layout Anda untuk menampilkan ikon. --}}
 @endsection
