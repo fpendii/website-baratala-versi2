@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <h4 class="card-title text-white mb-2">Selamat Datang di Panel Direktur! 🎉</h4>
+                            <h4 class="card-title text-white mb-2">Selamat Datang {{ auth()->user()->nama }}</h4>
                             <p class="mb-0">
                                 Ringkasan harian dan metrik utama untuk pemantauan surat dan karyawan.
                             </p>
@@ -102,7 +102,7 @@
 
     <div class="row g-4">
         {{-- Recent Activity / Quick Summary Table (Surat Masuk Terbaru) --}}
-        <div class="col-lg-8">
+        <div class="col-6">
             <div class="card shadow-sm h-100">
                 <h5 class="card-header"><i class="ri ri-mail-unread-line me-1"></i> 5 Surat Masuk Terbaru</h5>
                 <div class="table-responsive text-nowrap">
@@ -160,7 +160,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-8">
+        <div class="col-6">
             <div class="row g-4 mb-4">
                 <div class="col-12">
                     <div class="card shadow-sm h-100">

@@ -45,6 +45,7 @@ use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\DataJobdeskController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\SuratKeluarController;
 
 
 Route::get('/', [LandingPageController::class, 'index'])->name('landingpage');
@@ -127,6 +128,15 @@ Route::get('surat-masuk/edit/{id}', [SuratMasukController::class, 'edit'])->name
 Route::put('surat-masuk/update/{id}', [SuratMasukController::class, 'update'])->name('surat-masuk.update');
 Route::delete('surat-masuk/delete/{id}', [SuratMasukController::class, 'destroy'])->name('surat-masuk.destroy');
 Route::get('surat-masuk/download/{id}', [SuratMasukController::class, 'downloadLampiran'])->name('surat-masuk.download');
+
+// routee surat keluar
+Route::get('surat-keluar', [SuratKeluarController::class, 'index'])->name('surat-keluar.index');
+Route::get('surat-keluar/create', [SuratKeluarController::class, 'create'])->name('surat-keluar.create');
+Route::post('surat-keluar/store', [SuratKeluarController::class, 'store'])->name('surat-keluar.store');
+Route::get('surat-keluar/{id}', [SuratKeluarController::class, 'show'])->name('surat-keluar.show');
+Route::get('surat-keluar/edit/{id}', [SuratKeluarController::class, 'edit'])->name('surat-keluar.edit');
+Route::put('surat-keluar/update/{id}', [SuratKeluarController::class, 'update'])->name('surat-keluar.update');
+Route::delete('surat-keluar/delete/{id}', [SuratKeluarController::class, 'destroy'])->name('surat-keluar.destroy');
 
 // Route Jobdesk
 Route::get('jobdesk', [JobdeskController::class, 'index'])->name('jobdesk.index');

@@ -56,7 +56,7 @@ class SuratKeluarController extends Controller
                 'jenis_surat' => $request->jenis_surat,
             ]);
 
-            return redirect()->route('surat_keluar.index')
+            return redirect()->route('surat-keluar.index')
                              ->with('success', 'Surat Keluar berhasil ditambahkan.');
 
         } catch (\Exception $e) {
@@ -75,8 +75,9 @@ class SuratKeluarController extends Controller
     /**
      * Tampilkan form untuk mengedit Surat Keluar.
      */
-    public function edit(SuratKeluar $surat_keluar)
+    public function edit($id_surat)
     {
+        $surat_keluar = SuratKeluar::findOrFail($id_surat);
         $jenis_surat_options = ['umum', 'keuangan', 'operasional'];
         return view('surat_keluar.edit', compact('surat_keluar', 'jenis_surat_options'));
     }
@@ -110,7 +111,7 @@ class SuratKeluarController extends Controller
                 'jenis_surat' => $request->jenis_surat,
             ]);
 
-            return redirect()->route('surat_keluar.index')
+            return redirect()->route('surat-keluar.index')
                              ->with('success', 'Surat Keluar berhasil diperbarui.');
 
         } catch (\Exception $e) {
@@ -125,7 +126,7 @@ class SuratKeluarController extends Controller
     {
         try {
             $surat_keluar->delete();
-            return redirect()->route('surat_keluar.index')
+            return redirect()->route('surat-keluar.index')
                              ->with('success', 'Surat Keluar berhasil dihapus.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal menghapus data. ' . $e->getMessage()]);

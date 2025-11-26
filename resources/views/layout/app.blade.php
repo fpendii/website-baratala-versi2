@@ -102,6 +102,12 @@
                             <div data-i18n="Basic">Surat Masuk</div>
                         </a>
                     </li>
+                     <li class="menu-item {{ request()->is('surat-keluar*') ? 'active' : '' }}">
+                        <a href="/surat-keluar" class="menu-link">
+                            <i class="menu-icon icon-base ri ri-mail-send-line"></i>
+                            <div data-i18n="Basic">Surat Keluar</div>
+                        </a>
+                    </li>
 
                     @if (auth()->user()->role == 'keuangan' || auth()->user()->role == 'direktur')
                         <li class="menu-item {{ request()->is('keuangan*') ? 'active' : '' }}">
