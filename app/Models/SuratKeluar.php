@@ -20,6 +20,7 @@ class SuratKeluar extends Model
         'tujuan',
         'perihal',
         'jenis_surat',
+        'lampiran',
     ];
 
     // Kolom yang harus diubah ke tipe data tertentu (misal: date)

@@ -6,6 +6,7 @@ use App\Models\SuratKeluar;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class SuratKeluarController extends Controller
 {
@@ -14,16 +15,15 @@ class SuratKeluarController extends Controller
      */
     public function index()
     {
-        // Ambil semua surat keluar, urutkan berdasarkan tanggal terbaru
         $surat_keluar = SuratKeluar::with('pengguna')
-                                   ->orderBy('tgl_surat', 'desc')
-                                   ->get();
+            ->orderBy('tgl_surat', 'desc')
+            ->get();
 
         return view('surat_keluar.index', compact('surat_keluar'));
     }
 
     /**
-     * Tampilkan form untuk membuat Surat Keluar baru.
+     * Tampilkan form membuat Surat Keluar baru.
      */
     public function create()
     {
@@ -32,32 +32,40 @@ class SuratKeluarController extends Controller
     }
 
     /**
-     * Simpan Surat Keluar yang baru dibuat ke database.
+     * Simpan Surat Keluar baru.
      */
     public function store(Request $request)
     {
-        // Validasi data input
         $request->validate([
             'tgl_surat' => 'required|date',
             'nomor_surat' => 'required|string|max:100|unique:surat_keluar,nomor_surat',
             'tujuan' => 'required|string|max:255',
             'perihal' => 'required|string|max:255',
             'jenis_surat' => ['required', Rule::in(['umum', 'keuangan', 'operasional'])],
+            'lampiran' => 'nullable|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         try {
+
+            $lampiran = null;
+
+            // Upload lampiran jika ada
+            if ($request->hasFile('lampiran')) {
+                $lampiran = $request->file('lampiran')->store('surat_keluar_lampiran', 'public');
+            }
+
             SuratKeluar::create([
-                // Asumsi: Ambil ID pengguna yang sedang login
                 'id_pengguna' => Auth::id(),
                 'tgl_surat' => $request->tgl_surat,
                 'nomor_surat' => $request->nomor_surat,
                 'tujuan' => $request->tujuan,
                 'perihal' => $request->perihal,
                 'jenis_surat' => $request->jenis_surat,
+                'lampiran' => $lampiran,
             ]);
 
             return redirect()->route('surat-keluar.index')
-                             ->with('success', 'Surat Keluar berhasil ditambahkan.');
+                ->with('success', 'Surat Keluar berhasil ditambahkan.');
 
         } catch (\Exception $e) {
             return back()->withInput()->withErrors(['error' => 'Gagal menyimpan data. ' . $e->getMessage()]);
@@ -65,7 +73,7 @@ class SuratKeluarController extends Controller
     }
 
     /**
-     * Tampilkan detail Surat Keluar.
+     * Detail surat keluar.
      */
     public function show(SuratKeluar $surat_keluar)
     {
@@ -73,46 +81,55 @@ class SuratKeluarController extends Controller
     }
 
     /**
-     * Tampilkan form untuk mengedit Surat Keluar.
+     * Form edit Surat Keluar.
      */
     public function edit($id_surat)
     {
         $surat_keluar = SuratKeluar::findOrFail($id_surat);
         $jenis_surat_options = ['umum', 'keuangan', 'operasional'];
+
         return view('surat_keluar.edit', compact('surat_keluar', 'jenis_surat_options'));
     }
 
     /**
-     * Perbarui Surat Keluar di database.
+     * Update Surat Keluar.
      */
     public function update(Request $request, SuratKeluar $surat_keluar)
     {
-        // Validasi data input. Pastikan nomor_surat unik, kecuali untuk surat yang sedang diedit.
         $request->validate([
             'tgl_surat' => 'required|date',
             'nomor_surat' => [
                 'required',
                 'string',
                 'max:100',
-                Rule::unique('surat_keluar', 'nomor_surat')->ignore($surat_keluar->id),
+
             ],
             'tujuan' => 'required|string|max:255',
             'perihal' => 'required|string|max:255',
             'jenis_surat' => ['required', Rule::in(['umum', 'keuangan', 'operasional'])],
+            'lampiran' => 'nullable|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         try {
-            $surat_keluar->update([
-                // id_pengguna tidak diubah di sini
-                'tgl_surat' => $request->tgl_surat,
-                'nomor_surat' => $request->nomor_surat,
-                'tujuan' => $request->tujuan,
-                'perihal' => $request->perihal,
-                'jenis_surat' => $request->jenis_surat,
-            ]);
+
+            $data = $request->except('lampiran');
+
+            // Jika user upload lampiran baru
+            if ($request->hasFile('lampiran')) {
+
+                // Hapus lampiran lama jika ada
+                if ($surat_keluar->lampiran && Storage::disk('public')->exists($surat_keluar->lampiran)) {
+                    Storage::disk('public')->delete($surat_keluar->lampiran);
+                }
+
+                // Upload yang baru
+                $data['lampiran'] = $request->file('lampiran')->store('lampiran_surat', 'public');
+            }
+
+            $surat_keluar->update($data);
 
             return redirect()->route('surat-keluar.index')
-                             ->with('success', 'Surat Keluar berhasil diperbarui.');
+                ->with('success', 'Surat Keluar berhasil diperbarui.');
 
         } catch (\Exception $e) {
             return back()->withInput()->withErrors(['error' => 'Gagal memperbarui data. ' . $e->getMessage()]);
@@ -120,14 +137,23 @@ class SuratKeluarController extends Controller
     }
 
     /**
-     * Hapus Surat Keluar dari database.
+     * Hapus Surat Keluar.
      */
-    public function destroy(SuratKeluar $surat_keluar)
+    public function destroy($id_surat)
     {
+        $surat_keluar = SuratKeluar::findOrFail($id_surat);
         try {
+
+            // Hapus lampiran dari storage jika ada
+            if ($surat_keluar->lampiran && Storage::disk('public')->exists($surat_keluar->lampiran)) {
+                Storage::disk('public')->delete($surat_keluar->lampiran);
+            }
+
             $surat_keluar->delete();
+
             return redirect()->route('surat-keluar.index')
-                             ->with('success', 'Surat Keluar berhasil dihapus.');
+                ->with('success', 'Surat Keluar berhasil dihapus.');
+
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal menghapus data. ' . $e->getMessage()]);
         }
