@@ -788,9 +788,9 @@
             <div class="row g-3 justify-content-center mb-3">
                 <div class="col-auto"><a href="#" class="text-white-50"><i
                             class="bi bi-linkedin fs-4"></i></a></div>
-                <div class="col-auto"><a href="#" class="text-white-50"><i
-                            class="bi bi-facebook fs-4"></i></a></div>
-                <div class="col-auto"><a href="#" class="text-white-50"><i
+                {{-- <div class="col-auto"><a href="#" class="text-white-50"><i
+                            class="bi bi-facebook fs-4"></i></a></div> --}}
+                <div class="col-auto"><a href="https://www.instagram.com/pdbaratala.tuntungpandang/" class="text-white-50"><i
                             class="bi bi-instagram fs-4"></i></a></div>
             </div>
             <p class="mb-1 small">&copy; {{ date('Y') }} BARATALA TUNTUNG PANDANG. All Rights Reserved.</p>
