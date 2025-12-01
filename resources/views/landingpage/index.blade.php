@@ -12,15 +12,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap"
         rel="stylesheet">
 
+    <link rel="icon" href="image/logo.png" type="image/x-icon">
+
     <style>
-        /* Gaya ELEGAN BARU */
+        /* ====================== Root & Basic Styles ====================== */
         :root {
             --primary-color: #0d1a26;
-            /* Hitam Angkatan Laut */
             --secondary-color: #343a40;
-            /* Abu-abu Gelap */
             --accent-color: #ffc107;
-            /* Kuning/Emas Aksen */
             --light-bg: #f5f5f5;
         }
 
@@ -29,20 +28,18 @@
             background-color: var(--light-bg);
         }
 
-        /* Top Bar */
+        /* ====================== Top Bar ====================== */
         .top-bar {
             background-color: var(--primary-color);
             color: #dee2e6;
             font-size: 0.8rem;
-            /* Sedikit lebih kecil */
             padding: 5px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Navbar Utama */
+        /* ====================== Navbar ====================== */
         .navbar-custom {
             background-color: rgba(13, 26, 38, 0.98);
-            /* Lebih Opaque */
             border-bottom: 3px solid var(--accent-color);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
@@ -55,104 +52,41 @@
         .nav-link {
             transition: color 0.3s;
             font-weight: 600;
-            /* Lebih tebal */
         }
 
         .nav-link:hover {
             color: var(--accent-color) !important;
         }
 
-        /* Button CTA */
         .cta-button {
             background-color: var(--accent-color);
             color: var(--primary-color);
             font-weight: 700;
             padding: 12px 45px;
-            /* Lebih proporsional */
             border-radius: 50px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            /* Lebih renggang */
             transition: all 0.3s ease;
             box-shadow: 0 6px 20px rgba(255, 193, 7, 0.5);
-            /* Bayangan lebih kuat */
         }
 
         .cta-button:hover {
             background-color: #e0a800;
             color: var(--primary-color);
             transform: translateY(-3px);
-            /* Efek melayang lebih terasa */
             box-shadow: 0 10px 25px rgba(255, 193, 7, 0.7);
         }
 
-        /* Lain-lain */
-        .feature-icon,
-        .text-warning {
-            color: var(--accent-color) !important;
-        }
-
-        .vision-section {
-            background-color: var(--primary-color);
-            color: white;
-            padding-bottom: 70px !important;
-        }
-
-        /* Box Visi/Misi */
-        .vision-section .lead {
-            font-weight: 400;
-        }
-
-        .footer-custom {
-            background-color: var(--primary-color);
-        }
-
-        /* Judul Section yang Lebih Dramatis */
-        .section-title {
-            font-weight: 900;
-            /* Extra bold */
-            text-transform: uppercase;
-            border-left: 8px solid var(--accent-color);
-            /* Border lebih tebal */
-            padding-left: 20px;
-            margin-bottom: 4rem;
-            font-size: 2.2rem;
-        }
-
-        /* Gambar Tim yang lebih elegan */
-        .team-member img {
-            filter: grayscale(80%);
-            transition: filter 0.3s, transform 0.3s;
-            border: 5px solid var(--accent-color);
-            /* Menambahkan bingkai aksen */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .team-member:hover img {
-            filter: grayscale(0%);
-            transform: scale(1.05);
-            border-color: white;
-            /* Efek highlight saat hover */
-        }
-
-        .team-member .text-warning {
-            font-weight: 700 !important;
-        }
-
-        /* Hero */
+        /* ====================== Hero ====================== */
         .hero-title {
             font-size: 4.8rem;
-            /* Lebih besar & impactful */
             font-weight: 900 !important;
             text-shadow: 4px 4px 10px rgba(0, 0, 0, 1.0);
-            /* Bayangan sangat kuat */
         }
 
-        /* Peningkatan Carousel */
-        .carousel-item div.d-block {
+        .carousel-inner div.d-block {
             background-blend-mode: multiply;
             background-color: rgba(0, 0, 0, 0.7);
-            /* Overlay lebih gelap */
         }
 
         .carousel-caption {
@@ -166,7 +100,45 @@
             text-align: center;
         }
 
-        /* Statistik Box - Ditingkatkan */
+        /* ====================== Sections ====================== */
+        .section-title {
+            font-weight: 900;
+            text-transform: uppercase;
+            border-left: 8px solid var(--accent-color);
+            padding-left: 20px;
+            margin-bottom: 4rem;
+            font-size: 2.2rem;
+        }
+
+        .vision-section {
+            background-color: var(--primary-color);
+            color: white;
+            padding-bottom: 70px !important;
+        }
+
+        .vision-section .lead {
+            font-weight: 400;
+        }
+
+        /* ====================== Tim ====================== */
+        .team-member img {
+            filter: grayscale(80%);
+            transition: filter 0.3s, transform 0.3s;
+            border: 5px solid var(--accent-color);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-member:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+            border-color: white;
+        }
+
+        .team-member .text-warning {
+            font-weight: 700 !important;
+        }
+
+        /* ====================== Statistik Box ====================== */
         .stat-box {
             background-color: white;
             border: none;
@@ -187,14 +159,13 @@
             font-weight: 800;
         }
 
-        /* Operasi Section List */
+        /* ====================== List Group ====================== */
         .list-group-item {
             font-weight: 600;
             letter-spacing: 0.5px;
             border-radius: 0 !important;
         }
 
-        /* Box Legalitas */
         .legalitas-list-item {
             display: flex;
             align-items: center;
@@ -216,7 +187,12 @@
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
         }
 
-        /* Media Queries untuk Responsif */
+        /* ====================== Footer ====================== */
+        .footer-custom {
+            background-color: var(--primary-color);
+        }
+
+        /* ====================== Responsif ====================== */
         @media (max-width: 992px) {
             .hero-title {
                 font-size: 3rem;
@@ -225,6 +201,93 @@
             .section-title {
                 font-size: 1.75rem;
                 margin-bottom: 3rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            /* Top Bar */
+            .top-bar {
+                display: block !important;
+                font-size: 0.7rem;
+                text-align: center;
+            }
+
+            /* Navbar */
+            .navbar-custom .navbar-brand {
+                font-size: 1rem;
+            }
+
+            .navbar-nav .nav-link {
+                font-size: 0.9rem;
+                padding: 0.5rem 0.75rem;
+            }
+
+            .cta-button {
+                padding: 10px 25px;
+                font-size: 0.8rem;
+            }
+
+            /* Hero */
+            #hero-slider .carousel-inner {
+                height: 70vh;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+                text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+            }
+
+            .carousel-caption p.lead {
+                font-size: 0.9rem;
+            }
+
+            /* Section */
+            .section-title {
+                font-size: 1.5rem;
+                padding-left: 15px;
+                margin-bottom: 2rem;
+            }
+
+            .vision-section .row,
+            #tentang .row,
+            #operasi .row,
+            #legalitas .row {
+                flex-direction: column;
+            }
+
+            .vision-section .col-md-6,
+            #tentang .col-lg-6,
+            #operasi .col-lg-6,
+            #legalitas .col-lg-6 {
+                max-width: 100%;
+            }
+
+            /* Tim */
+            .team-member img {
+                width: 120px !important;
+                height: 120px !important;
+            }
+
+            .team-member h4 {
+                font-size: 0.9rem;
+            }
+
+            .team-member p {
+                font-size: 0.8rem;
+            }
+
+            /* List Dokumen */
+            #operasi .list-group {
+                overflow-x: auto;
+            }
+
+            #operasi .list-group-item {
+                white-space: nowrap;
+            }
+
+            /* Footer */
+            .footer-custom .row > div {
+                margin-bottom: 20px;
             }
         }
     </style>
@@ -353,11 +416,11 @@
                         perpanjangan dari izin sebelumnya.
                     </p>
 
-                    <h4 class="h4 fw-bold text-dark mb-4 text-warning">
+                    <h4 class="h3 fw-bold text-dark mb-4 text-warning">
                         Kami mengintegrasikan teknologi pintar, kepatuhan ketat, dan pemberdayaan komunitas lokal untuk
                         mencapai keberhasilan jangka panjang.
                     </h4>
-                    <a href="#investor" class="btn btn-outline-dark mt-3 fw-bold">Lihat Tata Kelola Perusahaan</a>
+                    {{-- <a href="#investor" class="btn btn-outline-dark mt-3 fw-bold">Lihat Tata Kelola Perusahaan</a> --}}
                 </div>
                 {{-- <div class="col-lg-6">
                     <h4 class="fw-bold text-dark mb-3"><i class="bi bi-map-fill text-warning me-2"></i> Peta Wilayah
@@ -534,20 +597,6 @@
 
             <div class="row g-4 justify-content-center">
 
-                <div class="col-md-3 col-sm-6">
-
-                    <div class="team-member">
-
-                        <img src="{{ asset('image/direktur.jpg') }}" class="img-fluid rounded-circle mb-3 shadow"
-                            style="width: 150px; height: 150px; object-fit: cover;" alt="Direktur">
-
-                        <h4 class="h6 fw-bold mb-0 text-dark">Ihsanudin</h4>
-
-                        <p class="small text-warning mb-2">Direktur Baratala</p>
-
-                    </div>
-
-                </div>
 
                 <div class="col-md-3 col-sm-6">
 
@@ -564,6 +613,20 @@
 
                 </div>
 
+                  <div class="col-md-3 col-sm-6">
+
+                    <div class="team-member">
+
+                        <img src="{{ asset('image/direktur.jpg') }}" class="img-fluid rounded-circle mb-3 shadow"
+                            style="width: 150px; height: 150px; object-fit: cover;" alt="Direktur">
+
+                        <h4 class="h6 fw-bold mb-0 text-dark">Ihsanudin</h4>
+
+                        <p class="small text-warning mb-2">Direktur Baratala</p>
+
+                    </div>
+
+                </div>
 
 
                 <div class="col-md-3 col-sm-6">
@@ -626,13 +689,34 @@
                                 ['name' => 'Peta Kesampaian Daerah KW 06', 'file' => 'peta_kesampaian_daerah_kw06.pdf'],
                                 ['name' => 'Citra 06', 'file' => 'CITRA 06.pdf'],
                                 ['name' => 'Peta Geologi', 'file' => 'PETA GEOLOGI.pdf'],
-                                ['name' => 'PETA RENCANA PENAMBANGAN CITRA SATELIT TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN CITRA SATELIT TAHUN 2026.pdf'],
-                                ['name' => 'PETA RENCANA PENAMBANGAN KAWASAN HUTAN TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN KAWASAN HUTAN TAHUN 2026.pdf'],
-                                ['name' => 'PETA RENCANA PENAMBANGAN PIT 1&3 KAWASAN HUTAN TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN PIT 1&3 KAWASAN HUTAN TAHUN 2026.pdf'],
-                                ['name' => 'PETA RENCANA PENAMBANGAN PIT 3 CITRA Satelit TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN PIT 3 CITRA Satelit TAHUN 2026.pdf'],
-                                ['name' => 'PETA RENCANA PENAMBANGAN PIT 3 KAWASAN HUTAN TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN PIT 3 KAWASAN HUTAN TAHUN 2026.pdf'],
-                                ['name' => 'PETA RENCANA PENAMBANGAN PIT 3 TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN PIT 3 TAHUN 2026.pdf'],
-                                ['name' => 'PETA RENCANA PENAMBANGAN TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN TAHUN 2026.pdf'],
+                                [
+                                    'name' => 'PETA RENCANA PENAMBANGAN CITRA SATELIT TAHUN 2026',
+                                    'file' => 'PETA RENCANA PENAMBANGAN CITRA SATELIT TAHUN 2026.pdf',
+                                ],
+                                [
+                                    'name' => 'PETA RENCANA PENAMBANGAN KAWASAN HUTAN TAHUN 2026',
+                                    'file' => 'PETA RENCANA PENAMBANGAN KAWASAN HUTAN TAHUN 2026.pdf',
+                                ],
+                                [
+                                    'name' => 'PETA RENCANA PENAMBANGAN PIT 1&3 KAWASAN HUTAN TAHUN 2026',
+                                    'file' => 'PETA RENCANA PENAMBANGAN PIT 1&3 KAWASAN HUTAN TAHUN 2026.pdf',
+                                ],
+                                [
+                                    'name' => 'PETA RENCANA PENAMBANGAN PIT 3 CITRA Satelit TAHUN 2026',
+                                    'file' => 'PETA RENCANA PENAMBANGAN PIT 3 CITRA Satelit TAHUN 2026.pdf',
+                                ],
+                                [
+                                    'name' => 'PETA RENCANA PENAMBANGAN PIT 3 KAWASAN HUTAN TAHUN 2026',
+                                    'file' => 'PETA RENCANA PENAMBANGAN PIT 3 KAWASAN HUTAN TAHUN 2026.pdf',
+                                ],
+                                [
+                                    'name' => 'PETA RENCANA PENAMBANGAN PIT 3 TAHUN 2026',
+                                    'file' => 'PETA RENCANA PENAMBANGAN PIT 3 TAHUN 2026.pdf',
+                                ],
+                                [
+                                    'name' => 'PETA RENCANA PENAMBANGAN TAHUN 2026',
+                                    'file' => 'PETA RENCANA PENAMBANGAN TAHUN 2026.pdf',
+                                ],
                                 ['name' => 'Peta Topografi', 'file' => 'Peta Topografi.pdf'],
                             ];
                         @endphp
@@ -718,89 +802,72 @@
         </div>
     </section>
 
-    <section id="kontak" class="py-5" style="background-color: var(--primary-color);">
-        <div class="container text-center">
-            <h2 class="display-5 fw-bold text-warning mb-3">Siap Menjalin Kemitraan Jangka Panjang?</h2>
-            <p class="lead text-white-50 mb-4">Hubungi tim kami hari ini untuk berdiskusi lebih lanjut mengenai peluang
-                investasi dan kerjasama.</p>
-
-            {{-- <a href="/unduh-profil.pdf" target="_blank"
-                class="cta-button bg-danger text-white text-decoration-none border border-light border-2 me-3"
-                style="background-color: #dc3545 !important;">
-                <i class="bi bi-cloud-arrow-down-fill me-2"></i> Unduh Profil PDF
-            </a> --}}
-
-            <button type="button" class="cta-button bg-info text-white text-decoration-none" data-bs-toggle="modal"
-                data-bs-target="#contactModal" style="background-color: #17a2b8 !important;">
-                <i class="bi bi-headset me-2"></i> Hubungi Kami
-            </button>
-        </div>
-    </section>
 
 
+    <footer class="footer-custom text-white pt-5 pb-3" style="background-color:#0d1a26;">
+        <div class="container">
+            <div class="row">
 
-    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-warning">
-                    <h5 class="modal-title text-dark fw-bold" id="contactModalLabel">
-                        Hubungi Kami
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="small text-secondary">
-                        Silakan isi detail Anda dan pesan, tim kami akan segera merespons.
+                <!-- Tentang Perusahaan -->
+                <div class="col-md-4 mb-4">
+                    <h5 class="fw-bold mb-3 text-warning">BARATALA TUNTUNG PANDANG</h5>
+                    <p class="small text-white-50">
+                        Perusahaan Daerah yang berkomitmen pada peningkatan ekonomi daerah, pemberdayaan SDM,
+                        dan pengelolaan lingkungan yang berkelanjutan.
                     </p>
-                    <form action="/submit-contact" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="nama" class="form-label small">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="nama" name="nama" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label small">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="perusahaan" class="form-label small">Nama Perusahaan (Opsional)</label>
-                            <input type="text" class="form-control" id="perusahaan" name="perusahaan">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="pesan" class="form-label small">Pesan atau Pertanyaan Anda</label>
-                            <textarea class="form-control" id="pesan" name="pesan" rows="4" required></textarea>
-                        </div>
-
-                        <button type="submit" class="btn btn-warning w-100 fw-bold">
-                            Kirim Pesan
-                        </button>
-                    </form>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <footer class="footer-custom text-white-50 py-4">
-        <div class="container text-center">
-            <div class="row g-3 justify-content-center mb-3">
-                <div class="col-auto"><a href="#" class="text-white-50"><i
-                            class="bi bi-linkedin fs-4"></i></a></div>
-                {{-- <div class="col-auto"><a href="#" class="text-white-50"><i
-                            class="bi bi-facebook fs-4"></i></a></div> --}}
-                <div class="col-auto"><a href="https://www.instagram.com/pdbaratala.tuntungpandang/" class="text-white-50"><i
-                            class="bi bi-instagram fs-4"></i></a></div>
+                <!-- Navigasi Cepat -->
+                <div class="col-md-2 mb-4">
+                    <h6 class="fw-bold mb-3 text-warning">Navigasi</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#tentang" class="text-white-50 text-decoration-none">Tentang</a></li>
+                        <li><a href="#operasi" class="text-white-50 text-decoration-none">Operasi</a></li>
+                        <li><a href="#legalitas" class="text-white-50 text-decoration-none">Legalitas</a></li>
+                        <li><a href="#tim" class="text-white-50 text-decoration-none">Manajemen</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal / Informasi Resmi -->
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold mb-3 text-warning">Informasi Legal</h6>
+                    <ul class="list-unstyled small text-white-50">
+                        <li>Perda No. 6 Tahun 2005</li>
+                        <li>SIUP Resmi • IUP-OP KW 06 & KW 07</li>
+                        <li>Dokumen legal dapat diakses oleh pihak berkepentingan.</li>
+                    </ul>
+                </div>
+
+                <!-- Kontak Singkat -->
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold mb-3 text-warning">Info Perusahaan</h6>
+                    <ul class="list-unstyled small text-white-50">
+                        <li><i class="bi bi-geo-alt-fill me-2"></i>Tanah Laut, Kalimantan Selatan</li>
+                        <li><i class="bi bi-envelope-fill me-2"></i>perusda.baratala@yahoo.com</li>
+                        <li><i class="bi bi-telephone-fill me-2"></i>0512-23445</li>
+                        <li><i class="bi bi-clock me-2"></i>Senin–Jumat, 08.00–16.00 WITA</li>
+                    </ul>
+                </div>
+
+                <!-- Media Sosial -->
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold mb-3 text-warning">Media Sosial</h6>
+                    <ul class="list-unstyled small text-white-50">
+                        <li> <div class="col-auto"><a href="https://www.instagram.com/pdbaratala.tuntungpandang/" class="text-white-50"><i
+                            class="bi bi-instagram fs-4"></i></a></div></li>
+                    </ul>
+                </div>
+
             </div>
-            <p class="mb-1 small">&copy; {{ date('Y') }} BARATALA TUNTUNG PANDANG. All Rights Reserved.</p>
-            <div class="small">
-                <a href="/privacy" class="text-white-50 text-decoration-none mx-2">Kebijakan Privasi</a>
-                |
-                <a href="/terms" class="text-white-50 text-decoration-none mx-2">Syarat &amp; Ketentuan</a>
+
+            <div class="border-top border-secondary mt-3 pt-3">
+                <p class="text-center small text-white-50 mb-0">
+                    © {{ date('Y') }} BARATALA TUNTUNG PANDANG. All rights reserved.
+                </p>
             </div>
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
