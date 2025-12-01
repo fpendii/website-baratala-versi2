@@ -283,7 +283,7 @@
                             BARATALA <span class="text-warning">TUNTUNG PANDANG</span>
                         </h1>
                         <p class="lead mb-5 fs-4 text-white-75">PERUSAHAAN DAERAH DENGAN KOMITMEN PENINGKATAN EKONOMI
-                            DAERAH,SUMBERDAYA MANUSIA DAN PENGELOLOAAN LINGKUNGAN BERKELANJUTA</p>
+                            DAERAH,SUMBERDAYA MANUSIA DAN PENGELOLOAAN LINGKUNGAN BERKELANJUTAN</p>
                     </div>
                 </div>
             </div>
@@ -296,7 +296,7 @@
                         <h1 class="hero-title fw-bolder mb-3 text-white">FOKUS PADA <span
                                 class="text-warning">INOVASI</span> DAN KUALITAS</h1>
                         <p class="lead mb-5 fs-4 text-white-75">PERUSAHAAN DAERAH DENGAN KOMITMEN PENINGKATAN EKONOMI
-                            DAERAH,SUMBERDAYA MANUSIA DAN PENGELOLOAAN LINGKUNGAN BERKELANJUTA</p>
+                            DAERAH,SUMBERDAYA MANUSIA DAN PENGELOLOAAN LINGKUNGAN BERKELANJUTAN</p>
                     </div>
                 </div>
             </div>
@@ -309,7 +309,7 @@
                         <h1 class="hero-title fw-bolder mb-3 text-white">PRIORITAS <span class="text-warning">K3L</span>
                             DAN SDM</h1>
                         <p class="lead mb-5 fs-4 text-white-75">PERUSAHAAN DAERAH DENGAN KOMITMEN PENINGKATAN EKONOMI
-                            DAERAH,SUMBERDAYA MANUSIA DAN PENGELOLOAAN LINGKUNGAN BERKELANJUTA.</p>
+                            DAERAH,SUMBERDAYA MANUSIA DAN PENGELOLOAAN LINGKUNGAN BERKELANJUTAN</p>
                     </div>
                 </div>
             </div>
@@ -318,8 +318,8 @@
         <button class="carousel-control-prev" type="button" data-bs-target="#hero-slider" data-bs-slide="prev"><span
                 class="carousel-control-prev-icon" aria-hidden="true"></span><span
                 class="visually-hidden">Previous</span></button>
-        <button class="carousel-control-next" type="button" data-bs-target="#hero-slider"
-            data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span
+        <button class="carousel-control-next" type="button" data-bs-target="#hero-slider" data-bs-slide="next"><span
+                class="carousel-control-next-icon" aria-hidden="true"></span><span
                 class="visually-hidden">Next</span></button>
     </section>
 
@@ -494,7 +494,7 @@
                                 <i class="bi bi-file-earmark-text-fill fs-1 text-dark"></i>
                                 <p class="small fw-bold mt-1 mb-0">Akta Pendirian</p>
                                 <p class="small text-muted">
-                                    <a href="assets/docs/akta_pendirian.pdf" download>Perda No. 6 Tahun 2005</a>
+                                    <a href="pdf/perda.pdf" download>Perda No. 6 Tahun 2005</a>
                                 </p>
                             </div>
 
@@ -502,7 +502,7 @@
                                 <i class="bi bi-file-earmark-text-fill fs-1 text-dark"></i>
                                 <p class="small fw-bold mt-1 mb-0">IUP-OP KW 06</p>
                                 <p class="small text-muted">
-                                    <a href="assets/docs/IUP_OP_KW06.pdf" download>SK No.
+                                    <a href="/pdf/iup_kw06.pdf" download>SK No.
                                         503/3-IUP.OP4/DSDPMPTSP/IV/II/2020</a>
                                 </p>
                             </div>
@@ -511,7 +511,7 @@
                                 <i class="bi bi-file-earmark-text-fill fs-1 text-dark"></i>
                                 <p class="small fw-bold mt-1 mb-0">IUP-OP KW 07</p>
                                 <p class="small text-muted">
-                                    <a href="assets/docs/IUP_OP_KW07.pdf" download>SK No.
+                                    <a href="/pdf/iup_kw07.pdf" download>SK No.
                                         503/11.5-41/DMPTSP/XII/2020</a>
                                 </p>
                             </div>
@@ -525,35 +525,6 @@
             </div>
         </div>
     </section>
-    {{-- <section id="bisnis-prospek" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="section-title text-dark">Bisnis Inti, Produk & Prospek Usaha</h2>
-            <div class="row g-4">
-                <div class="col-lg-6">
-                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-warning border-3 ps-3">Produk dan
-                        Distribusi</h3>
-                    <p class="text-secondary">**BARATALA** fokus pada produksi **Bijih Besi (Iron Ore)** dengan kadar
-                        [Sebutkan Kadar Utama, cth: Fe 62%] dan spesifikasi yang diminati pasar Asia. Kapasitas produksi
-                        kami mencapai **[Sebutkan Kapasitas, cth: 5 Juta Ton]** per tahun.</p>
-                    <p class="text-secondary small">Kami memiliki jaringan distribusi yang kuat dan terintegrasi dari
-                        tambang hingga ke tujuan ekspor di [Sebutkan Target Pasar, cth: Cina, India, Korea Selatan].</p>
-                    <a href="#kontak" class="btn btn-sm btn-outline-warning mt-2 fw-bold">Minta Spesifikasi Produk
-                        Lengkap</a>
-                </div>
-                <div class="col-lg-6">
-                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-warning border-3 ps-3">Prospek Usaha &
-                        Kemitraan Modal</h3>
-                    <p class="text-secondary">Dengan cadangan terbukti hingga [Sebutkan Angka, cth: 500 Juta Ton], kami
-                        menjamin **pertumbuhan berkelanjutan** selama dua dekade ke depan. Kami terbuka untuk
-                        **kemitraan modal** strategis yang sejalan dengan visi ekspansi pasar global.</p>
-                    <p class="text-secondary small">Prioritas investasi kami adalah teknologi ramah lingkungan untuk
-                        efisiensi jangka panjang.</p>
-                    <a href="#kontak" class="btn btn-sm btn-outline-warning mt-2 fw-bold">Hubungi Tim Investor Relations</a>
-                </div>
-            </div>
-        </div>
-    </section> --}}
-
 
     <section id="tim" class="py-5 bg-white">
 
@@ -612,33 +583,7 @@
 
             </div>
 
-            {{-- <h3 class="h4 fw-bold text-dark mt-5 mb-4 border-start border-warning border-3 ps-3 d-inline-block">Staff Operasional Utama</h3>
-             <div class="row g-4 justify-content-center">
-                 <div class="col-md-2 col-sm-4">
-                     <div class="team-member">
-                         <img src="placeholder_pria_1.png" class="img-fluid rounded-circle mb-3 shadow"
-                             style="width: 100px; height: 100px; object-fit: cover;" alt="Karyawan">
-                         <h4 class="h6 fw-bold mb-0 text-dark">Leo Saputra</h4>
-                         <p class="small text-warning mb-2">Karyawan</p>
-                     </div>
-                 </div>
-                 <div class="col-md-2 col-sm-4">
-                     <div class="team-member">
-                         <img src="placeholder_pria_2.png" class="img-fluid rounded-circle mb-3 shadow"
-                             style="width: 100px; height: 100px; object-fit: cover;" alt="Karyawan">
-                         <h4 class="h6 fw-bold mb-0 text-dark">Hidayat</h4>
-                         <p class="small text-warning mb-2">Karyawan</p>
-                     </div>
-                 </div>
-                 <div class="col-md-2 col-sm-4">
-                     <div class="team-member">
-                         <img src="placeholder_pria_3.png" class="img-fluid rounded-circle mb-3 shadow"
-                             style="width: 100px; height: 100px; object-fit: cover;" alt="Karyawan">
-                         <h4 class="h6 fw-bold mb-0 text-dark">Supriyanto</h4>
-                         <p class="small text-warning mb-2">Karyawan</p>
-                     </div>
-                 </div>
-             </div> --}}
+
 
         </div>
 
@@ -671,9 +616,40 @@
                 </div>
 
                 <div class="col-lg-6">
-                    <img src="/image/map-tambang-baratala.png" alt="Map Tambang Baratala"
-                        class="img-fluid rounded-3 shadow-lg" style="width: 100%; height: 100%; object-fit: cover;">
+                    <h3 class="h4 fw-bold text-dark border-start border-warning border-3 ps-3 mb-3">
+                        📄 Daftar Dokumen Lokasi Tambang
+                    </h3>
+
+                    <div class="list-group shadow-sm">
+                        @php
+                            $dokumens = [
+                                ['name' => 'Peta Kesampaian Daerah KW 06', 'file' => 'peta_kesampaian_daerah_kw06.pdf'],
+                                ['name' => 'Citra 06', 'file' => 'CITRA 06.pdf'],
+                                ['name' => 'Peta Geologi', 'file' => 'PETA GEOLOGI.pdf'],
+                                ['name' => 'PETA RENCANA PENAMBANGAN CITRA SATELIT TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN CITRA SATELIT TAHUN 2026.pdf'],
+                                ['name' => 'PETA RENCANA PENAMBANGAN KAWASAN HUTAN TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN KAWASAN HUTAN TAHUN 2026.pdf'],
+                                ['name' => 'PETA RENCANA PENAMBANGAN PIT 1&3 KAWASAN HUTAN TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN PIT 1&3 KAWASAN HUTAN TAHUN 2026.pdf'],
+                                ['name' => 'PETA RENCANA PENAMBANGAN PIT 3 CITRA Satelit TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN PIT 3 CITRA Satelit TAHUN 2026.pdf'],
+                                ['name' => 'PETA RENCANA PENAMBANGAN PIT 3 KAWASAN HUTAN TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN PIT 3 KAWASAN HUTAN TAHUN 2026.pdf'],
+                                ['name' => 'PETA RENCANA PENAMBANGAN PIT 3 TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN PIT 3 TAHUN 2026.pdf'],
+                                ['name' => 'PETA RENCANA PENAMBANGAN TAHUN 2026', 'file' => 'PETA RENCANA PENAMBANGAN TAHUN 2026.pdf'],
+                                ['name' => 'Peta Topografi', 'file' => 'Peta Topografi.pdf'],
+                            ];
+                        @endphp
+                        @foreach ($dokumens as $dok)
+                            <a href="{{ asset('peta/' . $dok['file']) }}" target="_blank"
+                                class="list-group-item list-group-item-action d-flex align-items-center">
+
+                                <i class="bi bi-filetype-pdf text-danger me-2 fs-5"></i>
+                                <span>{{ $dok['name'] }}</span>
+
+                            </a>
+                        @endforeach
+
+                    </div>
                 </div>
+
+
 
             </div>
 
@@ -825,7 +801,6 @@
             </div>
         </div>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
