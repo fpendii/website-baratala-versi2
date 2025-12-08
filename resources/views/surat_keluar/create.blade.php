@@ -37,8 +37,9 @@
                 <div class="mb-3">
                     <label class="form-label">Nomor Surat <span class="text-danger">*</span></label>
 
-                    <input type="text" class="form-control @error('nomor_surat') is-invalid @enderror" name="nomor_surat"
-                        value="{{ old('nomor_surat', $nomor_surat ?? '') }}" required>
+                    <input type="text" id="nomor_surat" class="form-control @error('nomor_surat') is-invalid @enderror"
+                        name="nomor_surat" value="{{ old('nomor_surat', $nomor_surat ?? '') }}" required>
+
 
                     @error('nomor_surat')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -51,8 +52,9 @@
                 {{-- Tanggal Surat --}}
                 <div class="mb-3">
                     <label class="form-label">Tanggal Surat <span class="text-danger">*</span></label>
-                    <input type="date" class="form-control @error('tgl_surat') is-invalid @enderror" name="tgl_surat"
-                        value="{{ old('tgl_surat') }}" required>
+                    <input type="date" id="tgl_surat" class="form-control @error('tgl_surat') is-invalid @enderror"
+                        name="tgl_surat" value="{{ old('tgl_surat') }}" required>
+
                     @error('tgl_surat')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -68,88 +70,91 @@
                     @enderror
                 </div>
 
-
-
-                {{-- PERIHAL (ISI SURAT) DENGAN TINYMCE (TEMPLATIZED) --}}
-                <div class="mb-4">
-                    <label class="form-label">Perihal (Isi Surat) <span
-                            class="text-danger">*</span></label>
-
-                    <textarea class="form-control @error('perihal') is-invalid @enderror" rows="15" name="perihal" id="isi_surat"
-                        required>
-{{ old(
-    'perihal',
-    '
-<div style="display: flex; align-items: center; border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 15px;">
-    <img src="' .
-        asset('image/logo.png') .
-        '" alt="Logo Perusahaan" style="width: 80px; height: auto; margin-right: 20px;">
-    <div style="flex-grow: 1; text-align: center;">
-        <p style="margin: 0; font-weight: bold; font-size: 14pt;">PERUSAHAAN DAERAH BARATALA TUNTUNG PANDANG</p>
-        <p style="margin: 0; font-size: 10px;">Jl. Abadi No. 03 Pelaihari 70811 Telp/Fax. 0512-23445</p>
-        <p style="margin: 0; font-size: 10px;">e-mail : perusda_baratala@yahoo.com</p>
-    </div>
-</div>
-
-<div style="text-align: center; margin-bottom: 20px;">
-    <strong>SURAT PERMOHONAN</strong><br>
-    Nomor : BTTP- 1.058/Ops/XII/2025
-</div>
-
-Kepada Yth.<br>
-<strong>Direktorat Jendral Minerba</strong><br>
-<strong>Kementerian Energi dan Sumber Daya Mineral</strong><br>
-<strong>Republik Indonesia</strong><br>
-Di –<br>
-&nbsp; &nbsp; &nbsp; &nbsp; Tempat<br>
-<br>
-
-Dengan hormat,<br><br>
-<p style="border: 2px solid #ccc; padding: 15px; background-color: #f9f9f9;">
-    Sehubungan dengan telah selesainya Uji Kompetensi pada tanggal 15 Agustus 2025, disampaikan permohonan untuk memperoleh kesempatan kembali dalam melakukan pengajuan pengesahan KTT definitif melalui sistem Perizinan Online Minerba.
-    <br><br>
-    Permohonan ini diajukan agar proses pengesahan dapat dilanjutkan sesuai ketentuan yang berlaku melalui Website Perizinan Online Minerba Kementerian ESDM RI.
-</p>
-<br>
-Demikian surat permohonan ini disampaikan. Atas perhatian dan kebijaksanaan yang diberikan disampaikan terima kasih.<br><br>
-
-<div style="margin-top: 30px;">
-    Pelaihari, 3 Desember 2025<br>
-    Hormat kami,<br><br><br><br>
-    <p style="margin-bottom: 0;"><strong>H.Ihsanudin SH., MH</strong></p>
-    Direktur Utama
-</div>
-',
-) }}
-                    </textarea>
+                {{-- Perihal --}}
+                <div class="mb-3">
+                    <label class="form-label">Perihal Surat <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('perihal') is-invalid @enderror" name="perihal"
+                        value="{{ old('perihal') }}" placeholder="Contoh: Permohonan Izin Keramaian" required>
                     @error('perihal')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                </div>
+
+                {{-- KONTEN SURAT (DENGAN TINYMCE) --}}
+                <div class="mb-4">
+                    <label class="form-label">Isi Surat Lengkap <span class="text-danger">*</span></label>
+                    {{-- GANTI NAMA INPUT DARI 'perihal' MENJADI 'konten_surat' --}}
+
+                    <textarea class="form-control @error('konten_surat') is-invalid @enderror" rows="15" name="konten_surat"
+                        id="isi_surat" required>
+        {{-- (Template HTML Anda di sini) --}}
+        {{ old(
+            'konten_surat',
+            '
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                            <tr>
+                                <td style="width: 15%; text-align: left; vertical-align: middle;">
+                                    <img src="../image/logo.png" alt="Logo Perusahaan" style="width: 80px; height: auto;">
+                                </td>
+
+                                <td style="width: 70%; text-align: center; vertical-align: middle; line-height: 1.2;">
+                                    <p style="margin: 0; font-weight: bold; font-size: 14pt;">
+                                        PERUSAHAAN DAERAH BARATALA TUNTUNG PANDANG
+                                    </p>
+                                    <p style="margin: 0; font-size: 10pt;">
+                                        Jl. Abadi No. 03 Pelaihari 70811 Telp/Fax. 0512-23445
+                                    </p>
+                                    <p style="margin: 0; font-size: 10pt;">
+                                        e-mail : perusda_baratala@yahoo.com
+                                    </p>
+                                </td>
+
+                                <td style="width: 15%;">
+                                    </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="padding-top: 10px;">
+                                    <hr style="border: none; border-top: 2px solid black; margin: 0;">
+                                </td>
+                            </tr>
+                        </table>
+
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <strong>SURAT PERMOHONAN</strong><br>
+                    Nomor : <span id="nomor_surat_text"></span>
 
                 </div>
-                {{-- Isi Surat Lengkap (EDITOR WORD) --}}
-                {{-- <div class="mb-4">
-                    <label class="form-label">Isi Surat Lengkap <span class="text-danger">*</span></label>
 
-                    <textarea id="editor" class="form-control @error('isi_surat') is-invalid @enderror" name="isi_surat" rows="12"
-                        required>{{ old('isi_surat') }}</textarea>
+                Kepada Yth.<br>
+                <strong>Direktorat Jendral Minerba</strong><br>
+                <strong>Kementerian Energi dan Sumber Daya Mineral</strong><br>
+                <strong>Republik Indonesia</strong><br>
+                Di –<br>
+                &nbsp; &nbsp; &nbsp; &nbsp; Tempat<br>
+                <br>
 
-                    @error('isi_surat')
+                Dengan hormat,<br><br>
+                <p >
+                    Sehubungan dengan telah selesainya Uji Kompetensi pada tanggal 15 Agustus 2025, disampaikan permohonan untuk memperoleh kesempatan kembali dalam melakukan pengajuan pengesahan KTT definitif melalui sistem Perizinan Online Minerba.
+                    <br><br>
+                    Permohonan ini diajukan agar proses pengesahan dapat dilanjutkan sesuai ketentuan yang berlaku melalui Website Perizinan Online Minerba Kementerian ESDM RI.
+                </p>
+                <br>
+                Demikian surat permohonan ini disampaikan. Atas perhatian dan kebijaksanaan yang diberikan disampaikan terima kasih.<br><br>
+
+                <div style="margin-top: 30px;">
+                    Pelaihari, 3 Desember 2025<br>
+                    Hormat kami,<br><br><br><br>
+                    <p style="margin-bottom: 0;"><strong>H.Ihsanudin SH., MH</strong></p>
+                    Direktur Utama
+                </div>
+                ',
+        ) }}
+    </textarea>
+                    @error('konten_surat')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                </div> --}}
 
-
-
-                {{-- Lampiran Surat (FILE UPLOAD) --}}
-                <div class="mb-4">
-                    <label class="form-label">Lampiran Surat (PDF / JPG / PNG)</label>
-                    <input type="file" class="form-control @error('lampiran') is-invalid @enderror" name="lampiran"
-                        accept=".pdf,.jpg,.jpeg,.png">
-                    <small class="text-muted">Opsional — unggah file surat jika tersedia.</small>
-                    @error('lampiran')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
                 </div>
 
                 {{-- Buttons --}}
@@ -169,25 +174,48 @@ Demikian surat permohonan ini disampaikan. Atas perhatian dan kebijaksanaan yang
         document.addEventListener('DOMContentLoaded', function() {
             tinymce.init({
                 selector: '#isi_surat',
-                plugins: 'advlist autolink lists link image charmap print preview anchor code paste', // Tambahkan 'code' dan 'paste'
+                plugins: 'advlist autolink lists link image charmap print preview anchor code paste',
                 toolbar_mode: 'floating',
-                // Toolbar disederhanakan karena format utama sudah ditetapkan
                 toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | numlist bullist | code',
-
                 height: 600,
                 menubar: false,
-
-                // Mengatur style untuk konten editor
                 content_style: 'body { font-family:Times New Roman,Times,serif; font-size:12pt; line-height: 1.5; margin: 30px; }',
-
-                // Mengizinkan elemen HTML yang lebih kompleks (seperti DIV dan Style)
-                extended_valid_elements: "div[style],p[style],hr[style],strong[style]",
-
-                // Memungkinkan editing langsung pada area yang ditandai dengan kotak abu-abu
+                extended_valid_elements: "div[style],p[style],hr[style],strong[style],span[id]",
                 setup: function(editor) {
                     editor.on('init', function() {
-                        // Fokuskan kursor langsung ke area konten utama (opsional)
-                        // editor.focus();
+                        const tglInput = document.getElementById('tgl_surat');
+                        const nomorInput = document.getElementById('nomor_surat');
+
+                        function updateIsiSurat() {
+                            let content = editor.getContent();
+
+                            // Update tanggal surat
+                            let tgl = new Date(tglInput.value);
+                            if (!isNaN(tgl)) {
+                                const options = {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                };
+                                const tglFormatted = tgl.toLocaleDateString('id-ID', options);
+                                content = content.replace(/Pelaihari,\s*.*?<br>/,
+                                    `Pelaihari, ${tglFormatted}<br>`);
+                            }
+
+                            // Update nomor surat
+                            const nomorVal = nomorInput.value || '';
+                            content = content.replace(/<span id="nomor_surat_text">.*?<\/span>/,
+                                `<span id="nomor_surat_text">${nomorVal}</span>`);
+
+                            editor.setContent(content);
+                        }
+
+                        // Update saat halaman load
+                        updateIsiSurat();
+
+                        // Update saat user mengubah tanggal atau nomor surat
+                        tglInput.addEventListener('change', updateIsiSurat);
+                        nomorInput.addEventListener('input', updateIsiSurat);
                     });
                 }
             });

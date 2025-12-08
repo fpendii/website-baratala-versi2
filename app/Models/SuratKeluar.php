@@ -17,10 +17,12 @@ class SuratKeluar extends Model
         'id_pengguna',
         'tgl_surat',
         'nomor_surat',
+        'konten_surat',
         'tujuan',
         'perihal',
         'jenis_surat',
         'lampiran',
+        'dok_surat'
     ];
 
     // Kolom yang harus diubah ke tipe data tertentu (misal: date)

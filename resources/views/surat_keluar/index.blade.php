@@ -56,7 +56,7 @@
                         <th style="width: 20%;">Tujuan Surat</th>
                         <th style="width: 15%;">Tanggal Surat</th>
                         <th style="width: 10%;">Jenis Surat</th>
-                        <th style="width: 15%;">Lampiran</th>
+                        <th style="width: 15%;">Dokumen Surat</th>
                         <th style="width: 15%;">Aksi</th>
                     </tr>
                 </thead>
@@ -104,8 +104,8 @@
 
                             {{-- LAMPIRAN --}}
                             <td>
-                                @if ($item->lampiran)
-                                    <a href="{{ asset('storage/' . $item->lampiran) }}" target="_blank"
+                                @if ($item->dok_surat)
+                                    <a href="{{ asset('storage/' . $item->dok_surat) }}" target="_blank"
                                         class="btn btn-sm btn-outline-info">
                                         <i class="ri ri-file-2-line"></i> Lihat
                                     </a>
