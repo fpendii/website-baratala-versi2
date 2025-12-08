@@ -3,11 +3,32 @@
 @section('title', 'Daftar Surat Keluar')
 
 @section('content')
+    <style>
+        .hover-card {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .hover-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-circle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold py-3 mb-0">Surat Keluar</h4>
-        <a href="{{ route('surat-keluar.create') }}" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPilihJenis">
             <i class="icon-base ri ri-add-line icon-18px me-1"></i> Tambah
-        </a>
+        </button>
     </div>
 
     {{-- ALERT --}}
@@ -84,9 +105,8 @@
                             {{-- LAMPIRAN --}}
                             <td>
                                 @if ($item->lampiran)
-                                    <a href="{{ asset('storage/' . $item->lampiran) }}"
-                                       target="_blank"
-                                       class="btn btn-sm btn-outline-info">
+                                    <a href="{{ asset('storage/' . $item->lampiran) }}" target="_blank"
+                                        class="btn btn-sm btn-outline-info">
                                         <i class="ri ri-file-2-line"></i> Lihat
                                     </a>
                                 @else
@@ -105,8 +125,7 @@
                                         {{-- DETAIL --}}
                                         <a href="javascript:void(0);" class="dropdown-item btn-detail-surat"
                                             data-bs-toggle="modal" data-bs-target="#detailSuratModal"
-                                            data-perihal="{{ $item->perihal }}"
-                                            data-nomor="{{ $item->nomor_surat }}"
+                                            data-perihal="{{ $item->perihal }}" data-nomor="{{ $item->nomor_surat }}"
                                             data-tujuan="{{ $item->tujuan }}"
                                             data-tanggal="{{ \Carbon\Carbon::parse($item->tgl_surat)->format('d F Y') }}"
                                             data-jenis="{{ ucfirst($currentJenis) }}"
@@ -116,12 +135,11 @@
 
                                         {{-- EDIT & DELETE --}}
                                         @if ($item->id_pengguna == Auth::id())
-                                            <a class="dropdown-item"
-                                                href="{{ route('surat-keluar.edit', $item->id) }}">
+                                            <a class="dropdown-item" href="{{ route('surat-keluar.edit', $item->id) }}">
                                                 <i class="icon-base ri ri-pencil-line icon-18px me-1"></i> Edit
                                             </a>
-                                            <form action="{{ route('surat-keluar.destroy', $item->id) }}"
-                                                method="POST" style="display: contents;"
+                                            <form action="{{ route('surat-keluar.destroy', $item->id) }}" method="POST"
+                                                style="display: contents;"
                                                 onsubmit="return confirm('Yakin hapus data ini?')">
                                                 @csrf
                                                 @method('DELETE')
@@ -149,6 +167,90 @@
 
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    {{-- MODAL PILIH JENIS SURAT (VERSI ELEGAN) --}}
+    <div class="modal fade" id="modalPilihJenis" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-primary">
+                        <i class="bx bx-envelope me-2"></i> Pilih Jenis Surat
+                    </h5>
+                    <button type="button" class="btn-close"></button>
+                </div>
+
+                <div class="modal-body pt-2 pb-4 px-4">
+
+                    <p class="text-muted text-center mb-4">
+                        Tentukan kategori surat yang akan dibuat
+                    </p>
+
+                    <div class="row g-3">
+
+                        {{-- UMUM --}}
+                        <div class="col-12">
+                            <a href="{{ route('surat-keluar.create', ['jenis' => 'umum']) }}" class="text-decoration-none">
+                                <div class="card border-0 shadow-sm hover-card">
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <div class="icon-circle bg-info text-white">
+                                            <i class="ri ri-file-text-line fs-4"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-0 fw-semibold">Surat Umum</h6>
+                                            <small class="text-muted">Surat biasa & administrasi</small>
+                                        </div>
+                                        <i class="ri ri-arrow-right-s-line fs-4 text-muted"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        {{-- OPERASIONAL --}}
+                        <div class="col-12">
+                            <a href="{{ route('surat-keluar.create', ['jenis' => 'operasional']) }}"
+                                class="text-decoration-none">
+                                <div class="card border-0 shadow-sm hover-card">
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <div class="icon-circle bg-warning text-white">
+                                            <i class="ri ri-briefcase-line fs-4"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-0 fw-semibold">Surat Operasional</h6>
+                                            <small class="text-muted">Surat kegiatan & operasional</small>
+                                        </div>
+                                        <i class="ri ri-arrow-right-s-line fs-4 text-muted"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        {{-- KEUANGAN --}}
+                        <div class="col-12">
+                            <a href="{{ route('surat-keluar.create', ['jenis' => 'keuangan']) }}"
+                                class="text-decoration-none">
+                                <div class="card border-0 shadow-sm hover-card">
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <div class="icon-circle bg-success text-white">
+                                            <i class="ri ri-money-dollar-circle-line fs-4"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-0 fw-semibold">Surat Keuangan</h6>
+                                            <small class="text-muted">Surat transaksi & keuangan</small>
+                                        </div>
+                                        <i class="ri ri-arrow-right-s-line fs-4 text-muted"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -198,10 +300,7 @@
 
                     <h6 class="text-primary border-bottom pb-2 mb-3">Lampiran</h6>
                     <div class="mb-4" id="detailLampiranWrapper">
-                        <a id="detailLampiran"
-                           href="#"
-                           target="_blank"
-                           class="btn btn-outline-info btn-sm">
+                        <a id="detailLampiran" href="#" target="_blank" class="btn btn-outline-info btn-sm">
                             <i class="ri ri-file-2-line me-1"></i> Lihat Lampiran
                         </a>
                         <p id="detailLampiranEmpty" class="text-muted d-none">Tidak ada lampiran.</p>

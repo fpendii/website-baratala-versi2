@@ -79,22 +79,22 @@
                         </a>
                     </li>
 
-                    @if (auth()->user()->role == 'admin')
+                    {{-- @if (auth()->user()->role == 'admin')
                         <li class="menu-item {{ request()->is('data-jobdesk*') ? 'active' : '' }}">
                             <a href="/data-jobdesk" class="menu-link">
                                 <i class="menu-icon icon-base ri ri-task-line"></i>
                                 <div data-i18n="Basic">Jobdesk</div>
                             </a>
                         </li>
-                    @endif
+                    @endif --}}
 
 
-                    <li class="menu-item {{ request()->is('rencana*') ? 'active' : '' }}">
+                    {{-- <li class="menu-item {{ request()->is('rencana*') ? 'active' : '' }}">
                         <a href="/rencana" class="menu-link">
                             <i class="menu-icon icon-base ri ri-calendar-check-line"></i>
                             <div data-i18n="Basic">Rencana Kerja</div>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <li class="menu-item {{ request()->is('surat-masuk*') ? 'active' : '' }}">
                         <a href="/surat-masuk" class="menu-link">
@@ -102,6 +102,7 @@
                             <div data-i18n="Basic">Surat Masuk</div>
                         </a>
                     </li>
+
                      <li class="menu-item {{ request()->is('surat-keluar*') ? 'active' : '' }}">
                         <a href="/surat-keluar" class="menu-link">
                             <i class="menu-icon icon-base ri ri-mail-send-line"></i>
@@ -119,12 +120,12 @@
                     @endif
 
 
-                    <li class="menu-item {{ request()->is('jobdesk*') ? 'active' : '' }}">
+                    {{-- <li class="menu-item {{ request()->is('jobdesk*') ? 'active' : '' }}">
                         <a href="/jobdesk" class="menu-link">
                             <i class="menu-icon icon-base ri ri-file-list-3-line"></i>
                             <div data-i18n="Basic">Laporan Jobdesk</div>
                         </a>
-                    </li>
+                    </li> --}}
 
                     @if (auth()->user()->role == 'admin')
                         <li class="menu-item {{ request()->is('pengguna*') ? 'active' : '' }}">
@@ -306,6 +307,7 @@
 
     <!-- Place this tag before closing body tag for github widget button. -->
     <script async="async" defer="defer" src="https://buttons.github.io/buttons.js"></script>
+    @stack('scripts')
 </body>
 
 </html>

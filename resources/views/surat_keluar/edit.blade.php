@@ -45,6 +45,21 @@
                     @enderror
                 </div>
 
+                {{-- Jenis Surat --}}
+                <div class="mb-3">
+                    <label class="form-label">Jenis Surat <span class="text-danger">*</span></label>
+                    <select class="form-select @error('jenis_surat') is-invalid @enderror" name="jenis_surat" required>
+                        <option disabled>Pilih Jenis Surat</option>
+                        <option value="umum" {{ old('jenis_surat', $surat_keluar->jenis_surat) == 'umum' ? 'selected' : '' }}>Umum</option>
+                        <option value="keuangan" {{ old('jenis_surat', $surat_keluar->jenis_surat) == 'keuangan' ? 'selected' : '' }}>Keuangan</option>
+                        <option value="operasional" {{ old('jenis_surat', $surat_keluar->jenis_surat) == 'operasional' ? 'selected' : '' }}>Operasional</option>
+                    </select>
+
+                    @error('jenis_surat')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 {{-- Tanggal Surat --}}
                 <div class="mb-3">
                     <label class="form-label">Tanggal Surat <span class="text-danger">*</span></label>
@@ -67,20 +82,7 @@
                     @enderror
                 </div>
 
-                {{-- Jenis Surat --}}
-                <div class="mb-3">
-                    <label class="form-label">Jenis Surat <span class="text-danger">*</span></label>
-                    <select class="form-select @error('jenis_surat') is-invalid @enderror" name="jenis_surat" required>
-                        <option disabled>Pilih Jenis Surat</option>
-                        <option value="umum" {{ old('jenis_surat', $surat_keluar->jenis_surat) == 'umum' ? 'selected' : '' }}>Umum</option>
-                        <option value="keuangan" {{ old('jenis_surat', $surat_keluar->jenis_surat) == 'keuangan' ? 'selected' : '' }}>Keuangan</option>
-                        <option value="operasional" {{ old('jenis_surat', $surat_keluar->jenis_surat) == 'operasional' ? 'selected' : '' }}>Operasional</option>
-                    </select>
 
-                    @error('jenis_surat')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
 
                 {{-- Perihal --}}
                 <div class="mb-4">

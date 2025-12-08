@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class SuratKeluarController extends Controller
 {
@@ -16,20 +17,77 @@ class SuratKeluarController extends Controller
     public function index()
     {
         $surat_keluar = SuratKeluar::with('pengguna')
-            ->orderBy('tgl_surat', 'desc')
+            ->orderBy('nomor_surat', 'desc')
             ->get();
 
         return view('surat_keluar.index', compact('surat_keluar'));
     }
 
-    /**
-     * Tampilkan form membuat Surat Keluar baru.
-     */
-    public function create()
+    public function create(Request $request)
     {
         $jenis_surat_options = ['umum', 'keuangan', 'operasional'];
-        return view('surat_keluar.create', compact('jenis_surat_options'));
+        $jenis = $request->jenis ?? 'umum';
+
+        // ===============================
+        // GENERATE NOMOR SURAT PER JENIS
+        // FORMAT: BTTP-1.058/Ops/XII/2025
+        // ===============================
+
+        // Ambil surat terakhir BERDASARKAN JENIS
+        $lastSurat = SuratKeluar::where('jenis_surat', $jenis)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $lastNumber = 0;
+
+        if ($lastSurat && preg_match('/BTTP-([\d\.]+)\//', $lastSurat->nomor_surat, $matches)) {
+            // Contoh: 1.058 → 1058
+            $lastNumber = (int) str_replace('.', '', $matches[1]);
+        }
+
+        // Tambah 1
+        $newNumber = $lastNumber + 1;
+
+        // Format ribuan: 1059 → 1.059
+        $formattedNumber = number_format($newNumber, 0, '', '.');
+
+        // Kode jenis surat
+        $jenisKode = [
+            'umum'        => 'Um',
+            'operasional' => 'Ops',
+            'keuangan'    => 'Keu',
+        ];
+
+        // Bulan Romawi
+        $bulanRomawi = [
+            1 => 'I',
+            2 => 'II',
+            3 => 'III',
+            4 => 'IV',
+            5 => 'V',
+            6 => 'VI',
+            7 => 'VII',
+            8 => 'VIII',
+            9 => 'IX',
+            10 => 'X',
+            11 => 'XI',
+            12 => 'XII'
+        ];
+
+        $bulan = $bulanRomawi[Carbon::now()->month];
+        $tahun = Carbon::now()->year;
+
+        // ✅ NOMOR FINAL SESUAI JENIS MASING-MASING
+        $nomor_surat = "BTTP-{$formattedNumber}/{$jenisKode[$jenis]}/{$bulan}/{$tahun}";
+
+        return view('surat_keluar.create', compact(
+            'jenis_surat_options',
+            'jenis',
+            'nomor_surat'
+        ));
     }
+
+
 
     /**
      * Simpan Surat Keluar baru.
@@ -66,7 +124,6 @@ class SuratKeluarController extends Controller
 
             return redirect()->route('surat-keluar.index')
                 ->with('success', 'Surat Keluar berhasil ditambahkan.');
-
         } catch (\Exception $e) {
             return back()->withInput()->withErrors(['error' => 'Gagal menyimpan data. ' . $e->getMessage()]);
         }
@@ -130,7 +187,6 @@ class SuratKeluarController extends Controller
 
             return redirect()->route('surat-keluar.index')
                 ->with('success', 'Surat Keluar berhasil diperbarui.');
-
         } catch (\Exception $e) {
             return back()->withInput()->withErrors(['error' => 'Gagal memperbarui data. ' . $e->getMessage()]);
         }
@@ -153,7 +209,6 @@ class SuratKeluarController extends Controller
 
             return redirect()->route('surat-keluar.index')
                 ->with('success', 'Surat Keluar berhasil dihapus.');
-
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal menghapus data. ' . $e->getMessage()]);
         }

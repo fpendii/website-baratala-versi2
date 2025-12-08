@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap"
         rel="stylesheet">
+    <meta name="google-site-verification" content="rYvl0NTI-KizBCuwVeQ2IGDpv2imbjtio-E1FTFzSaA" />
 
     <link rel="icon" href="image/logo.png" type="image/x-icon">
 
@@ -393,7 +394,7 @@
                 <div class="mb-4 mb-lg-0">
                     <h3 class="h3 fw-bold text-dark mb-4">Tentang Perusahaan.</h3>
                     <p class="text-secondary">
-                        Perusahaan Daerah (PD) Baratala Tuntung Pandang Kabupaten Tanah Laut, Provinsi Kalimantan
+                        Perusahaan Daerah PD Baratala Tuntung Pandang Kabupaten Tanah Laut, Provinsi Kalimantan
                         Selatan, didirikan pada tanggal 25 Agustus 2005 berdasarkan Peraturan Daerah Kabupaten Tanah
                         Laut Nomor 6 Tahun 2005 tentang Pembentukan Perusahaan Daerah Baratala Tuntung Pandang. Tujuan
                         didirikannya perusahaan ini adalah untuk mengelola dan memanfaatkan potensi daerah serta menjadi
