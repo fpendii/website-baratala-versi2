@@ -259,25 +259,5 @@
 
             toggleMetode();
         });
-
-        // Toggle antara form dan upload
-const metodeForm = document.getElementById('metodeForm');
-const metodeUpload = document.getElementById('metodeUpload');
-const isiSuratContainer = document.getElementById('isi_surat');
-const uploadContainer = document.getElementById('uploadContainer');
-
-function toggleMetode() {
-    if (metodeForm.checked) {
-        isiSuratContainer.style.display = 'block';
-        uploadContainer.style.display = 'none';
-    } else if (metodeUpload.checked) {
-        isiSuratContainer.style.display = 'none';
-        uploadContainer.style.display = 'block';
-    }
-}
-
-metodeForm.addEventListener('change', toggleMetode);
-metodeUpload.addEventListener('change', toggleMetode);
-
     </script>
 @endpush
