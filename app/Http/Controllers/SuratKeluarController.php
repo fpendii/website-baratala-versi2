@@ -275,4 +275,46 @@ class SuratKeluarController extends Controller
             return back()->withErrors(['error' => 'Gagal menghapus data. ' . $e->getMessage()]);
         }
     }
+
+    public function updateDokumen(Request $request)
+    {
+        // 1. Validasi
+        $request->validate([
+            'surat_id' => 'required|exists:surat_keluar,id',
+            // Menggunakan nama input file 'dok_surat'
+            'dok_surat' => 'required|file|mimes:pdf|max:5120', // Maks 5MB
+        ]);
+
+        // 2. Cari Surat
+        $surat = SuratKeluar::findOrFail($request->surat_id);
+
+        // 3. Proses File Upload
+        if ($request->hasFile('dok_surat')) {
+            $file = $request->file('dok_surat');
+
+            // Tentukan folder penyimpanan. Sesuaikan nama folder jika Anda menggunakan nama yang berbeda!
+            $storageDisk = 'public';
+            $pathFolder = 'dok_surat_keluar'; // Ganti jika folder Anda berbeda, misalnya 'surat/keluar'
+
+            // 4. Hapus file lama (JIKA ADA) dari storage
+            if ($surat->dok_surat && Storage::disk($storageDisk)->exists($surat->dok_surat)) {
+                Storage::disk($storageDisk)->delete($surat->dok_surat);
+            }
+
+            // Buat nama file baru (menggantikan dokumen lama)
+            $namaFile = time() . '_' . $surat->id . '_final.' . $file->getClientOriginalExtension();
+
+            // 5. Simpan file baru
+            $path = $file->storeAs($pathFolder, $namaFile, $storageDisk);
+
+            // 6. Update kolom di database (menggunakan kolom dok_surat yang sudah ada)
+            $surat->dok_surat = $path;
+            $surat->save();
+
+            return redirect()->route('surat-keluar.index')
+                ->with('success', 'Dokumen Surat Keluar berhasil diperbarui dengan versi TTD.');
+        }
+
+        return redirect()->back()->with('error', 'Gagal memproses dokumen.');
+    }
 }

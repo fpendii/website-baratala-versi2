@@ -121,7 +121,12 @@
                                         <i class="icon-base ri ri-more-2-line icon-18px"></i>
                                     </button>
                                     <div class="dropdown-menu">
-
+                                        <a class="dropdown-item text-success" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#uploadTtdModal" data-id="{{ $item->id }}"
+                                            data-nomor="{{ $item->nomor_surat }}">
+                                            <i class="icon-base ri ri-upload-cloud-2-line icon-18px me-1"></i> Update
+                                            Dokumen TTD
+                                        </a>
                                         {{-- DETAIL --}}
                                         <a href="javascript:void(0);" class="dropdown-item btn-detail-surat"
                                             data-bs-toggle="modal" data-bs-target="#detailSuratModal"
@@ -192,7 +197,8 @@
 
                         {{-- UMUM --}}
                         <div class="col-12">
-                            <a href="{{ route('surat-keluar.create', ['jenis' => 'umum']) }}" class="text-decoration-none">
+                            <a href="{{ route('surat-keluar.create', ['jenis' => 'umum']) }}"
+                                class="text-decoration-none">
                                 <div class="card border-0 shadow-sm hover-card">
                                     <div class="card-body d-flex align-items-center gap-3">
                                         <div class="icon-circle bg-info text-white">
@@ -315,6 +321,66 @@
             </div>
         </div>
     </div>
+
+    {{-- MODAL UPLOAD DOKUMEN TTD --}}
+    <div class="modal fade" id="uploadTtdModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bx bx-cloud-upload me-2 text-success"></i> Ganti Dokumen Final (TTD)
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ route('surat-keluar.update-dokumen') }}" method="POST" enctype="multipart/form-data"
+                    id="formUploadTtd">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="surat_id" id="uploadTtdSuratId">
+                    <div class="modal-body p-4">
+                        <p>Unggah file <span style="font-weight: bold">PDF</span> Surat Keluar yang sudah ditandatangani untuk  <span style="font-weight: bold">menggantikan dokumen
+                            sebelumnya</span>.</p>
+                        <h6 class="text-primary mb-3" id="uploadTtdNomorSurat"></h6>
+
+                        <div class="mb-3">
+                            <label for="dok_surat" class="form-label">Dokumen Surat Final (PDF) <span
+                                    class="text-danger">*</span></label>
+                            {{-- PASTIKAN NAMA INPUT ADALAH 'dok_surat' --}}
+                            <input class="form-control" type="file" id="dok_surat" name="dok_surat" accept=".pdf"
+                                required>
+                            <small class="text-muted">File lama akan dihapus. Pastikan file baru berformat PDF dan sudah
+                                ditandatangani.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Unggah & Ganti</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- SCRIPT UNTUK MODAL UPLOAD TTD --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... (Script Modal Detail yang sudah ada) ...
+
+            // SCRIPT BARU UNTUK MODAL UPLOAD TTD
+            const uploadTtdModal = document.getElementById('uploadTtdModal');
+            const uploadTtdSuratId = document.getElementById('uploadTtdSuratId');
+            const uploadTtdNomorSurat = document.getElementById('uploadTtdNomorSurat');
+
+            uploadTtdModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const suratId = button.getAttribute('data-id');
+                const nomor = button.getAttribute('data-nomor');
+
+                uploadTtdSuratId.value = suratId;
+                uploadTtdNomorSurat.textContent = `Nomor Surat: ${nomor}`;
+            });
+        });
+    </script>
 
     {{-- SCRIPT MODAL --}}
     <script>
