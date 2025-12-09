@@ -102,17 +102,23 @@
                                 </span>
                             </td>
 
-                            {{-- LAMPIRAN --}}
+                            {{-- DOKUMEN SURAT --}}
                             <td>
                                 @if ($item->dok_surat)
                                     <a href="{{ asset('storage/' . $item->dok_surat) }}" target="_blank"
                                         class="btn btn-sm btn-outline-info">
-                                        <i class="ri ri-file-2-line"></i> Lihat
+                                        <i class="ri ri-file-2-line"></i> Lihat Dokumen
+                                    </a>
+                                @elseif ($item->lampiran)
+                                    <a href="{{ asset('storage/' . $item->lampiran) }}" target="_blank"
+                                        class="btn btn-sm btn-outline-secondary">
+                                        <i class="ri ri-file-2-line"></i> Lihat Lampiran
                                     </a>
                                 @else
                                     <span class="text-muted">Tidak ada</span>
                                 @endif
                             </td>
+
 
                             <td>
                                 <div class="dropdown">
@@ -125,7 +131,7 @@
                                             data-bs-target="#uploadTtdModal" data-id="{{ $item->id }}"
                                             data-nomor="{{ $item->nomor_surat }}">
                                             <i class="icon-base ri ri-upload-cloud-2-line icon-18px me-1"></i> Update
-                                            Dokumen TTD
+                                            Dokumen
                                         </a>
                                         {{-- DETAIL --}}
                                         <a href="javascript:void(0);" class="dropdown-item btn-detail-surat"
@@ -134,7 +140,7 @@
                                             data-tujuan="{{ $item->tujuan }}"
                                             data-tanggal="{{ \Carbon\Carbon::parse($item->tgl_surat)->format('d F Y') }}"
                                             data-jenis="{{ ucfirst($currentJenis) }}"
-                                            data-lampiran="{{ $item->lampiran }}">
+                                            data-lampiran="{{ $item->dok_surat }}">
                                             <i class="icon-base ri ri-eye-line icon-18px me-1"></i> Detail
                                         </a>
 
@@ -304,7 +310,7 @@
                         <p id="detailPerihalContent" style="white-space: pre-wrap;"></p>
                     </div>
 
-                    <h6 class="text-primary border-bottom pb-2 mb-3">Lampiran</h6>
+                    <h6 class="text-primary border-bottom pb-2 mb-3">Dokumen Surat</h6>
                     <div class="mb-4" id="detailLampiranWrapper">
                         <a id="detailLampiran" href="#" target="_blank" class="btn btn-outline-info btn-sm">
                             <i class="ri ri-file-2-line me-1"></i> Lihat Lampiran
@@ -338,8 +344,9 @@
                     @method('PUT')
                     <input type="hidden" name="surat_id" id="uploadTtdSuratId">
                     <div class="modal-body p-4">
-                        <p>Unggah file <span style="font-weight: bold">PDF</span> Surat Keluar yang sudah ditandatangani untuk  <span style="font-weight: bold">menggantikan dokumen
-                            sebelumnya</span>.</p>
+                        <p>Unggah file <span style="font-weight: bold">PDF</span> Surat Keluar yang sudah ditandatangani
+                            untuk <span style="font-weight: bold">menggantikan dokumen
+                                sebelumnya</span>.</p>
                         <h6 class="text-primary mb-3" id="uploadTtdNomorSurat"></h6>
 
                         <div class="mb-3">
@@ -354,7 +361,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success">Unggah & Ganti</button>
+                        <button type="submit" class="btn btn-success">Upload Dokumen</button>
                     </div>
                 </form>
             </div>
@@ -406,15 +413,26 @@
                 document.getElementById('detailJenis').innerHTML =
                     `<span class="badge bg-info">${jenis}</span>`;
 
-                // LAMPIRAN
-                if (lampiran && lampiran !== '') {
+                // LAMPIRAN / DOKUMEN
+                let dokSurat = button.getAttribute('data-dok_surat');
+                let lampiran = button.getAttribute('data-lampiran');
+
+                if (dokSurat && dokSurat !== '') {
                     document.getElementById('detailLampiran').classList.remove('d-none');
                     document.getElementById('detailLampiranEmpty').classList.add('d-none');
-                    document.getElementById('detailLampiran').href = "/storage/lampiran/" + lampiran;
+                    document.getElementById('detailLampiran').href = "/storage/" + dokSurat;
+                    document.getElementById('detailLampiran').textContent = "Lihat Dokumen";
+                } else if (lampiran && lampiran !== '') {
+                    document.getElementById('detailLampiran').classList.remove('d-none');
+                    document.getElementById('detailLampiranEmpty').classList.add('d-none');
+                    document.getElementById('detailLampiran').href = "/storage/" + lampiran;
+                    document.getElementById('detailLampiran').textContent = "Lihat Lampiran";
                 } else {
                     document.getElementById('detailLampiran').classList.add('d-none');
                     document.getElementById('detailLampiranEmpty').classList.remove('d-none');
                 }
+
+
             });
         });
     </script>

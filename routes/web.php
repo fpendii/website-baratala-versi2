@@ -137,7 +137,7 @@ Route::get('surat-keluar/{id}', [SuratKeluarController::class, 'show'])->name('s
 Route::get('surat-keluar/edit/{id}', [SuratKeluarController::class, 'edit'])->name('surat-keluar.edit');
 Route::put('surat-keluar/update/{id}', [SuratKeluarController::class, 'update'])->name('surat-keluar.update');
 Route::delete('surat-keluar/delete/{id}', [SuratKeluarController::class, 'destroy'])->name('surat-keluar.destroy');
-Route::get('surat-keluar/update-dokumen', [SuratKeluarController::class, 'downloadLampiran'])->name('surat-keluar.update-dokumen');
+Route::put('surat-keluar/update-dokumen', [SuratKeluarController::class, 'updateDokumen'])->name('surat-keluar.update-dokumen');
 
 
 // Route Jobdesk

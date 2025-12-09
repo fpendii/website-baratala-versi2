@@ -21,7 +21,7 @@ class SuratKeluarController extends Controller
     public function index()
     {
         $surat_keluar = SuratKeluar::with('pengguna')
-            ->orderBy('id', 'desc')
+            ->orderBy('nomor_surat', 'desc')
             ->get();
 
         return view('surat_keluar.index', compact('surat_keluar'));
@@ -39,7 +39,7 @@ class SuratKeluarController extends Controller
 
         // Ambil surat terakhir BERDASARKAN JENIS
         $lastSurat = SuratKeluar::where('jenis_surat', $jenis)
-            ->orderBy('id', 'desc')
+            ->orderBy('nomor_surat', 'desc')
             ->first();
 
         $lastNumber = 0;
@@ -98,12 +98,12 @@ class SuratKeluarController extends Controller
      */
     public function store(Request $request)
     {
-        // 1. VALIDASI DATA
+        // VALIDASI
         $request->validate([
             'tgl_surat' => 'required|date',
             'nomor_surat' => 'required|string|max:100|unique:surat_keluar,nomor_surat',
             'tujuan' => 'required|string|max:255',
-            'konten_surat' => 'required|string',
+            'konten_surat' => 'nullable|string',
             'jenis_surat' => ['required', Rule::in(['umum', 'keuangan', 'operasional'])],
             'lampiran' => 'nullable|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
@@ -111,86 +111,122 @@ class SuratKeluarController extends Controller
         try {
             $lampiran = null;
             $dok_surat = null;
-            $htmlContent = $request->konten_surat;
+            $kontenSurat = $request->konten_surat;
 
-            // 2. Upload lampiran jika ada
-            if ($request->hasFile('lampiran')) {
-                $lampiran = $request->file('lampiran')->store('surat_keluar_lampiran', 'public');
-            }
+            // =====================================================
+            // 📌 CEK JIKA PENGGUNA MENGUPLOAD FILE → TIDAK PERLU PDF
+            // =====================================================
+            if ($request->hasFile('file_surat')) {
 
-            // --- START: BASE64 ENCODING & LOGGING ---
+                // SIMPAN FILE LAMPIRAN
+                $lampiran = $request->file('file_surat')->store('surat_keluar_pdf', 'public');
 
-            $logoPath = public_path('image/logo.png');
-
-            // LOG POINT 1: Cek Path Logo
-            Log::info('PDF Generation: Logo Path checked.', ['path' => $logoPath, 'exists' => file_exists($logoPath)]);
-
-            if (file_exists($logoPath)) {
-                // 3. ENCODE LOGO KE BASE64
-                $logoData = base64_encode(file_get_contents($logoPath));
-                $base64Image = 'data:image/png;base64,' . $logoData;
-
-                // BARIS BARU (Mencari URL Relatif yang diubah TinyMCE)
-                $assetUrlToFind = '../image/logo.png';
-
-                // LOG POINT 2: Cek URL Asset yang Dicari
-                Log::info('PDF Generation: Asset URL to be replaced.', ['asset_url' => $assetUrlToFind]);
-
-                // Cek apakah URL Asset ditemukan dalam konten
-                if (strpos($htmlContent, $assetUrlToFind) !== false) {
-                    // Ganti URL asset() dengan string Base64
-                    $htmlContent = str_replace($assetUrlToFind, $base64Image, $htmlContent);
-
-                    // LOG POINT 3: Konfirmasi Penggantian
-                    Log::info('PDF Generation: Replacement SUCCESSFUL. Logo URL found and replaced.');
-                } else {
-                    // LOG POINT 3b: Penggantian Gagal (URL Asset tidak ditemukan)
-                    Log::warning('PDF Generation: Replacement FAILED. Asset URL not found in HTML content.');
-                    // Tambahkan log untuk melihat awal konten yang di-submit
-                    Log::debug('Start of Content Submitted:', ['content_start' => substr($htmlContent, 0, 500)]);
-                }
+                // KOSONGKAN konten surat & PDF (dok_surat)
+                $kontenSurat = "";
+                $dok_surat = null;
             } else {
-                // LOG POINT 4: File Logo Tidak Ditemukan
-                Log::error('PDF Generation: Logo file NOT found at the specified path!');
+                // =====================================================
+                // 📌 JIKA TIDAK UPLOAD → GENERATE PDF DARI KONTEN
+                // =====================================================
+
+                // LOGO BASE64
+                $logoPath = public_path('image/logo.png');
+
+                if (file_exists($logoPath)) {
+                    $logoData = base64_encode(file_get_contents($logoPath));
+                    $base64Image = 'data:image/png;base64,' . $logoData;
+                    $assetUrlToFind = '../image/logo.png';
+
+                    if (strpos($kontenSurat, $assetUrlToFind) !== false) {
+                        $kontenSurat = str_replace($assetUrlToFind, $base64Image, $kontenSurat);
+                    }
+                }
+
+                // GENERATE PDF
+                $pdf = PDF::loadHtml($kontenSurat)->setPaper('A4', 'portrait');
+
+                $safeNomorSurat = str_replace(['/', '\\', ' '], '-', $request->nomor_surat);
+                $tanggal = date('Ymd');
+                $fileName = "SK-{$tanggal}-{$safeNomorSurat}.pdf";
+
+                $dok_surat = 'surat_keluar_pdf/' . $fileName;
+                Storage::disk('public')->put($dok_surat, $pdf->output());
             }
 
-            // --- END: BASE64 ENCODING & LOGGING ---
+            // =====================================================
+            // 🗂 SIMPAN KE DATABASE
+            // =====================================================
 
-            // 4. GENERATE DAN SIMPAN PDF DARI KONTEN HTML
-            $pdf = PDF::loadHtml($htmlContent)->setPaper('A4', 'portrait');
-
-            // Tentukan nama file PDF
-            $safeNomorSurat = str_replace(['/', '\\', ' '], '-', $request->nomor_surat);
-            $tanggal = date('Ymd');
-            $fileName = "SK-{$tanggal}-{$safeNomorSurat}.pdf";
-
-            // Simpan file PDF ke storage
-            $dok_surat = 'surat_keluar_pdf/' . $fileName;
-            Storage::disk('public')->put($dok_surat, $pdf->output());
-
-
-            // 5. Simpan data Surat Keluar ke Database
             $surat = SuratKeluar::create([
-                'id_pengguna' => Auth::id(),
-                'nomor_surat' => $request->nomor_surat,
-                'konten_surat' => $htmlContent,
-                'tgl_surat' => $request->tgl_surat,
-                'tujuan' => $request->tujuan,
-                'perihal' => $request->perihal,
-                'lampiran' => $lampiran,
-                'jenis_surat' => $request->jenis_surat,
-                'dok_surat' => $dok_surat
-
+                'id_pengguna'   => Auth::id(),
+                'nomor_surat'   => $request->nomor_surat,
+                'konten_surat'  => $kontenSurat,
+                'tgl_surat'     => $request->tgl_surat,
+                'tujuan'        => $request->tujuan,
+                'perihal'       => $request->perihal,
+                'lampiran'      => $lampiran,
+                'jenis_surat'   => $request->jenis_surat,
+                'dok_surat'     => $dok_surat
             ]);
 
+            // =====================================================
+            // 🔔 NOTIFIKASI WA KEPADA ATASAN (FONNTE)
+            // =====================================================
+            try {
+                $token = env('FONNTE_API_KEY');
+                $target = env('WA_ATASAN');
+
+                $pembuat = Auth::user()->nama ?? 'Pengguna';
+                $tanggalSurat = date('d-m-Y', strtotime($request->tgl_surat));
+
+                $message = "
+📄 *Notifikasi Surat Keluar Baru*
+
+Ada surat keluar baru yang dibuat:
+
+📝 *Nomor Surat:* {$request->nomor_surat}
+🎯 *Tujuan:* {$request->tujuan}
+📅 *Tanggal:* {$tanggalSurat}
+👤 *Dibuat oleh:* {$pembuat}
+
+Silakan cek sistem untuk detailnya.
+";
+
+                $curl = curl_init();
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => "https://api.fonnte.com/send",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => [
+                        "target" => $target,
+                        "message" => $message,
+                    ],
+                    CURLOPT_HTTPHEADER => [
+                        "Authorization: $token"
+                    ],
+                ]);
+
+                $response = curl_exec($curl);
+                curl_close($curl);
+
+                Log::info('Fonnte Notification Sent', ['response' => $response]);
+            } catch (\Exception $e) {
+                Log::error('Fonnte Notification Error: ' . $e->getMessage());
+            }
+
             return redirect()->route('surat-keluar.index')
-                ->with('success', 'Surat Keluar berhasil ditambahkan, konten surat dan dokumen PDF telah tersimpan.');
+                ->with('success', 'Surat berhasil ditambahkan & notifikasi WA terkirim.');
         } catch (\Exception $e) {
-            // ... penanganan error lainnya
-            Log::error('PDF Generation Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
-            return back()->withInput()->withErrors(['error' => 'Gagal menyimpan data atau membuat PDF. Silakan cek log untuk detail.']);
+
+            Log::error('Store Surat Error: ' . $e->getMessage());
+            return back()->withInput()->withErrors([
+                'error' => 'Gagal menyimpan surat. Silakan cek log.'
+            ]);
         }
     }
+
+
+
     /**
      * Detail surat keluar.
      */
@@ -202,57 +238,131 @@ class SuratKeluarController extends Controller
     /**
      * Form edit Surat Keluar.
      */
-    public function edit($id_surat)
+    public function edit($id)
     {
-        $surat_keluar = SuratKeluar::findOrFail($id_surat);
-        $jenis_surat_options = ['umum', 'keuangan', 'operasional'];
+        $surat = SuratKeluar::findOrFail($id);
 
-        return view('surat_keluar.edit', compact('surat_keluar', 'jenis_surat_options'));
+        return view('surat_keluar.edit', [
+            'surat' => $surat,
+            'nomor_surat' => $surat->nomor_surat,
+            'jenis' => $surat->jenis_surat,
+        ]);
     }
+
 
     /**
      * Update Surat Keluar.
      */
-    public function update(Request $request, SuratKeluar $surat_keluar)
+    public function update(Request $request, $id)
     {
+        // Ambil data surat lama
+        $surat = SuratKeluar::findOrFail($id);
+
+        // VALIDASI
         $request->validate([
             'tgl_surat' => 'required|date',
             'nomor_surat' => [
                 'required',
                 'string',
                 'max:100',
-
+                Rule::unique('surat_keluar', 'nomor_surat')->ignore($id)
             ],
             'tujuan' => 'required|string|max:255',
-            'perihal' => 'required|string|max:255',
+            'konten_surat' => 'required|string',
             'jenis_surat' => ['required', Rule::in(['umum', 'keuangan', 'operasional'])],
             'lampiran' => 'nullable|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         try {
+            $lampiran = $surat->lampiran; // default: pakai lampiran lama
+            $dok_surat = $surat->dok_surat; // default: pakai PDF lama
+            $htmlContent = $request->konten_surat;
 
-            $data = $request->except('lampiran');
-
-            // Jika user upload lampiran baru
+            /* ================================
+         * 1. Upload Lampiran (Jika Ada)
+         * ================================ */
             if ($request->hasFile('lampiran')) {
 
                 // Hapus lampiran lama jika ada
-                if ($surat_keluar->lampiran && Storage::disk('public')->exists($surat_keluar->lampiran)) {
-                    Storage::disk('public')->delete($surat_keluar->lampiran);
+                if ($lampiran && Storage::disk('public')->exists($lampiran)) {
+                    Storage::disk('public')->delete($lampiran);
                 }
 
-                // Upload yang baru
-                $data['lampiran'] = $request->file('lampiran')->store('lampiran_surat', 'public');
+                $lampiran = $request->file('lampiran')->store('surat_keluar_lampiran', 'public');
             }
 
-            $surat_keluar->update($data);
+            /* ================================
+         * 2. Replace Logo Menjadi Base64
+         * ================================ */
+            $logoPath = public_path('image/logo.png');
+            Log::info('PDF Update: Checking logo path', [
+                'path' => $logoPath,
+                'exists' => file_exists($logoPath)
+            ]);
+
+            if (file_exists($logoPath)) {
+                $logoData = base64_encode(file_get_contents($logoPath));
+                $base64Image = "data:image/png;base64,$logoData";
+
+                $assetUrlToFind = '../image/logo.png';
+
+                if (strpos($htmlContent, $assetUrlToFind) !== false) {
+                    $htmlContent = str_replace($assetUrlToFind, $base64Image, $htmlContent);
+                    Log::info('PDF Update: Logo replaced successfully');
+                } else {
+                    Log::warning('PDF Update: Logo URL NOT FOUND in HTML content');
+                }
+            } else {
+                Log::error('PDF Update: Logo NOT FOUND on server');
+            }
+
+            /* ================================
+         * 3. Generate PDF Baru
+         * ================================ */
+
+            // Hapus PDF lama jika ada
+            if ($dok_surat && Storage::disk('public')->exists($dok_surat)) {
+                Storage::disk('public')->delete($dok_surat);
+            }
+
+            $pdf = PDF::loadHtml($htmlContent)->setPaper('A4', 'portrait');
+
+            $safeNomorSurat = str_replace(['/', '\\', ' '], '-', $request->nomor_surat);
+            $tanggal = date('Ymd');
+            $fileName = "SK-{$tanggal}-{$safeNomorSurat}.pdf";
+
+            // Simpan PDF baru
+            $dok_surat = 'surat_keluar_pdf/' . $fileName;
+            Storage::disk('public')->put($dok_surat, $pdf->output());
+
+            /* ================================
+         * 4. Update Database
+         * ================================ */
+
+            $surat->update([
+                'id_pengguna' => Auth::id(),
+                'nomor_surat' => $request->nomor_surat,
+                'konten_surat' => $htmlContent,
+                'tgl_surat' => $request->tgl_surat,
+                'tujuan' => $request->tujuan,
+                'perihal' => $request->perihal,
+                'lampiran' => $lampiran,
+                'jenis_surat' => $request->jenis_surat,
+                'dok_surat' => $dok_surat,
+            ]);
 
             return redirect()->route('surat-keluar.index')
-                ->with('success', 'Surat Keluar berhasil diperbarui.');
+                ->with('success', 'Surat Keluar berhasil diperbarui dan PDF baru berhasil dibuat.');
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Gagal memperbarui data. ' . $e->getMessage()]);
+            Log::error('PDF Update Error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            return back()->withInput()->withErrors([
+                'error' => 'Gagal memperbarui data atau membuat PDF baru. Silakan cek log.'
+            ]);
         }
     }
+
 
     /**
      * Hapus Surat Keluar.
@@ -294,7 +404,7 @@ class SuratKeluarController extends Controller
 
             // Tentukan folder penyimpanan. Sesuaikan nama folder jika Anda menggunakan nama yang berbeda!
             $storageDisk = 'public';
-            $pathFolder = 'dok_surat_keluar'; // Ganti jika folder Anda berbeda, misalnya 'surat/keluar'
+            $pathFolder = 'surat_keluar_pdf';
 
             // 4. Hapus file lama (JIKA ADA) dari storage
             if ($surat->dok_surat && Storage::disk($storageDisk)->exists($surat->dok_surat)) {

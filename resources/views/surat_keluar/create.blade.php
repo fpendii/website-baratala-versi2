@@ -80,8 +80,28 @@
                     @enderror
                 </div>
 
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Metode Pembuatan Surat</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="metode" id="metode_editor" value="editor"
+                            checked>
+                        <label class="form-check-label">Tulis Surat di Form</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="metode" id="metode_upload" value="upload">
+                        <label class="form-check-label">Upload Dokumen (PDF / DOC / DOCX)</label>
+                    </div>
+                </div>
+
+                <div class="mb-3" id="group_upload" style="display:none;">
+                    <label class="form-label">Upload Dokumen Surat</label>
+                    <input type="file" class="form-control" name="file_surat" accept=".pdf,.doc,.docx">
+                </div>
+
+
+
                 {{-- KONTEN SURAT (DENGAN TINYMCE) --}}
-                <div class="mb-4">
+                <div class="mb-4" id="group_editor">
                     <label class="form-label">Isi Surat Lengkap <span class="text-danger">*</span></label>
                     {{-- GANTI NAMA INPUT DARI 'perihal' MENJADI 'konten_surat' --}}
 
@@ -91,64 +111,62 @@
         {{ old(
             'konten_surat',
             '
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
-                            <tr>
-                                <td style="width: 15%; text-align: left; vertical-align: middle;">
-                                    <img src="../image/logo.png" alt="Logo Perusahaan" style="width: 80px; height: auto;">
-                                </td>
+                                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                                                    <tr>
+                                                        <td style="width: 15%; text-align: left; vertical-align: middle;">
+                                                            <img src="../image/logo.png" alt="Logo Perusahaan" style="width: 80px; height: auto;">
+                                                        </td>
 
-                                <td style="width: 70%; text-align: center; vertical-align: middle; line-height: 1.2;">
-                                    <p style="margin: 0; font-weight: bold; font-size: 14pt;">
-                                        PERUSAHAAN DAERAH BARATALA TUNTUNG PANDANG
-                                    </p>
-                                    <p style="margin: 0; font-size: 10pt;">
-                                        Jl. Abadi No. 03 Pelaihari 70811 Telp/Fax. 0512-23445
-                                    </p>
-                                    <p style="margin: 0; font-size: 10pt;">
-                                        e-mail : perusda_baratala@yahoo.com
-                                    </p>
-                                </td>
+                                                        <td style="width: 70%; text-align: center; vertical-align: middle; line-height: 1.2;">
+                                                            <p style="margin: 0; font-weight: bold; font-size: 14pt;">
+                                                                PERUSAHAAN DAERAH BARATALA TUNTUNG PANDANG
+                                                            </p>
+                                                            <p style="margin: 0; font-size: 10pt;">
+                                                                Jl. Abadi No. 03 Pelaihari 70811 Telp/Fax. 0512-23445
+                                                            </p>
+                                                            <p style="margin: 0; font-size: 10pt;">
+                                                                e-mail : perusda_baratala@yahoo.com
+                                                            </p>
+                                                        </td>
 
-                                <td style="width: 15%;">
-                                    </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" style="padding-top: 10px;">
-                                    <hr style="border: none; border-top: 2px solid black; margin: 0;">
-                                </td>
-                            </tr>
-                        </table>
+                                                        <td style="width: 15%;">
+                                                            </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3" style="padding-top: 10px;">
+                                                            <hr style="border: none; border-top: 2px solid black; margin: 0;">
+                                                        </td>
+                                                    </tr>
+                                                </table>
 
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <strong>SURAT PERMOHONAN</strong><br>
-                    Nomor : <span id="nomor_surat_text"></span>
+                                        <div style="text-align: center; margin-bottom: 20px;">
+                                            <strong>SURAT PERMOHONAN</strong><br>
+                                            Nomor : <span id="nomor_surat_text"></span>
 
-                </div>
+                                        </div>
 
-                Kepada Yth.<br>
-                <strong>Direktorat Jendral Minerba</strong><br>
-                <strong>Kementerian Energi dan Sumber Daya Mineral</strong><br>
-                <strong>Republik Indonesia</strong><br>
-                Di –<br>
-                &nbsp; &nbsp; &nbsp; &nbsp; Tempat<br>
-                <br>
+                                        Kepada Yth.<br>
+                                        <strong>Direktorat Jendral Minerba</strong><br>
+                                        <strong>Kementerian Energi dan Sumber Daya Mineral</strong><br>
+                                        <strong>Republik Indonesia</strong><br>
+                                        Di –<br>
+                                        &nbsp; &nbsp; &nbsp; &nbsp; Tempat<br>
+                                        <br>
 
-                Dengan hormat,<br><br>
-                <p >
-                    Sehubungan dengan telah selesainya Uji Kompetensi pada tanggal 15 Agustus 2025, disampaikan permohonan untuk memperoleh kesempatan kembali dalam melakukan pengajuan pengesahan KTT definitif melalui sistem Perizinan Online Minerba.
-                    <br><br>
-                    Permohonan ini diajukan agar proses pengesahan dapat dilanjutkan sesuai ketentuan yang berlaku melalui Website Perizinan Online Minerba Kementerian ESDM RI.
-                </p>
-                <br>
-                Demikian surat permohonan ini disampaikan. Atas perhatian dan kebijaksanaan yang diberikan disampaikan terima kasih.<br><br>
+                                        Dengan hormat,<br><br>
+                                        <p >
+                                            (Isi Surat... )
+                                        </p>
+                                        <br>
+                                        Demikian surat permohonan ini disampaikan. Atas perhatian dan kebijaksanaan yang diberikan disampaikan terima kasih.<br><br>
 
-                <div style="margin-top: 30px;">
-                    Pelaihari, 3 Desember 2025<br>
-                    Hormat kami,<br><br><br><br>
-                    <p style="margin-bottom: 0;"><strong>H.Ihsanudin SH., MH</strong></p>
-                    Direktur Utama
-                </div>
-                ',
+                                        <div style="margin-top: 30px;">
+                                            Pelaihari, 3 Desember 2025<br>
+                                            Hormat kami,<br><br><br><br>
+                                            <p style="margin-bottom: 0;"><strong>H.Ihsanudin SH., MM</strong></p>
+                                            Direktur Utama
+                                        </div>
+                                        ',
         ) }}
     </textarea>
                     @error('konten_surat')
@@ -220,5 +238,46 @@
                 }
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const editorGroup = document.getElementById('group_editor');
+            const uploadGroup = document.getElementById('group_upload');
+
+            function toggleMetode() {
+                if (document.getElementById('metode_upload').checked) {
+                    editorGroup.style.display = 'none';
+                    uploadGroup.style.display = 'block';
+                } else {
+                    editorGroup.style.display = 'block';
+                    uploadGroup.style.display = 'none';
+                }
+            }
+
+            document.getElementById('metode_editor').addEventListener('change', toggleMetode);
+            document.getElementById('metode_upload').addEventListener('change', toggleMetode);
+
+            toggleMetode();
+        });
+
+        // Toggle antara form dan upload
+const metodeForm = document.getElementById('metodeForm');
+const metodeUpload = document.getElementById('metodeUpload');
+const isiSuratContainer = document.getElementById('isi_surat');
+const uploadContainer = document.getElementById('uploadContainer');
+
+function toggleMetode() {
+    if (metodeForm.checked) {
+        isiSuratContainer.style.display = 'block';
+        uploadContainer.style.display = 'none';
+    } else if (metodeUpload.checked) {
+        isiSuratContainer.style.display = 'none';
+        uploadContainer.style.display = 'block';
+    }
+}
+
+metodeForm.addEventListener('change', toggleMetode);
+metodeUpload.addEventListener('change', toggleMetode);
+
     </script>
 @endpush
