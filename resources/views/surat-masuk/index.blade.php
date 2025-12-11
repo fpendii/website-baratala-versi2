@@ -111,11 +111,11 @@
                                         @if ($item->id_pengguna == Auth::id())
                                         {{-- Tombol Edit --}}
                                         <a class="dropdown-item"
-                                            href="{{ url('/karyawan/surat-masuk/edit/' . $item->id) }}">
+                                            href="{{ url('surat-masuk/edit/' . $item->id) }}">
                                             <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
                                             Edit
                                         </a>
-                                        <form action="{{ url('/karyawan/surat-masuk/delete/' . $item->id) }}"
+                                        <form action="{{ url('surat-masuk/delete/' . $item->id) }}"
                                             method="POST" style="display: contents;"
                                             onsubmit="return confirm('Yakin hapus data ini?')">
                                             @csrf

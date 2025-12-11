@@ -22,7 +22,7 @@ class PenggunaController extends Controller
             $search = $request->cari;
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', '%' . $search . '%')
-                  ->orWhere('email', 'like', '%' . $search . '%');
+                    ->orWhere('email', 'like', '%' . $search . '%');
             });
         }
 
@@ -52,5 +52,17 @@ class PenggunaController extends Controller
         $pengguna = Pengguna::findOrFail($id);
         $pengguna->update($request->all());
         return redirect()->route('pengguna.index');
+    }
+
+    public function destroy($id)
+    {
+        $pengguna = Pengguna::findOrFail($id);
+
+        // Soft delete (tidak menghapus data dari DB)
+        $pengguna->delete();
+
+        return redirect()
+            ->route('pengguna.index')
+            ->with('success', 'Pengguna berhasil dihapus.');
     }
 }

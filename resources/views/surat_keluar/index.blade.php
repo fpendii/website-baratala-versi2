@@ -190,7 +190,7 @@
                     <h5 class="modal-title fw-bold text-primary">
                         <i class="bx bx-envelope me-2"></i> Pilih Jenis Surat
                     </h5>
-                    <button type="button" class="btn-close"></button>
+                    {{-- <button type="button" class="btn-close"></button> --}}
                 </div>
 
                 <div class="modal-body pt-2 pb-4 px-4">
