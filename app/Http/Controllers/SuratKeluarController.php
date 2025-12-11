@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 use App\Helpers\WhatsAppHelper;
+use App\Models\Pengguna;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class SuratKeluarController extends Controller
@@ -21,7 +22,7 @@ class SuratKeluarController extends Controller
     public function index(Request $request)
     {
         // 1. Mulai query builder
-        $query = SuratKeluar::with('pengguna')->orderBy('tgl_surat', 'desc');
+        $query = SuratKeluar::with('pengguna')->orderBy('nomor_surat', 'desc');
 
         // --- Logika Filter ---
 
@@ -142,6 +143,7 @@ class SuratKeluarController extends Controller
             'lampiran' => 'nullable|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
+        $noWaDirektur = Pengguna::where('role', 'direktur')->first()->no_hp;
         try {
             $lampiran = null;
             $dok_surat = null;
@@ -207,8 +209,10 @@ class SuratKeluarController extends Controller
             // 🔔 NOTIFIKASI WA KEPADA ATASAN (FONNTE)
             // =====================================================
             try {
+
+
                 $token = env('FONNTE_API_KEY');
-                $target = env('WA_ATASAN');
+                $target = $noWaDirektur;
 
                 $pembuat = Auth::user()->nama ?? 'Pengguna';
                 $tanggalSurat = date('d-m-Y', strtotime($request->tgl_surat));

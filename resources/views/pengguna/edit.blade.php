@@ -41,6 +41,7 @@
                     <option value="karyawan" {{ (old('role', $pengguna->role) == 'karyawan') ? 'selected' : '' }}>Karyawan</option>
                     <option value="direktur" {{ (old('role', $pengguna->role) == 'direktur') ? 'selected' : '' }}>Direktur</option>
                     <option value="enginer" {{ (old('role', $pengguna->role) == 'enginer') ? 'selected' : '' }}>Enginer</option>
+                    <option value="keuangan" {{ (old('role', $pengguna->role) == 'keuangan') ? 'selected' : '' }}>Keuangan</option>
                     <option value="produksi" {{ (old('role', $pengguna->role) == 'produksi') ? 'selected' : '' }}>Produksi</option>
 
                 </select>

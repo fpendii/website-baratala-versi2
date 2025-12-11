@@ -58,7 +58,7 @@ class AuthController extends Controller
                 'id'       => $user->id,
             ]);
 
- 
+
             return redirect()->intended('dashboard');
 
             // redirect sesuai role
@@ -78,7 +78,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login')->with('success', 'Berhasil logout.');
+        return redirect()->route('landingpage')->with('success', 'Berhasil logout.');
     }
 
     public function showLinkRequestForm()
