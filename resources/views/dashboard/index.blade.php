@@ -50,7 +50,7 @@
                         </span>
                     </div>
                     {{-- Data Statistik --}}
-                    <h3 class="mt-3 mb-0">32</h3>
+                    <h3 class="mt-3 mb-0">{{ $totalSuratKeluarBulanIni }}</h3>
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
                         </span>
                     </div>
                     {{-- Data Statistik --}}
-                    <h3 class="mt-3 mb-0">45</h3>
+                    <h3 class="mt-3 mb-0">{{ $totalSuratMasukBulanIni }}</h3>
                 </div>
             </div>
         </div>
@@ -90,7 +90,7 @@
                         </span>
                     </div>
                     {{-- Data Statistik --}}
-                    <h3 class="mt-3 mb-0">128</h3>
+                    <h3 class="mt-3 mb-0">{{ $totalPengguna }}</h3>
                 </div>
             </div>
         </div>

@@ -18,14 +18,31 @@ class SuratKeluarController extends Controller
     /**
      * Tampilkan daftar semua Surat Keluar.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $surat_keluar = SuratKeluar::with('pengguna')
-            ->orderBy('nomor_surat', 'desc')
-            ->get();
+        $query = SuratKeluar::with('pengguna')->orderBy('nomor_surat', 'desc');
+
+        // FILTER JENIS
+        if ($request->filled('jenis')) {
+            $query->where('jenis_surat', $request->jenis);
+        }
+
+        // FILTER NOMOR SURAT
+        if ($request->filled('nomor')) {
+            $query->where('nomor_surat', 'LIKE', '%' . $request->nomor . '%');
+        }
+
+        // FILTER PERIHAL
+        if ($request->filled('perihal')) {
+            $query->where('perihal', 'LIKE', '%' . $request->perihal . '%');
+        }
+
+        $surat_keluar = $query->get();
 
         return view('surat_keluar.index', compact('surat_keluar'));
     }
+
+
 
     public function create(Request $request)
     {

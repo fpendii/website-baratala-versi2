@@ -52,7 +52,7 @@
                     <option value="enginer" {{ old('role') == 'enginer' ? 'selected' : '' }}>Enginer</option>
                     <option value="produksi" {{ old('role') == 'produksi' ? 'selected' : '' }}>Produksi</option>
                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="karyawan" {{ old('') == 'karyawan' ? 'selected' : '' }}>Paryawan</option>
+                    <option value="karyawan" {{ old('') == 'karyawan' ? 'selected' : '' }}>Karyawan</option>
 
 
                 </select>

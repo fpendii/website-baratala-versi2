@@ -47,8 +47,53 @@
 
     <div class="card">
         <h5 class="card-header">Daftar Surat Keluar</h5>
+        <div class="card-body pb-2">
+            <div class="d-flex justify-content-end mb-3">
+    <form method="GET" action="{{ route('surat-keluar.index') }}" class="d-flex gap-2 flex-wrap">
+
+        {{-- FILTER JENIS --}}
+        <div>
+            <label class="form-label mb-0">Jenis:</label>
+            <select name="jenis" class="form-select" onchange="this.form.submit()" style="width: 180px;">
+                <option value="">Semua</option>
+                <option value="umum" {{ request('jenis')=='umum' ? 'selected' : '' }}>Umum</option>
+                <option value="operasional" {{ request('jenis')=='operasional' ? 'selected' : '' }}>Operasional</option>
+                <option value="keuangan" {{ request('jenis')=='keuangan' ? 'selected' : '' }}>Keuangan</option>
+            </select>
+        </div>
+
+        {{-- FILTER NOMOR SURAT --}}
+        <div>
+            <label class="form-label mb-0">Nomor Surat:</label>
+            <input type="text" name="nomor" class="form-control"
+                placeholder="Cari nomor..." value="{{ request('nomor') }}" style="width: 180px;">
+        </div>
+
+        {{-- FILTER PERIHAL --}}
+        <div>
+            <label class="form-label mb-0">Perihal:</label>
+            <input type="text" name="perihal" class="form-control"
+                placeholder="Cari perihal..." value="{{ request('perihal') }}" style="width: 180px;">
+        </div>
+
+        {{-- TOMBOL FILTER --}}
+        <div class="align-self-end">
+            <button type="submit" class="btn btn-primary">Filter</button>
+
+            @if(request()->has('jenis') || request()->has('nomor') || request()->has('perihal'))
+                <a href="{{ route('surat-keluar.index') }}" class="btn btn-secondary">Reset</a>
+            @endif
+        </div>
+
+    </form>
+</div>
+
+        </div>
+
         <div class="table-responsive text-nowrap">
+
             <table class="table table-hover table-sm align-middle">
+
                 <thead class="table-light">
                     <tr>
                         <th style="width: 5%;">#</th>
@@ -67,7 +112,7 @@
                             <td>{{ $index + 1 }}</td>
                             <td>
                                 <strong title="{{ $item->nomor_surat }}">
-                                    <a href="{{ route('surat-keluar.show', $item->id) }}" class="text-primary">
+                                    <a class="text-primary">
                                         {{ $item->perihal }}
                                     </a>
                                 </strong>
@@ -169,7 +214,7 @@
                             <td colspan="7" class="text-center py-4">
                                 <i class="bx bx-envelope-open bx-lg d-block mb-2 text-muted"></i>
                                 <p class="mb-1">Belum ada data Surat Keluar yang tercatat.</p>
-                                <a href="{{ route('surat-keluar.create') }}" class="btn btn-sm btn-outline-primary mt-2">
+                                <a class="btn btn-sm btn-outline-primary mt-2">
                                     Buat Surat Keluar Pertama
                                 </a>
                             </td>
@@ -390,6 +435,7 @@
     </script>
 
     {{-- SCRIPT MODAL --}}
+    {{-- SCRIPT MODAL --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const detailModal = document.getElementById('detailSuratModal');
@@ -397,39 +443,39 @@
             detailModal.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
 
+                // Ambil semua data dari atribut HTML
                 const perihal = button.getAttribute('data-perihal');
                 const nomor = button.getAttribute('data-nomor');
                 const tujuan = button.getAttribute('data-tujuan');
                 const tanggal = button.getAttribute('data-tanggal');
                 const jenis = button.getAttribute('data-jenis');
-                const lampiran = button.getAttribute('data-lampiran');
+                const dokumenPath = button.getAttribute(
+                    'data-lampiran'); // GANTI: Gunakan satu nama untuk path dokumen
 
                 // ISI DATA
                 document.getElementById('detailPerihal').textContent = perihal;
-                document.getElementById('detailPerihalContent').textContent = perihal;
+                document.getElementById('detailPerihalContent').textContent =
+                    perihal; // Menggunakan perihal sebagai content
                 document.getElementById('detailNomor').textContent = nomor;
                 document.getElementById('detailTujuan').textContent = tujuan;
                 document.getElementById('detailTanggal').textContent = tanggal;
+
+                // Perbaikan untuk Badge Jenis Surat
                 document.getElementById('detailJenis').innerHTML =
                     `<span class="badge bg-info">${jenis}</span>`;
 
                 // LAMPIRAN / DOKUMEN
-                let dokSurat = button.getAttribute('data-dok_surat');
-                let lampiran = button.getAttribute('data-lampiran');
+                const detailLampiran = document.getElementById('detailLampiran');
+                const detailLampiranEmpty = document.getElementById('detailLampiranEmpty');
 
-                if (dokSurat && dokSurat !== '') {
-                    document.getElementById('detailLampiran').classList.remove('d-none');
-                    document.getElementById('detailLampiranEmpty').classList.add('d-none');
-                    document.getElementById('detailLampiran').href = "/storage/" + dokSurat;
-                    document.getElementById('detailLampiran').textContent = "Lihat Dokumen";
-                } else if (lampiran && lampiran !== '') {
-                    document.getElementById('detailLampiran').classList.remove('d-none');
-                    document.getElementById('detailLampiranEmpty').classList.add('d-none');
-                    document.getElementById('detailLampiran').href = "/storage/" + lampiran;
-                    document.getElementById('detailLampiran').textContent = "Lihat Lampiran";
+                if (dokumenPath && dokumenPath !== '') {
+                    detailLampiran.classList.remove('d-none');
+                    detailLampiranEmpty.classList.add('d-none');
+                    detailLampiran.href = "/storage/" + dokumenPath;
+                    detailLampiran.textContent = "Lihat Dokumen"; // Nama Tautan
                 } else {
-                    document.getElementById('detailLampiran').classList.add('d-none');
-                    document.getElementById('detailLampiranEmpty').classList.remove('d-none');
+                    detailLampiran.classList.add('d-none');
+                    detailLampiranEmpty.classList.remove('d-none');
                 }
 
 
