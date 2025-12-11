@@ -25,9 +25,72 @@
         </div>
     @endif
 
+    {{-- CARD FILTER SURAT MASUK --}}
+    <div class="card mb-4">
+        <h5 class="card-header">Filter Data Surat Masuk</h5>
+        <div class="card-body">
+            {{-- Form Filter menggunakan GET method, diarahkan ke URL saat ini --}}
+            <form action="{{ url()->current() }}" method="GET" class="row g-3 align-items-end">
+                {{-- Filter Pengirim (Search) --}}
+                <div class="col-md-6 col-lg-3">
+                    <label for="filter_pengirim" class="form-label">Cari Pengirim</label>
+                    {{-- request('pengirim') digunakan untuk mempertahankan nilai input setelah submit --}}
+                    <input type="text" class="form-control" id="filter_pengirim" name="pengirim"
+                        placeholder="Nama Pengirim..." value="{{ request('pengirim') }}">
+                </div>
+
+                {{-- Filter Prioritas --}}
+                <div class="col-md-6 col-lg-2">
+                    <label for="filter_prioritas" class="form-label">Prioritas</label>
+                    <select id="filter_prioritas" name="prioritas" class="form-select">
+                        <option value="">Semua Prioritas</option>
+                        {{-- Mempertahankan nilai yang dipilih --}}
+                        <option value="tinggi" {{ request('prioritas') == 'tinggi' ? 'selected' : '' }}>Tinggi</option>
+                        <option value="sedang" {{ request('prioritas') == 'sedang' ? 'selected' : '' }}>Sedang</option>
+                        <option value="rendah" {{ request('prioritas') == 'rendah' ? 'selected' : '' }}>Rendah</option>
+                    </select>
+                </div>
+
+                {{-- Filter Tanggal Mulai --}}
+                <div class="col-md-6 col-lg-3">
+                    <label for="filter_tanggal_mulai" class="form-label">Dari Tanggal Terima</label>
+                    <input type="date" class="form-control" id="filter_tanggal_mulai" name="tanggal_mulai"
+                        value="{{ request('tanggal_mulai') }}">
+                </div>
+
+                {{-- Filter Tanggal Selesai --}}
+                <div class="col-md-6 col-lg-3">
+                    <label for="filter_tanggal_selesai" class="form-label">Sampai Tanggal Terima</label>
+                    <input type="date" class="form-control" id="filter_tanggal_selesai" name="tanggal_selesai"
+                        value="{{ request('tanggal_selesai') }}">
+                </div>
+
+                {{-- Tombol Aksi --}}
+                <div class="col-12 col-md-auto col-lg-1">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="icon-base ri ri-filter-3-line icon-18px"></i> Filter
+                    </button>
+                </div>
+
+                {{-- Tombol Reset - Ditampilkan jika ada filter aktif --}}
+                @if (request()->hasAny(['pengirim', 'prioritas', 'tanggal_mulai', 'tanggal_selesai']))
+                    <div class="col-12 col-md-auto col-lg-auto">
+                        <a href="{{ url()->current() }}" class="btn btn-outline-secondary w-100">
+                            <i class="icon-base ri ri-refresh-line icon-18px"></i> Reset
+                        </a>
+                    </div>
+                @endif
+            </form>
+        </div>
+    </div>
+    {{-- END CARD FILTER --}}
+
+
     <div class="card">
         <h5 class="card-header">Daftar Surat Masuk</h5>
+
         <div class="table-responsive text-nowrap">
+
             <table class="table table-hover table-sm align-middle">
                 <thead class="table-light">
                     <tr>
@@ -41,11 +104,13 @@
                 </thead>
                 <tbody class="table-border-bottom-0">
                     {{-- Loop data dari Controller (variabel $suratMasuk) --}}
+                    {{-- Tambahkan $suratMasuk->firstItem() untuk perhitungan nomor urut yang benar saat paginasi --}}
                     @forelse($suratMasuk as $index => $item)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $suratMasuk->firstItem() + $index }}</td>
                             <td>
                                 <strong title="{{ $item->nomor_surat ?? 'Tidak Ada Nomor' }}">
+                                    {{-- Sesuaikan route ini jika perlu --}}
                                     <a href="{{ route('direktur.surat-masuk.show', $item->id) }}" class="text-primary">
                                         {{ $item->judul }}
                                     </a>
@@ -55,7 +120,8 @@
 
                                 {{-- Icon Lampiran --}}
                                 @if ($item->lampiran)
-                                    <a href="{{ asset('storage/public/' . $item->lampiran) }}" target="_blank"
+                                    {{-- Perbaiki path asset ke storage/public/ --}}
+                                    <a href="{{ asset('storage/' . $item->lampiran) }}" target="_blank"
                                         class="ms-1 text-info" title="Lampiran tersedia">
                                         <i class="bx bx-paperclip"></i>
                                     </a>
@@ -96,7 +162,8 @@
 
                                         {{-- TOMBOL DETAIL BARU (Memicu Modal) --}}
                                         <a href="javascript:void(0);" class="dropdown-item btn-detail-surat"
-                                            data-bs-toggle="modal" data-bs-target="#detailSuratModal" {{-- Data Attributes untuk injeksi ke Modal --}}
+                                            data-bs-toggle="modal" data-bs-target="#detailSuratModal"
+                                            {{-- Data Attributes untuk injeksi ke Modal --}}
                                             data-judul="{{ $item->judul }}"
                                             data-nomor="{{ $item->nomor_surat ?? 'No. Surat: -' }}"
                                             data-pengirim="{{ $item->pengirim }}"
@@ -109,22 +176,20 @@
 
                                         {{-- hanya pegguna yang upload bisa edit dan hapus --}}
                                         @if ($item->id_pengguna == Auth::id())
-                                        {{-- Tombol Edit --}}
-                                        <a class="dropdown-item"
-                                            href="{{ url('surat-masuk/edit/' . $item->id) }}">
-                                            <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
-                                            Edit
-                                        </a>
-                                        <form action="{{ url('surat-masuk/delete/' . $item->id) }}"
-                                            method="POST" style="display: contents;"
-                                            onsubmit="return confirm('Yakin hapus data ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="dropdown-item text-danger" type="submit">
-                                                <i class="icon-base ri ri-delete-bin-6-line icon-18px me-1"></i>
-                                                Delete
-                                            </button>
-                                        </form>
+                                            {{-- Tombol Edit --}}
+                                            <a class="dropdown-item" href="{{ url('surat-masuk/edit/' . $item->id) }}">
+                                                <i class="icon-base ri ri-pencil-line icon-18px me-1"></i>
+                                                Edit
+                                            </a>
+                                            <form action="{{ url('surat-masuk/delete/' . $item->id) }}" method="POST"
+                                                style="display: contents;" onsubmit="return confirm('Yakin hapus data ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="dropdown-item text-danger" type="submit">
+                                                    <i class="icon-base ri ri-delete-bin-6-line icon-18px me-1"></i>
+                                                    Delete
+                                                </button>
+                                            </form>
                                         @endif
                                     </div>
                                 </div>
@@ -132,9 +197,10 @@
                         </tr>
                     @empty
                         <tr>
+                            {{-- Sesuaikan colspan jika ada penambahan kolom --}}
                             <td colspan="6" class="text-center py-4">
                                 <i class="bx bx-mail-send bx-lg d-block mb-2 text-muted"></i>
-                                <p class="mb-1">Kotak Surat Masuk Anda masih kosong.</p>
+                                <p class="mb-1">Tidak ditemukan surat masuk yang sesuai dengan filter.</p>
                                 <a href="{{ route('surat-masuk.create') }}"
                                     class="btn btn-sm btn-outline-primary mt-2">Input Surat Masuk Pertama</a>
                             </td>
@@ -143,8 +209,16 @@
                 </tbody>
             </table>
         </div>
+
+        {{-- Paginasi --}}
+        @if ($suratMasuk->hasPages())
+            <div class="card-footer clearfix">
+                {{-- Menggunakan appends(request()->query()) agar parameter filter (GET) ikut terbawa saat pindah halaman --}}
+                {{ $suratMasuk->appends(request()->query())->links() }}
+            </div>
+        @endif
     </div>
-    </div>
+
     {{-- ================================================================= --}}
     {{-- MODAL DETAIL SURAT MASUK --}}
     {{-- ================================================================= --}}
@@ -229,6 +303,8 @@
             </div>
         </div>
     </div>
+
+    {{-- JAVASCRIPT UNTUK MODAL DETAIL --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const detailModal = document.getElementById('detailSuratModal');

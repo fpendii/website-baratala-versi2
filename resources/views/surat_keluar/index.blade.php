@@ -4,6 +4,7 @@
 
 @section('content')
     <style>
+        /* ... CSS yang sudah ada ... */
         .hover-card {
             transition: all 0.2s ease-in-out;
             cursor: pointer;
@@ -23,6 +24,7 @@
             justify-content: center;
         }
     </style>
+
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold py-3 mb-0">Surat Keluar</h4>
@@ -45,186 +47,231 @@
         </div>
     @endif
 
+    {{-- =================================================================== --}}
+    {{-- CARD FILTER SURAT KELUAR (Kode Baru/Modifikasi) --}}
+    <div class="card mb-4">
+        <h5 class="card-header">Filter Data Surat Keluar</h5>
+        <div class="card-body">
+            <form action="{{ url()->current() }}" method="GET" class="row g-3 align-items-end">
+
+                {{-- 1. Filter Nomor Surat (BARU) --}}
+                <div class="col-md-6 col-lg-3">
+                    <label for="filter_nomor_surat" class="form-label">Cari Nomor Surat</label>
+                    <input type="text" class="form-control" id="filter_nomor_surat" name="nomor"
+                        placeholder="Masukkan Nomor Surat..." value="{{ request('nomor') }}">
+                </div>
+
+                {{-- 2. Filter Perihal / Tujuan --}}
+                <div class="col-md-6 col-lg-3">
+                    <label for="filter_perihal_tujuan" class="form-label">Cari Perihal / Tujuan</label>
+                    <input type="text" class="form-control" id="filter_perihal_tujuan" name="cari"
+                        placeholder="Perihal atau Tujuan..." value="{{ request('cari') }}">
+                </div>
+
+                {{-- 3. Filter Jenis Surat --}}
+                <div class="col-md-6 col-lg-2">
+                    <label for="filter_jenis" class="form-label">Jenis Surat</label>
+                    <select id="filter_jenis" name="jenis" class="form-select">
+                        <option value="">Semua Jenis</option>
+                        <option value="umum" {{ request('jenis') == 'umum' ? 'selected' : '' }}>Umum</option>
+                        <option value="operasional" {{ request('jenis') == 'operasional' ? 'selected' : '' }}>Operasional
+                        </option>
+                        <option value="keuangan" {{ request('jenis') == 'keuangan' ? 'selected' : '' }}>Keuangan</option>
+                    </select>
+                </div>
+
+                {{-- 4. Filter Tanggal Mulai --}}
+                <div class="col-md-6 col-lg-3">
+                    <label for="filter_tanggal_mulai" class="form-label">Dari Tanggal Surat</label>
+                    <input type="date" class="form-control" id="filter_tanggal_mulai" name="tanggal_mulai"
+                        value="{{ request('tanggal_mulai') }}">
+                </div>
+
+                {{-- 5. Filter Tanggal Selesai --}}
+                <div class="col-md-6 col-lg-3">
+                    <label for="filter_tanggal_selesai" class="form-label">Sampai Tanggal Surat</label>
+                    <input type="date" class="form-control" id="filter_tanggal_selesai" name="tanggal_selesai"
+                        value="{{ request('tanggal_selesai') }}">
+                </div>
+
+                {{-- Tombol Aksi --}}
+                <div class="col-12 col-md-auto col-lg-1">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="icon-base ri ri-filter-3-line icon-18px"></i> Filter
+                    </button>
+                </div>
+
+                {{-- Tombol Reset --}}
+                @if (request()->hasAny(['nomor', 'cari', 'jenis', 'tanggal_mulai', 'tanggal_selesai']))
+                    <div class="col-12 col-md-auto col-lg-auto">
+                        <a href="{{ url()->current() }}" class="btn btn-outline-secondary w-100">
+                            <i class="icon-base ri ri-refresh-line icon-18px"></i> Reset
+                        </a>
+                    </div>
+                @endif
+            </form>
+        </div>
+    </div>
+    {{-- END CARD FILTER --}}
+    {{-- =================================================================== --}}
+
+
     <div class="card">
         <h5 class="card-header">Daftar Surat Keluar</h5>
         <div class="card-body pb-2">
-            <div class="d-flex justify-content-end mb-3">
-    <form method="GET" action="{{ route('surat-keluar.index') }}" class="d-flex gap-2 flex-wrap">
 
-        {{-- FILTER JENIS --}}
-        <div>
-            <label class="form-label mb-0">Jenis:</label>
-            <select name="jenis" class="form-select" onchange="this.form.submit()" style="width: 180px;">
-                <option value="">Semua</option>
-                <option value="umum" {{ request('jenis')=='umum' ? 'selected' : '' }}>Umum</option>
-                <option value="operasional" {{ request('jenis')=='operasional' ? 'selected' : '' }}>Operasional</option>
-                <option value="keuangan" {{ request('jenis')=='keuangan' ? 'selected' : '' }}>Keuangan</option>
-            </select>
-        </div>
+            <div class="table-responsive text-nowrap">
 
-        {{-- FILTER NOMOR SURAT --}}
-        <div>
-            <label class="form-label mb-0">Nomor Surat:</label>
-            <input type="text" name="nomor" class="form-control"
-                placeholder="Cari nomor..." value="{{ request('nomor') }}" style="width: 180px;">
-        </div>
-
-        {{-- FILTER PERIHAL --}}
-        <div>
-            <label class="form-label mb-0">Perihal:</label>
-            <input type="text" name="perihal" class="form-control"
-                placeholder="Cari perihal..." value="{{ request('perihal') }}" style="width: 180px;">
-        </div>
-
-        {{-- TOMBOL FILTER --}}
-        <div class="align-self-end">
-            <button type="submit" class="btn btn-primary">Filter</button>
-
-            @if(request()->has('jenis') || request()->has('nomor') || request()->has('perihal'))
-                <a href="{{ route('surat-keluar.index') }}" class="btn btn-secondary">Reset</a>
-            @endif
-        </div>
-
-    </form>
-</div>
-
-        </div>
-
-        <div class="table-responsive text-nowrap">
-
-            <table class="table table-hover table-sm align-middle">
-
-                <thead class="table-light">
-                    <tr>
-                        <th style="width: 5%;">#</th>
-                        <th style="width: 25%;">Perihal & Nomor Surat</th>
-                        <th style="width: 20%;">Tujuan Surat</th>
-                        <th style="width: 15%;">Tanggal Surat</th>
-                        <th style="width: 10%;">Jenis Surat</th>
-                        <th style="width: 15%;">Dokumen Surat</th>
-                        <th style="width: 15%;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="table-border-bottom-0">
-
-                    @forelse($surat_keluar as $index => $item)
+                <table class="table table-hover table-sm align-middle">
+                    <thead class="table-light">
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>
-                                <strong title="{{ $item->nomor_surat }}">
-                                    <a class="text-primary">
-                                        {{ $item->perihal }}
-                                    </a>
-                                </strong>
-                                <br>
-                                <small class="text-muted">No. Surat: {{ $item->nomor_surat }}</small>
-                            </td>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 25%;">Perihal & Nomor Surat</th>
+                            <th style="width: 20%;">Tujuan Surat</th>
+                            <th style="width: 15%;">Tanggal Surat</th>
+                            <th style="width: 10%;">Jenis Surat</th>
+                            <th style="width: 15%;">Dokumen Surat</th>
+                            <th style="width: 15%;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
 
-                            <td>
-                                <strong class="text-dark">{{ $item->tujuan }}</strong>
-                                <br>
-                                <small class="text-muted">
-                                    Dibuat oleh: {{ Str::limit($item->pengguna->name ?? 'N/A', 25) }}
-                                </small>
-                            </td>
-
-                            <td>
-                                <i class="bx bx-calendar me-1"></i>
-                                {{ \Carbon\Carbon::parse($item->tgl_surat)->format('d M Y') }}
-                            </td>
-
-                            <td>
-                                @php
-                                    $jenisClass = [
-                                        'keuangan' => 'success',
-                                        'operasional' => 'warning',
-                                        'umum' => 'info',
-                                    ];
-                                    $currentJenis = strtolower($item->jenis_surat ?? 'umum');
-                                @endphp
-                                <span class="badge bg-{{ $jenisClass[$currentJenis] ?? 'secondary' }}">
-                                    {{ ucfirst($currentJenis) }}
-                                </span>
-                            </td>
-
-                            {{-- DOKUMEN SURAT --}}
-                            <td>
-                                @if ($item->dok_surat)
-                                    <a href="{{ asset('storage/' . $item->dok_surat) }}" target="_blank"
-                                        class="btn btn-sm btn-outline-info">
-                                        <i class="ri ri-file-2-line"></i> Lihat Dokumen
-                                    </a>
-                                @elseif ($item->lampiran)
-                                    <a href="{{ asset('storage/' . $item->lampiran) }}" target="_blank"
-                                        class="btn btn-sm btn-outline-secondary">
-                                        <i class="ri ri-file-2-line"></i> Lihat Lampiran
-                                    </a>
-                                @else
-                                    <span class="text-muted">Tidak ada</span>
-                                @endif
-                            </td>
-
-
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none"
-                                        data-bs-toggle="dropdown">
-                                        <i class="icon-base ri ri-more-2-line icon-18px"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item text-success" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#uploadTtdModal" data-id="{{ $item->id }}"
-                                            data-nomor="{{ $item->nomor_surat }}">
-                                            <i class="icon-base ri ri-upload-cloud-2-line icon-18px me-1"></i> Update
-                                            Dokumen
+                        {{-- PASTIKAN DATA SURAT KELUAR MENGGUNAKAN PAGINATE DI CONTROLLER --}}
+                        @forelse($surat_keluar as $index => $item)
+                            <tr>
+                                {{-- Jika menggunakan paginate(), gunakan $surat_keluar->firstItem() + $index --}}
+                                <td>{{ $surat_keluar->firstItem() + $index }}</td>
+                                <td>
+                                    <strong title="{{ $item->nomor_surat }}">
+                                        <a class="text-primary">
+                                            {{ $item->perihal }}
                                         </a>
-                                        {{-- DETAIL --}}
-                                        <a href="javascript:void(0);" class="dropdown-item btn-detail-surat"
-                                            data-bs-toggle="modal" data-bs-target="#detailSuratModal"
-                                            data-perihal="{{ $item->perihal }}" data-nomor="{{ $item->nomor_surat }}"
-                                            data-tujuan="{{ $item->tujuan }}"
-                                            data-tanggal="{{ \Carbon\Carbon::parse($item->tgl_surat)->format('d F Y') }}"
-                                            data-jenis="{{ ucfirst($currentJenis) }}"
-                                            data-lampiran="{{ $item->dok_surat }}">
-                                            <i class="icon-base ri ri-eye-line icon-18px me-1"></i> Detail
-                                        </a>
+                                    </strong>
+                                    <br>
+                                    <small class="text-muted">No. Surat: {{ $item->nomor_surat }}</small>
+                                </td>
 
-                                        {{-- EDIT & DELETE --}}
-                                        @if ($item->id_pengguna == Auth::id())
-                                            <a class="dropdown-item" href="{{ route('surat-keluar.edit', $item->id) }}">
-                                                <i class="icon-base ri ri-pencil-line icon-18px me-1"></i> Edit
+                                <td>
+                                    <strong class="text-dark">{{ $item->tujuan }}</strong>
+                                    <br>
+                                    <small class="text-muted">
+                                        Dibuat oleh: {{ Str::limit($item->pengguna->name ?? 'N/A', 25) }}
+                                    </small>
+                                </td>
+
+                                <td>
+                                    <i class="bx bx-calendar me-1"></i>
+                                    {{ \Carbon\Carbon::parse($item->tgl_surat)->format('d M Y') }}
+                                </td>
+
+                                <td>
+                                    @php
+                                        $jenisClass = [
+                                            'keuangan' => 'success',
+                                            'operasional' => 'warning',
+                                            'umum' => 'info',
+                                        ];
+                                        $currentJenis = strtolower($item->jenis_surat ?? 'umum');
+                                    @endphp
+                                    <span class="badge bg-{{ $jenisClass[$currentJenis] ?? 'secondary' }}">
+                                        {{ ucfirst($currentJenis) }}
+                                    </span>
+                                </td>
+
+                                {{-- DOKUMEN SURAT --}}
+                                <td>
+                                    @if ($item->dok_surat)
+                                        <a href="{{ asset('storage/' . $item->dok_surat) }}" target="_blank"
+                                            class="btn btn-sm btn-outline-info">
+                                            <i class="ri ri-file-2-line"></i> Lihat Dokumen
+                                        </a>
+                                    @elseif ($item->lampiran)
+                                        <a href="{{ asset('storage/' . $item->lampiran) }}" target="_blank"
+                                            class="btn btn-sm btn-outline-secondary">
+                                            <i class="ri ri-file-2-line"></i> Lihat Lampiran
+                                        </a>
+                                    @else
+                                        <span class="text-muted">Tidak ada</span>
+                                    @endif
+                                </td>
+
+
+                                <td>
+                                    {{-- ... Dropdown Aksi yang sudah ada ... --}}
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none"
+                                            data-bs-toggle="dropdown">
+                                            <i class="icon-base ri ri-more-2-line icon-18px"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item text-success" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#uploadTtdModal" data-id="{{ $item->id }}"
+                                                data-nomor="{{ $item->nomor_surat }}">
+                                                <i class="icon-base ri ri-upload-cloud-2-line icon-18px me-1"></i> Update
+                                                Dokumen
                                             </a>
-                                            <form action="{{ route('surat-keluar.destroy', $item->id) }}" method="POST"
-                                                style="display: contents;"
-                                                onsubmit="return confirm('Yakin hapus data ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="dropdown-item text-danger" type="submit">
-                                                    <i class="icon-base ri ri-delete-bin-6-line icon-18px me-1"></i> Delete
-                                                </button>
-                                            </form>
-                                        @endif
+                                            {{-- DETAIL --}}
+                                            <a href="javascript:void(0);" class="dropdown-item btn-detail-surat"
+                                                data-bs-toggle="modal" data-bs-target="#detailSuratModal"
+                                                data-perihal="{{ $item->perihal }}" data-nomor="{{ $item->nomor_surat }}"
+                                                data-tujuan="{{ $item->tujuan }}"
+                                                data-tanggal="{{ \Carbon\Carbon::parse($item->tgl_surat)->format('d F Y') }}"
+                                                data-jenis="{{ ucfirst($currentJenis) }}"
+                                                data-lampiran="{{ $item->dok_surat }}">
+                                                <i class="icon-base ri ri-eye-line icon-18px me-1"></i> Detail
+                                            </a>
+
+                                            {{-- EDIT & DELETE --}}
+                                            @if ($item->id_pengguna == Auth::id())
+                                                <a class="dropdown-item"
+                                                    href="{{ route('surat-keluar.edit', $item->id) }}">
+                                                    <i class="icon-base ri ri-pencil-line icon-18px me-1"></i> Edit
+                                                </a>
+                                                <form action="{{ route('surat-keluar.destroy', $item->id) }}" method="POST"
+                                                    style="display: contents;"
+                                                    onsubmit="return confirm('Yakin hapus data ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="dropdown-item text-danger" type="submit">
+                                                        <i class="icon-base ri ri-delete-bin-6-line icon-18px me-1"></i>
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
 
-                    @empty
-                        <tr>
-                            <td colspan="7" class="text-center py-4">
-                                <i class="bx bx-envelope-open bx-lg d-block mb-2 text-muted"></i>
-                                <p class="mb-1">Belum ada data Surat Keluar yang tercatat.</p>
-                                <a class="btn btn-sm btn-outline-primary mt-2">
-                                    Buat Surat Keluar Pertama
-                                </a>
-                            </td>
-                        </tr>
-                    @endforelse
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center py-4">
+                                    <i class="bx bx-envelope-open bx-lg d-block mb-2 text-muted"></i>
+                                    <p class="mb-1">Belum ada data Surat Keluar yang tercatat.</p>
+                                    <a class="btn btn-sm btn-outline-primary mt-2" data-bs-toggle="modal"
+                                        data-bs-target="#modalPilihJenis">
+                                        Buat Surat Keluar Pertama
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforelse
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+        {{-- Paginasi --}}
+        @if (isset($surat_keluar) && $surat_keluar->hasPages())
+            <div class="card-footer clearfix">
+                {{-- Menggunakan appends(request()->query()) agar parameter filter (GET) ikut terbawa saat pindah halaman --}}
+                {{ $surat_keluar->appends(request()->query())->links() }}
+            </div>
+        @endif
     </div>
+
+    {{-- MODAL PILIH JENIS SURAT & MODAL DETAIL & MODAL UPLOAD TTD (Kode yang sudah ada, tidak diubah) --}}
+    {{-- ... (Sisipkan semua kode MODAL di sini) ... --}}
 
     {{-- MODAL PILIH JENIS SURAT (VERSI ELEGAN) --}}
     <div class="modal fade" id="modalPilihJenis" tabindex="-1" aria-hidden="true">
@@ -235,7 +282,6 @@
                     <h5 class="modal-title fw-bold text-primary">
                         <i class="bx bx-envelope me-2"></i> Pilih Jenis Surat
                     </h5>
-                    {{-- <button type="button" class="btn-close"></button> --}}
                 </div>
 
                 <div class="modal-body pt-2 pb-4 px-4">
@@ -358,7 +404,7 @@
                     <h6 class="text-primary border-bottom pb-2 mb-3">Dokumen Surat</h6>
                     <div class="mb-4" id="detailLampiranWrapper">
                         <a id="detailLampiran" href="#" target="_blank" class="btn btn-outline-info btn-sm">
-                            <i class="ri ri-file-2-line me-1"></i> Lihat Lampiran
+                            <i class="ri ri-file-2-line me-1"></i> Lihat Dokumen
                         </a>
                         <p id="detailLampiranEmpty" class="text-muted d-none">Tidak ada lampiran.</p>
                     </div>
@@ -397,7 +443,6 @@
                         <div class="mb-3">
                             <label for="dok_surat" class="form-label">Dokumen Surat Final (PDF) <span
                                     class="text-danger">*</span></label>
-                            {{-- PASTIKAN NAMA INPUT ADALAH 'dok_surat' --}}
                             <input class="form-control" type="file" id="dok_surat" name="dok_surat" accept=".pdf"
                                 required>
                             <small class="text-muted">File lama akan dihapus. Pastikan file baru berformat PDF dan sudah
@@ -413,11 +458,11 @@
         </div>
     </div>
 
+
+    {{-- SCRIPT YANG SUDAH ADA --}}
     {{-- SCRIPT UNTUK MODAL UPLOAD TTD --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ... (Script Modal Detail yang sudah ada) ...
-
             // SCRIPT BARU UNTUK MODAL UPLOAD TTD
             const uploadTtdModal = document.getElementById('uploadTtdModal');
             const uploadTtdSuratId = document.getElementById('uploadTtdSuratId');
@@ -431,13 +476,8 @@
                 uploadTtdSuratId.value = suratId;
                 uploadTtdNomorSurat.textContent = `Nomor Surat: ${nomor}`;
             });
-        });
-    </script>
 
-    {{-- SCRIPT MODAL --}}
-    {{-- SCRIPT MODAL --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+            // SCRIPT MODAL DETAIL
             const detailModal = document.getElementById('detailSuratModal');
 
             detailModal.addEventListener('show.bs.modal', function(event) {
@@ -450,7 +490,7 @@
                 const tanggal = button.getAttribute('data-tanggal');
                 const jenis = button.getAttribute('data-jenis');
                 const dokumenPath = button.getAttribute(
-                    'data-lampiran'); // GANTI: Gunakan satu nama untuk path dokumen
+                    'data-lampiran');
 
                 // ISI DATA
                 document.getElementById('detailPerihal').textContent = perihal;
@@ -461,8 +501,16 @@
                 document.getElementById('detailTanggal').textContent = tanggal;
 
                 // Perbaikan untuk Badge Jenis Surat
+                // Tentukan warna badge berdasarkan jenis
+                let badgeClass = 'info';
+                if (jenis.toLowerCase() === 'keuangan') {
+                    badgeClass = 'success';
+                } else if (jenis.toLowerCase() === 'operasional') {
+                    badgeClass = 'warning';
+                }
+
                 document.getElementById('detailJenis').innerHTML =
-                    `<span class="badge bg-info">${jenis}</span>`;
+                    `<span class="badge bg-${badgeClass}">${jenis}</span>`;
 
                 // LAMPIRAN / DOKUMEN
                 const detailLampiran = document.getElementById('detailLampiran');
@@ -477,8 +525,6 @@
                     detailLampiran.classList.add('d-none');
                     detailLampiranEmpty.classList.remove('d-none');
                 }
-
-
             });
         });
     </script>

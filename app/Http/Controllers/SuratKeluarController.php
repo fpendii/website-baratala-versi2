@@ -20,29 +20,46 @@ class SuratKeluarController extends Controller
      */
     public function index(Request $request)
     {
-        $query = SuratKeluar::with('pengguna')->orderBy('nomor_surat', 'desc');
+        // 1. Mulai query builder
+        $query = SuratKeluar::with('pengguna')->orderBy('tgl_surat', 'desc');
 
-        // FILTER JENIS
-        if ($request->filled('jenis')) {
-            $query->where('jenis_surat', $request->jenis);
-        }
+        // --- Logika Filter ---
 
-        // FILTER NOMOR SURAT
+        // NEW: Filter Nomor Surat
         if ($request->filled('nomor')) {
-            $query->where('nomor_surat', 'LIKE', '%' . $request->nomor . '%');
+            $query->where('nomor_surat', 'like', '%' . $request->nomor . '%');
         }
 
-        // FILTER PERIHAL
-        if ($request->filled('perihal')) {
-            $query->where('perihal', 'LIKE', '%' . $request->perihal . '%');
+        // 2. Filter Perihal / Tujuan (Cari)
+        if ($request->filled('cari')) {
+            $cari = $request->cari;
+            // Gunakan where untuk mencari di kolom perihal ATAU tujuan
+            $query->where(function ($q) use ($cari) {
+                $q->where('perihal', 'like', '%' . $cari . '%')
+                    ->orWhere('tujuan', 'like', '%' . $cari . '%');
+            });
         }
 
-        $surat_keluar = $query->get();
+        // 3. Filter berdasarkan Jenis Surat
+        if ($request->filled('jenis')) {
+            $query->where('jenis_surat', strtolower($request->jenis));
+        }
+
+        // 4. Filter berdasarkan Rentang Tanggal Surat (Tanggal Mulai)
+        if ($request->filled('tanggal_mulai')) {
+            $query->whereDate('tgl_surat', '>=', $request->tanggal_mulai);
+        }
+
+        // 5. Filter berdasarkan Rentang Tanggal Surat (Tanggal Selesai)
+        if ($request->filled('tanggal_selesai')) {
+            $query->whereDate('tgl_surat', '<=', $request->tanggal_selesai);
+        }
+
+        // 6. Ambil data dengan paginasi
+        $surat_keluar = $query->paginate(10);
 
         return view('surat_keluar.index', compact('surat_keluar'));
     }
-
-
 
     public function create(Request $request)
     {

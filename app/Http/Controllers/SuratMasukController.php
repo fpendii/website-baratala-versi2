@@ -15,9 +15,40 @@ class SuratMasukController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $suratMasuk = SuratMasuk::orderBy('created_at', 'desc')->get();
+        // Mulai query builder
+        $query = SuratMasuk::orderBy('created_at', 'desc');
+
+        // --- Logika Filter ---
+
+        // 1. Filter berdasarkan Pengirim
+        if ($request->filled('pengirim')) {
+            $query->where('pengirim', 'like', '%' . $request->pengirim . '%');
+        }
+
+        // 2. Filter berdasarkan Prioritas
+        if ($request->filled('prioritas')) {
+            // Prioritas disimpan dalam huruf kecil
+            $prioritas = strtolower($request->prioritas);
+            $query->where('prioritas', $prioritas);
+        }
+
+        // 3. Filter berdasarkan Rentang Tanggal Terima (Tanggal Mulai)
+        if ($request->filled('tanggal_mulai')) {
+            $query->whereDate('tanggal_terima', '>=', $request->tanggal_mulai);
+        }
+
+        // 4. Filter berdasarkan Rentang Tanggal Terima (Tanggal Selesai)
+        if ($request->filled('tanggal_selesai')) {
+            $query->whereDate('tanggal_terima', '<=', $request->tanggal_selesai);
+        }
+
+        // Ambil data yang sudah difilter dan tambahkan paginasi (disarankan)
+        // Jika Anda ingin tetap menggunakan get() tanpa paginasi, ubah .paginate(10) menjadi .get()
+        $suratMasuk = $query->paginate(10);
+        // ATAU: $suratMasuk = $query->get();
+
         return view('surat-masuk.index', compact('suratMasuk'));
     }
 
