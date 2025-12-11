@@ -76,7 +76,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="bx bx-save me-1"></i> Simpan Surat Masuk
                 </button>
-                <a href="{{ route('direktur.surat-masuk.index') }}" class="btn btn-outline-secondary">Batal</a>
+                <a href="{{ route('surat-masuk.index') }}" class="btn btn-outline-secondary">Batal</a>
             </form>
         </div>
     </div>

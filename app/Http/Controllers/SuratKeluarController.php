@@ -24,40 +24,46 @@ class SuratKeluarController extends Controller
         // 1. Mulai query builder
         $query = SuratKeluar::with('pengguna')->orderBy('nomor_surat', 'desc');
 
-        // --- Logika Filter ---
-
-        // NEW: Filter Nomor Surat
+        // Filter
         if ($request->filled('nomor')) {
             $query->where('nomor_surat', 'like', '%' . $request->nomor . '%');
         }
-
-        // 2. Filter Perihal / Tujuan (Cari)
         if ($request->filled('cari')) {
             $cari = $request->cari;
-            // Gunakan where untuk mencari di kolom perihal ATAU tujuan
             $query->where(function ($q) use ($cari) {
                 $q->where('perihal', 'like', '%' . $cari . '%')
                     ->orWhere('tujuan', 'like', '%' . $cari . '%');
             });
         }
-
-        // 3. Filter berdasarkan Jenis Surat
         if ($request->filled('jenis')) {
             $query->where('jenis_surat', strtolower($request->jenis));
         }
-
-        // 4. Filter berdasarkan Rentang Tanggal Surat (Tanggal Mulai)
         if ($request->filled('tanggal_mulai')) {
             $query->whereDate('tgl_surat', '>=', $request->tanggal_mulai);
         }
-
-        // 5. Filter berdasarkan Rentang Tanggal Surat (Tanggal Selesai)
         if ($request->filled('tanggal_selesai')) {
             $query->whereDate('tgl_surat', '<=', $request->tanggal_selesai);
         }
 
-        // 6. Ambil data dengan paginasi
-        $surat_keluar = $query->paginate(10);
+        // Ambil data collection
+        $allData = $query->get();
+        $totalData = $allData->count(); // Hitung total data sesuai filter
+
+        // Tentukan jumlah per halaman (misal 10)
+        $perPage = 20;
+
+        // Slice data sesuai halaman sekarang
+        $page = $request->get('page', 1);
+        $items = $allData->slice(($page - 1) * $perPage, $perPage)->values();
+
+        // Buat paginator manual agar jumlah halaman sesuai data
+        $surat_keluar = new \Illuminate\Pagination\LengthAwarePaginator(
+            $items,
+            $totalData,
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         return view('surat_keluar.index', compact('surat_keluar'));
     }
@@ -209,8 +215,6 @@ class SuratKeluarController extends Controller
             // 🔔 NOTIFIKASI WA KEPADA ATASAN (FONNTE)
             // =====================================================
             try {
-
-
                 $token = env('FONNTE_API_KEY');
                 $target = $noWaDirektur;
 
@@ -224,6 +228,7 @@ Ada surat keluar baru yang dibuat:
 
 📝 *Nomor Surat:* {$request->nomor_surat}
 🎯 *Tujuan:* {$request->tujuan}
+📖 *Perihal:* {$request->perihal}
 📅 *Tanggal:* {$tanggalSurat}
 👤 *Dibuat oleh:* {$pembuat}
 

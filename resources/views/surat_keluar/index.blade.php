@@ -262,12 +262,12 @@
         </div>
 
         {{-- Paginasi --}}
-        @if (isset($surat_keluar) && $surat_keluar->hasPages())
-            <div class="card-footer clearfix">
-                {{-- Menggunakan appends(request()->query()) agar parameter filter (GET) ikut terbawa saat pindah halaman --}}
-                {{ $surat_keluar->appends(request()->query())->links() }}
-            </div>
-        @endif
+        @if ($surat_keluar->hasPages())
+    <div class="d-flex justify-content-end mt-3">
+        {{-- appends(request()->query()) agar filter GET tetap terbawa --}}
+        {{ $surat_keluar->appends(request()->query())->links('pagination::bootstrap-5') }}
+    </div>
+@endif
     </div>
 
     {{-- MODAL PILIH JENIS SURAT & MODAL DETAIL & MODAL UPLOAD TTD (Kode yang sudah ada, tidak diubah) --}}

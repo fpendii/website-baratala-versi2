@@ -111,7 +111,7 @@
                             <td>
                                 <strong title="{{ $item->nomor_surat ?? 'Tidak Ada Nomor' }}">
                                     {{-- Sesuaikan route ini jika perlu --}}
-                                    <a href="{{ route('direktur.surat-masuk.show', $item->id) }}" class="text-primary">
+                                    <a href="{{ route('surat-masuk.show', $item->id) }}" class="text-primary">
                                         {{ $item->judul }}
                                     </a>
                                 </strong>
